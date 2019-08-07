@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+
+@font-face {
+    font-family: NanumSquareR;
+    src: url(../font/NanumSquareR.woff) format('woff');
+}
+
+@font-face {
+    font-family: NanumSquareL;
+    src: url(../font/NanumSquareL.woff) format('woff');
+}
+
+@font-face {
+    font-family: NanumSquareB;
+    src: url(../font/NanumSquareB.woff) format('woff');
+}
+
+h1, h2, h3, h4, h5, p {
+    font-family: NanumSquareB, sans-serif !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+h1, h3 {
+    margin-top: 35px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+th, td {
+	font-family: NanumSquareR, sans-serif !important;
+	padding-top: 35px !important;
+	padding-bottom: 35px !important;
+	padding-left: 35px !important;
+	text-align: left !important;
+	font-size: 1.1em;
+}
+
+th {
+}
+
+td {
+}
+
+pre {
+    font-family: NanumSquareR !important;
+    src: url(../font/NanumSquareR.woff) format('woff') !important;
+    margin-bottom: 0px !important;
+    border: none !important;
+}
+
+#map {
+	height: 300px;
+	opacity: 85%;
+}
+
+#view-navbar {
+    background: rgba(0,0,0,0.7) !important;
+    margin: 0px !important;
+    width: 100% !important;
+    height: 90px !important;
+}
+
+/*#top_navbar-nav > li > a {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#top_navbar > .container {
+    height: 90px;
+}*/
+
+.page-title {
+	margin: 0px;
+	padding: 0px;
+}
+
+.title-box {
+    color: rgba(0,0,0,0.7) !important;
+}
+
+.text-dark th, .text-dark td {
+	padding-left: 17px !important;
+	padding-top: 17px !important;
+	padding-bottom: 17px !important;
+	vertical-align: middle !important;
+}
+
+.table-responsive > .table {
+	width: 95% !important;
+	margin-left: 15px !important;
+	margin-right: 25px !important;
+}
+
+.attendee-table {
+	margin-top: 17px !important;
+}
+
+.attendee-table th, .attendee-table td {
+	text-align: center !important;
+	padding-left: 7px !important;
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+}
+.attendee-table th {
+	font-weight: normal !important;
+	background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+#myTable th, #myTable td {
+	padding-top: 15px !important;
+	padding-bottom: 15px !important;
+}
+
+.right-sidebar {
+	top: 60px !important
+}
+
+.inputbutton {
+	font-weight: bolder !important;
+}
+
+.btn-main {
+	font-size: 1.2em !important;
+	width: 45% !important;
+	height: 65px !important;
+	margin: 15px !important;
+}
+
+.btn-sidenav {
+	background-color: white !important;
+	border-color: blue !important;
+	color: blue !important;
+	opacity: 0.5 !important;
+}
+
+.btn-kakao {
+	background-color: #392F31 !important;
+	color: #F7E600 !important;
+}
+
+.btn-kakao:hover {
+	background-color: buttonshadow !important;
+}
+
+.btn-side {
+	font-size: 1.1em !important;
+	width: 95% !important;
+	height: 65px !important;
+	margin-top: 15px !important;
+}
+
+.r-panel-body > table th, .r-panel-body > table td {
+	text-align: center;
+	padding-top: 25px !important;
+	padding-bottom: 25px !important;
+	font-size: 1.2em;
+	font-weight: normal;
+}
+
+.r-panel-body > table td {
+	font-weight: bold;
+}
+
+.banner {
+	background-image: url('../image/banner_bg.jpg');
+	background-size: 100%;
+	color: ivory;
+	font-weight: bold;
+}
+
+.applybox {
+}
+
+.applytable th {
+	width: 14%;
+}
+
+.captd {
+	width: 14%;
+}
+
+.maptd {
+	padding-left: 55px;
+	padding-right: 55px;
+}
+
+.jsgrid-header-cell {
+	text-align: center;
+}
+
+.ui-datepicker{ font-size: 12px; width: 55px; }
+.ui-datepicker select.ui-datepicker-month{ width:30%; font-size: 11px; }
+.ui-datepicker select.ui-datepicker-year{ width:40%; font-size: 11px; }
+.complex-colorpicker {
+	height: 90px;
+}
+
+#page-wrapper {
+	margin: 0px;
+}
+
+/* .sticky-top {
+	position: fixed;
+	top: 0px;
+	width: 73%;
+	opacity : 70%;
+} */
+
+.sticky-right {
+	position: fixed !important;
+	width: 31%;
+	top: 30px;
+}
+
+
+.separator {
+    background: #59e;
+    margin-top: 80px;
+    padding: 21px;
+    text-align: center;
+    color: #fff;
+}
+
+.red {
+    background: #fcc;
+    border: #eaa solid 4px;
+}
+
+.yellow {
+    background: #f6f6c0;
+    border: #dd7 solid 4px;
+}
+
+.green {
+    background: #bfc;
+    border: #ada solid 4px;
+}
+
+.bluegreen {
+    background: #aee;
+    border: #8dd solid 4px;
+}
+
+.blue {
+    background: #bcf;
+    border: #9ae solid 4px;
+}
+
+
+.pet_image {
+    width: 100%;
+}
+
+.carousel-caption * {
+    color: white;
+}
+

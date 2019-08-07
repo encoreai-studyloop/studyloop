@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+.ribbon-wrapper { 
+	background-color: transparent !important;
+	padding: 0px;
+	margin: 0px;
+	top: -27px;
+	left: -7px;
+}
+
+.contd {
+	width: 80%;
+}
+
+.hiddentd {
+	width: 10%;
+	color: transparent;
+}

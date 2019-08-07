@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="commons/Connect.properties"/>
+	<!-- DB 연결 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/> <!--  my batis 전용 태그 -->
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+				<property name="poolTimeToWait" value="${poolTimeToWait}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!--  Mapper 설정  -->
+	<mappers>
+		<mapper resource="commons/sql.xml"/>
+	</mappers>
+</configuration>
