@@ -458,7 +458,7 @@
 				</div><!-- /.col-lg-8 col-md-8 col-sm-12 col-xs-12 -->
 				
 				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 p-r-10 m-b-20">
-					<div class="right-sidebar shw-rside">
+					<div class="right-sidebar hd-sidebar">
 					<!-- .right-sidebar -->
 					<aside id="view-sidebar">
 						<!-- .breadcrumb -->
@@ -468,7 +468,7 @@
 						</ol>
 						<!-- /.breadcrumb -->
 						<div class="slimscrollright">
-							<div class="r-panel-body">
+							<div class="r-panel-body table-responsive">
 								<table class="sidebar-nav table">
 									<tr>
 										<th>${str_spot}</th>
@@ -577,8 +577,9 @@
 		
 		<script>
 			$( document ).ready( function() {
-				var navOffset = $( '.navbar' ).offset();
-				var sideOffset = $( '.right-sidebar' ).offset();
+				//var navOffset = $( '.navbar' ).offset();
+				//var sideOffset = $( '.right-sidebar' ).offset();
+				$( '.right-sidebar' ).removeClass( 'hd-sidebar' );
 				
 				// hide fake button
 				$( "#sa-close" ).hide();
@@ -591,11 +592,11 @@
 					else {
 						$( '.navbar' ).removeClass( 'sticky-top' );
 						} */
-					if ( $( document ).scrollTop() > sideOffset.top ) {
-						$( '.right-sidebar' ).addClass( 'sticky-right' );
+					if ( $( window ).scrollTop() > ($(document).height() - $(window).height() - 300 ) ) {
+						$( '.right-sidebar' ).addClass( 'hd-sidebar' );
 						}
 					else {
-						$( '.right-sidebar' ).removeClass( 'sticky-right' );
+						$( '.right-sidebar' ).removeClass( 'hd-sidebar' );
 						}
 					});
 				

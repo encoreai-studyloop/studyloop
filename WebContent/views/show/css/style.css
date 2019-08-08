@@ -113,8 +113,19 @@ pre {
 	padding-bottom: 15px !important;
 }
 
+.breadcrumb li {
+	font-weight: bold !important;
+}
+
 .right-sidebar {
-	top: 60px !important
+	top: 60px !important;
+	display: block !important;
+	width: 31% !important;
+	right: 0 !important;
+}
+
+.hd-sidebar {
+	right: -430px !important;
 }
 
 .inputbutton {
@@ -146,9 +157,10 @@ pre {
 
 .btn-side {
 	font-size: 1.1em !important;
-	width: 95% !important;
+	width: 100% !important;
 	height: 65px !important;
 	margin-top: 15px !important;
+	margin-right: 15px !important;
 }
 
 .r-panel-body > table th, .r-panel-body > table td {
