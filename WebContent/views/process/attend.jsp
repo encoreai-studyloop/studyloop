@@ -46,10 +46,10 @@
 	    <link href="../../studyloop/default/css/colors/megna.css" id="theme" rel="stylesheet">
 	
 	</head>
-		<%--  <%
+		<%
 		    List<UserDataBean> HattendCheckTable = (List<UserDataBean>)request.getAttribute("getHattendCheckTable");
 			
-		 %> --%>
+		 %> 
 <body class="fix-sidebar">
 <!-- Preloader -->
     <div class="preloader">
@@ -178,7 +178,7 @@
 					                            
 					                            <hr>
 					                            
-					                            <p class="text-muted m-b-30">Check the attendance</p>
+					                            <p class="text-muted m-b-30">출석 여부를 체크해 주세요.</p>
 					                            <!-- select All -->
 			                    				<div class="col-sm-14">
 			                        
@@ -187,7 +187,7 @@
 						                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-info dropdown-toggle waves-effect waves-light" type="button">Select All <span class="caret"></span></button>
 						                        
 		 				                                    <% 
-						                                    	List<UserDataBean> HattendCheckTable =(List<UserDataBean>)request.getAttribute("getHattendCheckTable");
+						                                    	
 						                                    	for(int num=0; num<HattendCheckTable.size(); num++) {
 						                                    %>
 						                                    <ul role="menu" class="dropdown-menu">
@@ -202,7 +202,7 @@
 						                                    }
 						                                    %>
 						                                    
-						                                    <button type="button" class="fcbtn btn btn-info btn-outline btn-1f" onclick="save()">저장</button>
+						                                    <button type="button" class="fcbtn btn btn-info btn-outline btn-1f">저장</button>
 						                                </div>
 						                                
 						                            </div>
@@ -231,13 +231,13 @@
 															for( int i=0; i<HattendCheckTable.size(); i++ ) {
 																UserDataBean nn = HattendCheckTable.get(i);	
 														%>
-					                                    
+					                                    <c:if test="${noedit == null}">
 					                                        <tr>
 					                                            <td><%=nn.getNick()%></td>
 					                                            <td><%=nn.getName()%></td>
 					                                            <td><%=date.format(today)%></td>					                                            
 					                                            <td>
-					                                           		<c:if test="${noedit == null}">
+					                                           		
 					                                            	<ul class="icheck-list">
 									                                   <li>						                                   		
 									                                       <input type="radio" class="check" id="flat-radio-a<%=nn.getId()%>" name="flat-radio<%=idx%>" data-radio="icheckbox_flat-green" value="0">
@@ -254,12 +254,18 @@
 									                                   						                                   		
 									                                   </li>
 								                               		</ul>
-								                               		</c:if>
-								                               		<c:if test="${noedit != null}">
-								                               			스터디 장만 이용할 수 있습니다.
-								                               		</c:if>
-					                                            </td>
-					                                        </tr>
+								                               </td>
+								                            </tr>
+								                        </c:if>
+					                               		<c:if test="${noedit != null}">
+					                               			<td><%=nn.getNick()%></td>
+				                                            <td><%=nn.getName()%></td>
+				                                            <td><%=date.format(today)%></td>
+				                                            <td>	
+					                               			스터디 장만 이용할 수 있습니다.
+					                               			</td>
+					                               		</c:if>
+					                                       
 					                                        <%
 					                                        idx ++;
 																}
@@ -285,10 +291,10 @@
 					                           
 					                           	<hr>
 					                           
-					                            <p class="text-muted m-b-30">Export data to Copy, CSV, Excel, PDF & Print</p>
+					                            <p class="text-muted m-b-30">출석부를 아래의 형태로 출력해 보세요.</p>
 					                            <div class="table-responsive">
-					                            <c:if test="${atckDtoList == null }">
-					                            </c:if>
+					                            <%-- <c:if test="${atckDtoList == null }"> --%>
+					                            <%-- </c:if> --%>
 					                                <table id="example23" class="display nowrap" cellspacing="0" width="100%">
 					                                    <thead>
 					                                        <tr>
