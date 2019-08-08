@@ -1,19 +1,21 @@
 function updateStatus(hsid, uid, now, idx){
 	var status =$("input[name=flat-radio"+idx+"]:checked", '#attendCheck').val()
-	console.log(now);
-	console.log(hsid);
-	location = "updateStatus.do?hsid="+hsid+"&uid="+uid+"&now="+now+"&status="+status;
-	
-	alert("출석 체크가 완료되었습니다.");
-	
-	if (status == null) {
-		alert ("출석 상태를 체크해주세요.");
+		if (status != null) {
+			console.log(now);
+			console.log(hsid);
+			location = "updateStatus.do?hsid="+hsid+"&uid="+uid+"&now="+now+"&status="+status;
+			
+			alert("출석 체크가 완료되었습니다.");
+			
+			}
+		if (status == null) {
+			alert ("출석 상태를 체크해주세요.");
 		
-		// return 
+			return location="attend.do?hsid="+hsid; 
+		}
+	
+	
 	}
-	
-	
-}
 
 
 
