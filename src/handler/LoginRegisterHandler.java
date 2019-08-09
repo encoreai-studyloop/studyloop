@@ -209,9 +209,11 @@ public class LoginRegisterHandler {
 		}
 		req.setAttribute("email", email);
 		req.setAttribute("result", result);
-		req.getSession().setAttribute("lat", req.getParameter("lat"));
-		req.getSession().setAttribute("long", req.getParameter("long"));
-		
+
+		if(req.getParameter("lat").equals(null) && req.getParameter("lat").equals("")) {
+			req.getSession().setAttribute("lat", Double.parseDouble(req.getParameter("lat")));
+			req.getSession().setAttribute("long", Double.parseDouble(req.getParameter("long")));
+		}
 		return new ModelAndView("views/login/loginPro");
 	}
 	

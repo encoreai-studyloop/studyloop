@@ -260,14 +260,16 @@ public class MainSearchHandler {
 
 		log1.debug("ddsfsdfsfdsfsfsdf");
 		
-		Map<String,String> cord = new HashMap<String,String>();
-		cord.put("lat", "0");
-		cord.put("long", "0");
+		Map<String,Double> cord = new HashMap<String,Double>();
+		cord.put("lat", (double) 0);
+		cord.put("long", (double) 0);
+		
 		if(req.getSession().getAttribute("lat") != null) {
+			System.out.println(req.getSession().getAttribute("lat") +"IN!!");
 			String latitude = (String) req.getSession().getAttribute("lat");
 			String longtitude = (String) req.getSession().getAttribute("long");				
-			cord.replace("lat", latitude);
-			cord.replace("long", longtitude);
+			cord.replace("lat", Double.parseDouble(latitude));
+			cord.replace("long", Double.parseDouble(longtitude));
 		}
 		
 		CategoryDataBean categoryDto = searchDao.loadCategory();
@@ -276,16 +278,21 @@ public class MainSearchHandler {
 		//ArrayList<StudyDataBean> studyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNail();
 		
 		//새로운 스터디 가져오기
-		ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnew();
+		//ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnew();
 		
 		//근방 5km 이내 스터디 가져오기
-		//ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnear(cord);
+		ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnear(cord);
 		
 		//핫한 스터디 가져오기
 		ArrayList<StudyDataBean> hstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofhot();
 		
 		//프리미엄 스터디 가져오기
 		ArrayList<StudyDataBean> pstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofpremium();
+		
+		for(int i=0; i<nstudyDtoList.size(); i++) {
+			System.out.println("dd");
+			System.out.println(nstudyDtoList.get(i).getTitle());
+		}
 		
 	    //req.setAttribute("studyDtoList", studyDtoList );
 	    req.setAttribute("nstudyDtoList", nstudyDtoList );
