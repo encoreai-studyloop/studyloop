@@ -60,7 +60,7 @@ public class MainSearchHandler {
         
 
         
-        System.out.println(keyword);
+      
             if(keyword == null) {
                 keyword = "";
             }
@@ -80,7 +80,7 @@ public class MainSearchHandler {
         }
         
         if( loclist != null ) {
-            System.out.println("필터있음");
+      
             List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
             for(int i=0; i<studyDtoList.size(); i++) {
                 
@@ -198,9 +198,7 @@ public class MainSearchHandler {
             id_map.put( "user_id", tid );
             id_map.put( "study_id", sid );
             int curUserStat = userDao.getUserStatus( id_map );
-            System.out.println("curUserStat:" + curUserStat);
-            System.out.println("status:" + status);
-            System.out.println("sid:" + sid);
+
             
             Map<String,Integer> info = new HashMap<String, Integer>();
             info.put("tid", tid);
@@ -237,10 +235,7 @@ public class MainSearchHandler {
 		
 		//회원이 신청한 스터디 
 		List<StudyDataBean> rstudyDtoList = userDao.getRegisterStudy(myId);
-		System.out.println("dfdsf");
-		for(StudyDataBean s : rstudyDtoList) {
-			System.out.println("신청 절차 :" );
-		}
+
 
 		//회원의 스터디에 신청한 유저들
 		List<StudyRegFormDataBean> ruserDtoList = userDao.getMyStudyRegUser(myId);
@@ -256,18 +251,20 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/main")
 	public ModelAndView mainFormprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log1 = Logger.getLogger("studyloop");
-
-		log1.debug("ddsfsdfsfdsfsfsdf");
+		Logger log = Logger.getLogger("studyloop");
 		
-		Map<String,String> cord = new HashMap<String,String>();
-		cord.put("lat", "0");
-		cord.put("long", "0");
+		
+		Map<String,Double> cord = new HashMap<String,Double>();
+		cord.put("lat", (double) 0);
+		cord.put("long", (double) 0);
+		
 		if(req.getSession().getAttribute("lat") != null) {
-			String latitude = (String) req.getSession().getAttribute("lat");
-			String longtitude = (String) req.getSession().getAttribute("long");				
+	
+			double latitude =  (double) req.getSession().getAttribute("lat");
+			double longtitude = (double) req.getSession().getAttribute("long");				
 			cord.replace("lat", latitude);
 			cord.replace("long", longtitude);
+			log.debug("lat : " + latitude + "\tlong" + longtitude);
 		}
 		
 		CategoryDataBean categoryDto = searchDao.loadCategory();
@@ -276,16 +273,17 @@ public class MainSearchHandler {
 		//ArrayList<StudyDataBean> studyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNail();
 		
 		//새로운 스터디 가져오기
-		ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnew();
+		//ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnew();
 		
 		//근방 5km 이내 스터디 가져오기
-		//ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnear(cord);
+		ArrayList<StudyDataBean> nstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofnear(cord);
 		
 		//핫한 스터디 가져오기
 		ArrayList<StudyDataBean> hstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofhot();
 		
 		//프리미엄 스터디 가져오기
 		ArrayList<StudyDataBean> pstudyDtoList = (ArrayList<StudyDataBean>) searchDao.getStudyThumbNailofpremium();
+		
 		
 	    //req.setAttribute("studyDtoList", studyDtoList );
 	    req.setAttribute("nstudyDtoList", nstudyDtoList );
@@ -303,7 +301,7 @@ public class MainSearchHandler {
 		map.put("uid", uid);
 		map.put("sid", sid);
 		searchDao.deleteRegister(map);
-		System.out.println("uid : "+ uid +"\nsid : "+ sid);
+	
 		resp.sendRedirect("mypage.do");
 		return new ModelAndView("views/search/mypage");
 	}
@@ -325,19 +323,19 @@ public class MainSearchHandler {
 		
 		if(schoolDto !=null) {
 			req.setAttribute("schoolDto", schoolDto);
-			System.out.println("스쿨있음");
+		
 		}
 		if(languageDtoList !=null) {
 			req.setAttribute("languageDtoList", languageDtoList);
-			System.out.println("랭귀지있음");
+		
 		}
 		if(certificateDtoList !=null) {
 			req.setAttribute("certificateDtoList", certificateDtoList);
-			System.out.println("자격증있음");
+			
 		}
 		if(expDtoList !=null) {
 			req.setAttribute("expDtoList", expDtoList);
-			System.out.println("경력있음");
+			
 		}
 		
 		return new ModelAndView("views/search/addinfoForm");
@@ -353,13 +351,13 @@ public class MainSearchHandler {
 		//정보가 있는 정보면 기존꺼 delete 후 insert 없으면 그냥 insert 로 나눠서 작업 
 		//delete 
 		int delres = searchDao.cleanExistinginfo(id);
-		System.out.println(delres);
+	
 		
 		//insert
 		String schoolname = req.getParameter("school");
-		System.out.println(schoolname);
+		
 		String schoolstatus = req.getParameter("radio-school");
-		System.out.println(schoolstatus);
+	
 		String schoolmajor = req.getParameter("school-major");
 		SchoolDataBean schoolDto = new SchoolDataBean();
 		schoolDto.setName(schoolname);
@@ -450,7 +448,7 @@ public class MainSearchHandler {
     public void ajax_setMePrime( HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int user_id = Integer.parseInt( req.getParameter( "id" ) );
         int updateResult = searchDao.updateUserPrime( user_id );
-        System.out.println( "in ajax updateResult : " + updateResult );
+    
         
         resp.sendRedirect( "/studyloop/mypage.do?id=" + user_id );
     }

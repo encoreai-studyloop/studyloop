@@ -295,7 +295,7 @@ public class SearchDBBean implements SearchDao{
 	}
 	
 	@Override
-	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, String> cord) {		
+	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, Double> cord) {		
 		return SqlMapClient.getSession().selectList("Studyloop.getStudyThumbNailofnear", cord);
 	}
 }

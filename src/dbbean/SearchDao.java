@@ -49,6 +49,6 @@ public interface SearchDao {
 	public List<ArticleReportDataBean> getReportedArticles();
 	public List<UserReportDataBean> getReportedUsers();
 	public int closeStudy(int sid);
-	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, String> cord);
+	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, Double> cord);
 		
 }

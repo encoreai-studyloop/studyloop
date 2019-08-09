@@ -627,8 +627,8 @@
          <div id="multi-item-example1"
             class="carousel slide carousel-multi-item1" data-ride="carousel">
             <div class = "near_study_rec">
-               <div class="title" style="padding-left:80px"><strong>새로운 스터디 추천</strong></div>
-               <div class="sub_title" style="padding-left:80px">일주일 이내에 등록된 스터디 추천</div>
+               <div class="title" style="padding-left:80px"><strong>인근 스터디 추천</strong></div>
+               <div class="sub_title" style="padding-left:80px">접속 위치 근방 10km 이내에 위치한 스터디들 입니다.</div>
             </div>
             <!--Controls-->
             <div class="controls-top" style="padding-left:720px">
@@ -791,7 +791,7 @@
             class="carousel slide carousel-multi-item2" data-ride="carousel">
             <div class = "near_study_rec">
                <div class="title" style="padding-left:80px"><strong>최근 핫한 스터디 추천</strong></div>
-               <div class="sub_title" style="padding-left:80px">채용 기간 별 지원잗들이 몰리는 기업이나 시험이 임박한 자격증 스터디 등을 선별해서 추천</div>
+               <div class="sub_title" style="padding-left:80px">최근 신청자가 몰리는 스터디를 추천합니다.</div>
             </div>
             <!--Controls-->
             <div class="controls-top" style="padding-left:720px">
