@@ -66,37 +66,21 @@
                     
                     <li> <a href="javascript:void(0);" class="waves-effect"><i class="linea-icon linea-basic fa-fw text-danger" data-icon="7"></i> <span class="hide-menu text-danger">주최중인 스터디<span class="fa arrow"></span></span></a>
                         <ul class="nav nav-second-level">
-                        
-                   <%--      
-                        <%
-                         
-                        List<StudyDataBean> studyDtoList = (List<StudyDataBean>)request.getAttribute("studyDtoList");
-							for (int i=0; i<studyDtoList.size(); i++) {
-						%> --%>
+               
 						<c:forEach var="studyDto" items="${studyDtoList}">
                         	
                             <li><a href="attend.do?hsid=${studyDto.id}">${studyDto.title}</a></li>
-                      <%--   <%
-					}
-                        %> --%>
+                
                         </c:forEach>
                         </ul>
                     </li>
                     <li> <a href="javascript:void(0);" class="waves-effect"><i class="linea-icon linea-basic fa-fw text-danger" data-icon="7"></i> <span class="hide-menu text-danger">참여중인 스터디<span class="fa arrow"></span></span></a>
                         <ul class="nav nav-second-level">
                         
-                      <%--   <%
                     
-                        
-                        List<StudyDataBean> ateeDtoList = (List<StudyDataBean>)request.getAttribute("ateeDtoList");
-							for (int i=0; i<ateeDtoList.size(); i++) {
-						%> --%>
                         <c:forEach var="ateeDto" items="${ateeDtoList}">
                             <li><a href="attend.do?hsid=${ateeDto.id}&noedit=1">${ateeDto.title}</a></li>
-                      <%--   <%
-					}
-                        %> --%>
-                            
+                   
                         </c:forEach>
                         </ul>
                     </li>
@@ -161,19 +145,28 @@
                     <!-- Nav tabs -->
                     	<div data-example-id="togglable-tabs" class="bs-example bs-example-tabs">
                              <ul role="tablist" class="nav nav-tabs" id="myTabs">
-                                
+                                <c:if test="${noedit == null}">
 	                             <li class="active nav-item" role="presentation"><a aria-expanded="true" class="nav-link" aria-controls="attend_main" data-toggle="tab" role="tab" id="home-tab" href="#attend_main">출석관리</a></li>
 	                             <li role="presentation" class="nav-item"><a aria-controls="attend_list" class="nav-link" data-toggle="tab" id="profile-tab" role="tab" href="#attend_list" aria-expanded="false">출석부 리스트</a></li> 
+	                            </c:if>
+	                            
+	                             <c:if test="${noedit == 1}">
+	                             <li role="presentation" class="active nav-item"><a aria-controls="attend_list" class="nav-link" data-toggle="tab" id="profile-tab" role="tab" href="#attend_list" aria-expanded="true">출석부 리스트</a></li> 
+                             	</c:if>
                              </ul>
                         
                              
                              <!-- Tab panes -->
+                             <c:if test="${noedit == null}">
                              <div class="tab-content">
+                             
                                 <!-- attend_main 내용 -->
+                            
                                 <div role="tabpanel" class="tab-pane active" id="attend_main">
                                 	 <div class="row">
 					                    <div class="col-sm-12">
 					                        <div class="white-box">
+					                        
 					                            <h3 class="box-title m-b-0">출석관리</h3>
 					                            
 					                            <hr>
@@ -250,27 +243,20 @@
 									                                       <label for="flat-radio-c<%=nn.getId()%>">결석</label> &nbsp;&nbsp;&nbsp;
 									                                   	
 								                                   			<input type="button" class="btn btn-info btn-outline" value="저장" name = "save" onclick="updateStatus(<%=hsid%>, <%=nn.getId()%>, '<%=string.format(today)%>', <%=idx%>)">  
-								 											
-									                                   						                                   		
+								 															                                   		
 									                                   </li>
 								                               		</ul>
 								                               </td>
 								                            </tr>
 								                        </c:if>
-					                               		<c:if test="${noedit != null}">
-					                               			<td><%=nn.getNick()%></td>
-				                                            <td><%=nn.getName()%></td>
-				                                            <td><%=date.format(today)%></td>
-				                                            <td>	
-					                               			스터디 장만 이용할 수 있습니다.
-					                               			</td>
-					                               		</c:if>
-					                                       
+								                         
 					                                        <%
 					                                        idx ++;
 																}
 														
 					                                        %>
+					                                        
+					                                       
 					                                    </tbody>
 				                                	</table>
 				                                	</form>
@@ -279,9 +265,13 @@
 				                    	</div>
                            			</div>
                            		</div>
+                           	
+                           	
+                           	
                            		<!-- Attend Main 내용 End -->
                              		
                        			<!-- attend_list 내용 -->
+                       			
                                 <div role="tabpanel" class="tab-pane" id="attend_list">
                                     
                                     <div class="row">
@@ -293,8 +283,7 @@
 					                           
 					                            <p class="text-muted m-b-30">출석부를 아래의 형태로 출력해 보세요.</p>
 					                            <div class="table-responsive">
-					                            <%-- <c:if test="${atckDtoList == null }"> --%>
-					                            <%-- </c:if> --%>
+					                        
 					                                <table id="example23" class="display nowrap" cellspacing="0" width="100%">
 					                                    <thead>
 					                                        <tr>
@@ -305,10 +294,8 @@
 					                                        </tr>
 					                                    </thead>
 					                                    <tbody>					                        
-					                                    	<c:if test="${atckDtoList == null }">
-															 데이터가 없습니다.
-					                                        </c:if>
-					                                        <c:if test="${atckDtoList != null }">
+					                                    	
+					                                       
 					                                        <c:forEach var="atckDto" items="${atckDtoList}">
 					                                        <tr>
 					                                            <td>${atckDto.nick}</td>
@@ -325,7 +312,7 @@
 					                                            </c:if>					                                            					                                            
 					                                        </tr>
 					                                        </c:forEach>
-					                                        </c:if>
+					                                        
 					                                    </tbody>
 					                                </table>
 					                            </div>
@@ -333,7 +320,62 @@
 					                    </div>
 					                </div>
                                 </div>
+                              	
                           </div> <!-- tab panes -->
+                       </c:if>
+                          
+                  <c:if test="${noedit == 1 }">       
+                 	 <div role="tabpanel" class="tab-pane active" id="attend_list">	
+                                    
+                                    <div class="row">
+					                    <div class="col-sm-12">
+					                        <div class="white-box">
+					                            <h4 class="box-title m-b-0">출석부 리스트</h4>
+					                           
+					                           	<hr>
+					                           
+					                            <p class="text-muted m-b-30">출석부를 아래의 형태로 출력해 보세요.</p>
+					                            <div class="table-responsive">
+					                           
+					                                <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+					                                    <thead>
+					                                        <tr>
+					                                            <th>닉네임</th>
+					                                            <th>이름</th>
+					                                            <th>날짜</th>
+					                                            <th>출석현황</th>
+					                                        </tr>
+					                                    </thead>
+					                                    <tbody>					                        
+					                                    	
+					                                        <c:forEach var="atckDto" items="${atckDtoList}">
+					                                        <tr>
+					                                            <td>${atckDto.nick}</td>
+					                                            <td>${atckDto.name}</td>
+					                                            <td><fmt:formatDate value="${atckDto.attend_date}" type="date" pattern="yyyy/MM/dd"/></td>
+					                                			<c:if test="${atckDto.attendance == 0 }">
+					                                            <td>출석</td>
+					                                            </c:if>
+					                                            <c:if test="${atckDto.attendance == 1 }">
+					                                            <td>지각</td>
+					                                            </c:if>
+					                                            <c:if test="${atckDto.attendance == 2 }">
+					                                            <td>결석</td>
+					                                            </c:if>					                                            					                                            
+					                                        </tr>
+					                                        </c:forEach>
+					                                        
+					                                    </tbody>
+					                                </table>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+                                </div>
+                            </c:if> 
+                          
+                          
+                          
                		</div> <!-- Nav Tabs -->
            	</div>
            	<!-- /.container-fluid -->
