@@ -59,7 +59,29 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
    	</select> 
    	
    	<select id="getStudyThumbNailofnear" resultType="databean.StudyDataBean" parameterType="java.util.Map">
-   		select * from ws_studyinfo s, ws_location l where s.loc_id = l.id and
+		select s.ID ID,
+		s.TITLE TITLE,
+		s.INTRO INTRO,
+		s.PROCESS PROCESS,
+		s.TARGET TARGET,
+		s.CURRICULUM CURRICULUM,
+		s.SCOMMENT SCOMMENT,
+		s.SCOST SCOST,
+		s.CHAT_URL CHAT_URL,
+		s.CUR_PERSONNEL CUR_PERSONNEL,
+		s.MAX_PERSONNEL MAX_PERSONNEL,
+		s.TERM TERM,
+		s.PICTURE PICTURE,
+		s.REGDATE REGDATE,
+		s.DEADLINE DEADLINE,
+		s.PLACE PLACE,
+		s.USER_ID USER_ID,
+		s.LOC_ID LOC_ID,
+		s.CAT_ID CAT_ID,
+		s.STUDYTIME_ID STUDYTIME_ID,
+		l.detail_loc as location,
+        u.prime as prime
+   		from ws_studyinfo s, ws_location l, ws_user u where s.loc_id = l.id and u.id = s.user_id and
 		(select DISTNACE_WGS84(l.latitude, l.longitude, #{lat}, #{long}) from dual) &lt;= 25
    	</select>
    	

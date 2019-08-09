@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -130,13 +131,13 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/inputPro")
 	public ModelAndView inputProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
+		Logger log = Logger.getLogger("studyloop");
+		log.debug("회원가입 시도");
 		req.setCharacterEncoding("utf-8");
 	
 		
 		UserDataBean userDto = new UserDataBean();
-		
-		System.out.println("이메일 : "+ req.getParameter("email"));
+
 		userDto.setEmail(req.getParameter("email"));
 		userDto.setName(req.getParameter("name"));
 		userDto.setNick(req.getParameter("nick"));
@@ -157,7 +158,7 @@ public class LoginRegisterHandler {
 		
 		//birth
 		userDto.setBirth(req.getParameter("birth"));
-		System.out.println(userDto.getBirth());
+	
 		
 		//prime
 		userDto.setPrime("0");
@@ -171,11 +172,15 @@ public class LoginRegisterHandler {
 		//int result = userDao.insertUser(userDto);
 		//req.setAttribute("result", result);
 		req.getSession().setAttribute("tmpuserDto", userDto);
+		
+		
 		return new ModelAndView("views/login/survey");
 	}
 	
 	@RequestMapping("/surveyfinish")
 	public ModelAndView surveyFormprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
+		log.debug("설문작성 시도");
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("tmpuserDto");
 		String visit = String.join("@",  req.getParameterValues("visit"));		
 		String interest =String.join("@", req.getParameterValues("interest"));
@@ -189,6 +194,9 @@ public class LoginRegisterHandler {
 		userDto.setPart(part);
 		int result = userDao.insertUser(userDto);
 		req.setAttribute("result", result);
+		log.debug("회원가입 & 설문작성 완료");
+		log.debug("\n회원 정보 :\n이름) " + userDto.getName()+"\n성별) "+userDto.getGender()+"\n주소) "+userDto.getAddress()+"\n가입시간) "+ userDto.getRegdate()
+		+"\n생일) "+userDto.getBirth() +"\n설문 결과 :\n");
 		return new ModelAndView("views/login/inputPro");
 	}
 	
@@ -197,6 +205,7 @@ public class LoginRegisterHandler {
 	//로그인 처리하는 부분
 	@RequestMapping("/loginPro")
 	public ModelAndView loginProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
 		
 		String email = req.getParameter("email");
 		String passwd = req.getParameter("passwd");
@@ -209,8 +218,9 @@ public class LoginRegisterHandler {
 		}
 		req.setAttribute("email", email);
 		req.setAttribute("result", result);
-
-		if(req.getParameter("lat").equals(null) && req.getParameter("lat").equals("")) {
+		
+	
+		if(!req.getParameter("lat").equals(null) && !req.getParameter("lat").equals("")) {
 			req.getSession().setAttribute("lat", Double.parseDouble(req.getParameter("lat")));
 			req.getSession().setAttribute("long", Double.parseDouble(req.getParameter("long")));
 		}
