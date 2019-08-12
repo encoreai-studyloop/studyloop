@@ -25,10 +25,9 @@ public class SearchDBBean implements SearchDao{
 	@Override
 	public CategoryDataBean loadCategory() {
 		List<CategoryTempBean> tmpDto;
-		System.out.println("여기 들어옴");
-		System.out.println("0");
+
 		tmpDto = SqlMapClient.getSession().selectList("Studyloop.loadCategory");
-		System.out.println("112");
+	
 		CategoryDataBean categoryDto = new CategoryDataBean();
 		
 		Map<String,ArrayList<String>> j_tmp = new HashMap<String,ArrayList<String>>();
@@ -36,7 +35,7 @@ public class SearchDBBean implements SearchDao{
 		Map<String,ArrayList<String>> l_tmp = new HashMap<String,ArrayList<String>>();
 		Map<String,ArrayList<String>> c_tmp = new HashMap<String,ArrayList<String>>();
 		Map<String,ArrayList<String>> e_tmp = new HashMap<String,ArrayList<String>>();
-		System.out.println("1");
+
 		for(CategoryTempBean c : tmpDto) {
 			if(c.getBig().equals("취업")) {
 				if(j_tmp.containsKey(c.getMiddle())) {
@@ -89,7 +88,7 @@ public class SearchDBBean implements SearchDao{
 				}
 			}
 		}
-		System.out.println("2");
+		
 		categoryDto.setJob(j_tmp);
 		categoryDto.setCertificate(c_tmp);
 		categoryDto.setLanguage(l_tmp);

@@ -111,7 +111,7 @@
                                             <div class="pricing-header">
                                                 <h4 class="price-lable text-white bg-warning"> 인기</h4>
                                                 <h4 class="text-center">Premium</h4>
-                                                <h2 class="text-center"><span class="price-sign">월 ￦</span> 9,900</h2>
+                                                <h2 class="text-center"><span class="price-sign">월 ￦</span> 8,900</h2>
                                                 
                                             </div>
                                             <div class="price-table-content">
@@ -461,7 +461,7 @@
 							msg += '상점 거래ID : ' + rsp.merchant_uid + '\n';
 							msg += '결제 금액 : ' + rsp.paid_amount + '\n';
 							msg += '카드 승인번호 : ' + rsp.apply_num + '\n';
-							alert("결제가 완료되었습니다.\n프리미엄 혜택 적용을 위해 재 로그인 해주세요")
+							alert("결제가 완료되었습니다.\n프리미엄 혜택의 완전한 적용을 위해 재 로그인 해주세요")
 							location = "/studyloop/setPrime.do?id=" + ${userDto.getId()}
 						} else { 
 							var msg = '결제에 실패했습니다.\n';

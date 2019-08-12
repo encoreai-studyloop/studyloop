@@ -29,6 +29,9 @@ public class LoginRegisterHandler {
 	@Resource
 	private SearchDao searchDao;
 	
+	private long logintime;
+	private long logouttime;
+	
 
 	@RequestMapping("/register")
 	public ModelAndView registerprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -126,6 +129,9 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/logout")
 	public ModelAndView logoutProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
+		logouttime = System.currentTimeMillis();
+		log.debug("총 접속 시간 : "+ (logouttime - logintime));
 		return new ModelAndView("views/login/logout");
 	}
 	
@@ -215,6 +221,8 @@ public class LoginRegisterHandler {
 			UserDataBean userDto = new UserDataBean();
 			userDto = userDao.getUserinfo(email);
 			req.setAttribute("userDto", userDto);
+			log.debug(userDto.getEmail()+" 로그인");
+			logintime = System.currentTimeMillis();
 		}
 		req.setAttribute("email", email);
 		req.setAttribute("result", result);
