@@ -406,15 +406,7 @@
 													   </c:if>
 													    </c:forEach>
 													  </optgroup>
-													  
-													  <optgroup label="부산">
-													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
-													  	<c:if test="${locDto.state_city =='부산'}">
-													   <option value="${locDto.id}">${locDto.detail_loc}</option> 
-													   </c:if>
-													    </c:forEach>
-													  </optgroup>
-													  
+					
 													  <optgroup label="경기">
 													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
 													  	<c:if test="${locDto.state_city =='경기'}">
@@ -430,6 +422,39 @@
 													   </c:if>
 													    </c:forEach>
 													  </optgroup>
+													  
+													  <optgroup label="부산">
+													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+													  	<c:if test="${locDto.state_city == '부산'}">
+													   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+													   </c:if>
+													    </c:forEach>
+													  </optgroup>
+													
+													  <optgroup label="대구">
+													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+													  	<c:if test="${locDto.state_city == '대구'}">
+													   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+													   </c:if>
+													    </c:forEach>
+													  </optgroup>
+													  
+													  <optgroup label="울산">
+													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+													  	<c:if test="${locDto.state_city == '울산'}">
+													   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+													   </c:if>
+													    </c:forEach>
+													  </optgroup>
+													  
+													  <optgroup label="경상도">
+													  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+													  	<c:if test="${locDto.state_city == '경상도'}">
+													   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+													   </c:if>
+													   </c:forEach>
+													  </optgroup>
+													  
 												</select>
 												</c:if>
 								

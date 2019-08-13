@@ -99,21 +99,13 @@
                               </div><br><br>
                          
                               &nbsp;<div class="col-md-3">
-                              	<div class="form-group">    
+                             <div class="form-group">    
                               <c:if test="${!empty locDtoList}"> 	
                               <select name="location" id="selectBox" class="city">
                               <option value="" disabled selected>스터디 장소를 선택해주세요</option>
 								  <optgroup label="서울">
 								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
 								  	<c:if test="${locDto.state_city == '서울'}">
-								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
-								   </c:if>
-								    </c:forEach>
-								  </optgroup>
-								  
-								  <optgroup label="부산">
-								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
-								  	<c:if test="${locDto.state_city == '부산'}">
 								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
 								   </c:if>
 								    </c:forEach>
@@ -130,6 +122,38 @@
 								  <optgroup label="인천">
 								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
 								  	<c:if test="${locDto.state_city == '인천'}">
+								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+								   </c:if>
+								    </c:forEach>
+								  </optgroup>
+								
+								  <optgroup label="부산">
+								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+								  	<c:if test="${locDto.state_city == '부산'}">
+								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+								   </c:if>
+								    </c:forEach>
+								  </optgroup>
+								
+								  <optgroup label="대구">
+								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+								  	<c:if test="${locDto.state_city == '대구'}">
+								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+								   </c:if>
+								    </c:forEach>
+								  </optgroup>
+								  
+								  <optgroup label="울산">
+								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+								  	<c:if test="${locDto.state_city == '울산'}">
+								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
+								   </c:if>
+								    </c:forEach>
+								  </optgroup>
+								  
+								  <optgroup label="경상도">
+								  <c:forEach var="locDto" items="${locDtoList}" varStatus="i">
+								  	<c:if test="${locDto.state_city == '경상도'}">
 								   <option value="${locDto.id}">${locDto.detail_loc}</option> 
 								   </c:if>
 								    </c:forEach>
