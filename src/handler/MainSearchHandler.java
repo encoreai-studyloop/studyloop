@@ -342,6 +342,7 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/addinfoForm")
 	public ModelAndView addinfoFormPageProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+		Logger log = Logger.getLogger("studyloop");	
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("userDto");
 		int id = userDto.getId();
 		
@@ -352,19 +353,25 @@ public class MainSearchHandler {
 		
 		if(schoolDto !=null) {
 			req.setAttribute("schoolDto", schoolDto);
-		
+			log.debug("추가정보 :\n학교명 : " + schoolDto.getName()+"\n전공명 : "+ schoolDto.getMajor() +"\n졸업유무" +schoolDto.getStatus());
 		}
 		if(languageDtoList !=null) {
 			req.setAttribute("languageDtoList", languageDtoList);
-		
+			for(LanguageDataBean l : languageDtoList) {
+				log.debug("어학 리스트 :\n언어 : "+l.getLanguage()+ "\n시험명 : "+l.getName() + "\n점수/등급 : "+l.getScore());
+			}	
 		}
 		if(certificateDtoList !=null) {
 			req.setAttribute("certificateDtoList", certificateDtoList);
-			
+			for(CertificateDataBean c : certificateDtoList) {
+				log.debug("자격증 리스트 :\n자격증명 : "+c.getName()+ "\n점수/등급 : "+c.getScore());
+			}	
 		}
 		if(expDtoList !=null) {
 			req.setAttribute("expDtoList", expDtoList);
-			
+			for(ExpDataBean e : expDtoList) {
+				log.debug("경력 리스트 :\n경력명 : "+e.getExperience()+ "\n시작일 : "+e.getStart_date() +"\n종료일 : " +e.getEnd_date());
+			}	
 		}
 		
 		return new ModelAndView("views/search/addinfoForm");
@@ -477,15 +484,18 @@ public class MainSearchHandler {
     public void ajax_setMePrime( HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int user_id = Integer.parseInt( req.getParameter( "id" ) );
         int updateResult = searchDao.updateUserPrime( user_id );
-    
+        Logger log = Logger.getLogger("studyloop");
+        log.debug(userDao.getUserById(user_id).getEmail() +" : 프리미엄 구매");
         
         resp.sendRedirect( "/studyloop/mypage.do?id=" + user_id );
     }
 	
 	@RequestMapping("/closeStudy")
 	public void closeStudyProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+		Logger log = Logger.getLogger("studyloop");	
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		searchDao.closeStudy(sid);
+		log.debug(userDao.getStudyById(sid).getTitle() +" 스터디 종료시킴");
 		resp.sendRedirect("mypage.do");
 	}
 	 
