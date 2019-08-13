@@ -12,15 +12,15 @@
     
     <appender name="rolling" class="org.apache.log4j.RollingFileAppender">
 		<!-- 로그 파일 생성위치 -->
-		<param name="file" value="c:/logs/log.log" />
+		<param name="file" value="c:/logs/studyloop.log" />
 		<param name="Append" value="true" />
 		<!-- 로그 파일 하나당 사이즈 5m -->
-		<param name="MaxFileSize" value="5000kb" />
+		<param name="MaxFileSize" value="20000kb" />
 		<!-- 최대 생성 파일수 ( 50개가 넘으면 순차적으로 파일이 삭제됨 -->
-		<param name="MaxBackupIndex" value="50" />
+		<param name="MaxBackupIndex" value="5000" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" />
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+			<!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" /> -->
 		</layout>
 	</appender>
 
