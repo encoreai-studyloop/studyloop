@@ -131,7 +131,10 @@ public class LoginRegisterHandler {
 	public ModelAndView logoutProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		Logger log = Logger.getLogger("studyloop");
 		logouttime = System.currentTimeMillis();
-		log.debug("총 접속 시간 : "+ (logouttime - logintime));
+		long millis = (logouttime - logintime);
+		long minutes = (millis / 1000)  / 60;
+		int seconds = (int)((millis / 1000) % 60);			
+		log.debug("총 접속 시간 : "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/login/logout");
 	}
 	

@@ -23,6 +23,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		select * from ws_user
 	</select>
 	
+	<select id="getStatus" parameterType="int" resultType="String">
+		select name from ws_regprocess where id = #{status}
+	</select>
+	
 	<select id="getUserStatus" parameterType="java.util.Map" resultType="int">
         select regprocess_id from WS_ATTENDEE where user_id=#{user_id} and study_id=#{study_id}
     </select>

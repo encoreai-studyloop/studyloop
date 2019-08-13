@@ -26,4 +26,5 @@ public interface UserDao {
 	public int updateUserStatus(Map<String,Integer> info);
 	public List<UserDataBean> getUsers();
 	public int getUserStatus( Map<String, Integer> id_map );
+	public String getStatus(int status);
 }

@@ -39,6 +39,7 @@ import databean.UserDataBean;
 import dbbean.SearchDao;
 import dbbean.ShowDao;
 import dbbean.UserDao;
+import location.GpsToAddress;
 
 
 @Controller
@@ -52,24 +53,28 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/search")
     public ModelAndView searchprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
         String keyword  = req.getParameter("searchVal");
         String[] loclist = req.getParameterValues("loclist");
         String cat = req.getParameter("cat");
         String[] daylist = req.getParameterValues("sday");
         String sort = req.getParameter("sort");
-        
-
-        
+              
       
-            if(keyword == null) {
-                keyword = "";
-            }
+        if(keyword == null) {
+        	keyword = "";
+            log.debug("전체 검색");   
+        }
+        else {
+        	log.debug("검색키워드 : "+ keyword);   
+        }
     
         List<StudyDataBean> studyDtoList = searchDao.searchByKeyWord(keyword);
 
         List<LocTmpDataBean> locationList = searchDao.getLocationList(keyword);
         
         if(cat != null) {
+        	log.debug("카테고리 검색 : "+ cat); 
         	List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
         	for(int i=0; i<studyDtoList.size(); i++) {       		
         		if(studyDtoList.get(i).getCategory().equals(cat)) {
@@ -80,7 +85,7 @@ public class MainSearchHandler {
         }
         
         if( loclist != null ) {
-      
+        	log.debug("지역 검색 : "+ loclist.toString()); 
             List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
             for(int i=0; i<studyDtoList.size(); i++) {
                 
@@ -100,6 +105,7 @@ public class MainSearchHandler {
         }
         
         if(daylist != null) { //화목 
+        	log.debug("요일 검색 : "+ daylist.toString()); 
         	List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
         	for(int i=0; i<studyDtoList.size(); i++) {
         		StudyDataBean studyDto = studyDtoList.get(i);
@@ -127,6 +133,7 @@ public class MainSearchHandler {
         
         if(sort != null) {
         	if(sort.equals("1")) { //프리미엄 순
+        		log.debug("프리미엄순 정렬"); 
                 Collections.sort(studyDtoList, new Comparator<StudyDataBean>() {
                     @Override
                     public int compare(StudyDataBean s1, StudyDataBean s2) {
@@ -140,6 +147,7 @@ public class MainSearchHandler {
                 });
         	}
         	else if(sort.equals("2")) { //최신 등록 순
+        		log.debug("최신 등록순 정렬"); 
                 Collections.sort(studyDtoList, new Comparator<StudyDataBean>() {
                     @Override
                     public int compare(StudyDataBean s1, StudyDataBean s2) {
@@ -153,7 +161,8 @@ public class MainSearchHandler {
                 });        		
         	}
         	else { // 데드라인 임박 순 
-                Collections.sort(studyDtoList, new Comparator<StudyDataBean>() {
+        		log.debug("데드라인 임박순 정렬"); 
+                Collections.sort(studyDtoList, new Comparator<StudyDataBean>() {             	
                     @Override
                     public int compare(StudyDataBean s1, StudyDataBean s2) {
                     	if(s1.getDeadline() != null && s2.getDeadline() != null) {
@@ -179,15 +188,19 @@ public class MainSearchHandler {
 	@RequestMapping("/mypage")
 	public ModelAndView myPageprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		//회원 정보
-
+		Logger log = Logger.getLogger("studyloop");
+		
 		UserDataBean user = (UserDataBean) req.getSession().getAttribute("userDto");
 		if(user == null) {
 			resp.sendRedirect("login.do");
 		}
+		
+
 		UserDataBean userDto = userDao.getUserById(user.getId());
 		req.setAttribute("userDto", userDto);
 		int myId = userDto.getId();
-		
+
+		log.debug("회원 " +userDto.getEmail() +" 마이페이지 진입");
 		//유저 status 변경
 		if(req.getParameter("tid") != null) {
             int tid = Integer.parseInt(req.getParameter("tid"));
@@ -223,6 +236,7 @@ public class MainSearchHandler {
                     }
                 }
             }
+            log.debug("스터디 "+userDao.getStudyById(sid)+"에 신청한 유저 "+ userDao.getUserById(tid).getNick() +" 의 상태를 "+userDao.getStatus(status)+"로 변경");
         }
 
 		
@@ -244,7 +258,18 @@ public class MainSearchHandler {
 		req.setAttribute("rstudyDtoList", rstudyDtoList);
 		req.setAttribute("ruserDtoList", ruserDtoList);
 		
-
+		log.debug("참여중인 스터디 : "+pstudyDtoList.size()+" 개");
+		for(StudyDataBean s : pstudyDtoList) {
+			log.debug("제목 : "+ s.getTitle() + "\t카테고리 : "+s.getCategory());
+		}	
+		log.debug("주최한 스터디 : "+ostudyDtoList.size()+" 개");
+		for(StudyDataBean s : ostudyDtoList) {
+			log.debug("제목 : "+ s.getTitle() + "\t카테고리 : "+s.getCategory());
+		}
+		log.debug("신청한 스터디 : "+rstudyDtoList.size()+" 개");
+		for(StudyDataBean s : rstudyDtoList) {
+			log.debug("제목 : "+ s.getTitle() + "\t카테고리 : "+s.getCategory());
+		}
 		
 		return new ModelAndView("views/search/mypage");
 	}
@@ -264,7 +289,11 @@ public class MainSearchHandler {
 			double longtitude = (double) req.getSession().getAttribute("long");				
 			cord.replace("lat", latitude);
 			cord.replace("long", longtitude);
-			log.debug("lat : " + latitude + "\tlong" + longtitude);
+			log.debug("접속 좌표 : " + latitude + ", " + longtitude);
+
+			GpsToAddress gps = new GpsToAddress();
+			
+			log.debug("접속 위치 :" +gps.coordToAddr(latitude, longtitude));
 		}
 		
 		CategoryDataBean categoryDto = searchDao.loadCategory();

@@ -123,5 +123,10 @@ public class UserDBBean implements UserDao{
         return SqlMapClient.getSession().selectOne( "Studyloop.getUserStatus", id_map );
     }
 	
+	@Override
+	public String getStatus(int status) {
+		// TODO Auto-generated method stub
+		return SqlMapClient.getSession().selectOne( "Studyloop.getStatus", status );
+	}
 	
 }
