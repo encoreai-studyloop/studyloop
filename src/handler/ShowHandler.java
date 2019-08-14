@@ -49,7 +49,7 @@ public class ShowHandler {
 	@Resource
 	private UserDao userDao;
 	
-	private Logger log = Logger.getLogger("studyloop");
+	private Logger log = Logger.getLogger( "studyloop" );
 
 	long applyintime;
 	long applyouttime;
@@ -68,7 +68,6 @@ public class ShowHandler {
 		if(userDto != null) {
 			userDto = userDao.getUserById(userDto.getId());
 		}
-		
 		
 		
 		int cntAttendee = showDao.getCntAttendee( study_id );	// count attendee with regprocess_id=5
@@ -113,7 +112,7 @@ public class ShowHandler {
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
 		
-		log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + " 클릭");   
+		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "' 클릭" );
 		
 		return new ModelAndView("views/show/view");
 	}
@@ -130,7 +129,6 @@ public class ShowHandler {
 			CertificateDataBean certDto = new CertificateDataBean();
 			UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 			StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
-			System.out.println(userDto.getId());
 
 			
 			attendeeDto.setPurpose( req.getParameter( "purpose" ) );
@@ -197,6 +195,7 @@ public class ShowHandler {
 			long minutes = (millis / 1000)  / 60;
 			int seconds = (int)((millis / 1000) % 60);	
 			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
+			
 		return new ModelAndView("views/show/apply");
 	}
 
@@ -204,7 +203,9 @@ public class ShowHandler {
 	public ModelAndView applyFormPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 		req.getSession().setAttribute( "userDto", userDto );
+		
 		applyintime = System.currentTimeMillis();
+		
 		return new ModelAndView("views/show/applyForm");
 	}
 	
@@ -228,7 +229,7 @@ public class ShowHandler {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "application/json;charset=UTF-8");
 		
-		System.out.println("in ajax : got user_id " + user_id + ", got study_id " + study_id);
+//		System.out.println("in ajax : got user_id " + user_id + ", got study_id " + study_id);
 		
 		ApplyDataBean applyDto = showDao.loadPrevData( user_id );
 
@@ -237,8 +238,8 @@ public class ShowHandler {
 		id_map.put( "study_id", study_id );
 		AttendeeDataBean attendeeDto = showDao.getMineApplied( id_map );
 		
-		System.out.println("in ajax : got attendeeDto " + attendeeDto);
-		System.out.println("in ajax : got attendeeId " + attendeeDto.getId() + "\n");
+//		System.out.println("in ajax : got attendeeDto " + attendeeDto);
+//		System.out.println("in ajax : got attendeeId " + attendeeDto.getId() + "\n");
 		
 		HashMap<String, Object> attendeeMap = new HashMap<String, Object>();
 		attendeeMap.put( "attendee_id", Integer.toString( attendeeDto.getId() ) );
@@ -270,7 +271,7 @@ public class ShowHandler {
 		
 		JSONArray json = new JSONArray();
 		json.add( attendeeMap );
-		System.out.println(json.toString() + "\n");
+//		System.out.println(json.toString() + "\n");
 		return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);
 	}
 	
@@ -285,7 +286,6 @@ public class ShowHandler {
 		int user_id = userDto.getId();
 		ApplyDataBean applyDto = showDao.loadPrevData( user_id );
 		//ApplyDataBean applyDto = new ApplyDataBean();
-		System.out.println("user_id : " + user_id);
 		
 		HashMap<String, Object> applyMap = new HashMap<String, Object>();
 		applyMap.put( "attendee_id", Integer.toString( applyDto.getAttendee_id() ) );
@@ -308,7 +308,7 @@ public class ShowHandler {
 		
 		JSONArray json = new JSONArray();
 		json.add( applyMap );
-		System.out.println(json.toString());
+//		System.out.println(json.toString());
 		return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);
 	}
 	
@@ -338,10 +338,12 @@ public class ShowHandler {
 	public ModelAndView boardListProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		int study_id = 1; //스터디 아이디
 		int wuser_id = 1; //글쓰는 사람 유저 아이디
+
 		List<BoardDataBean> boardDtoList = boardDao.loadBoardlist(study_id);
 		req.setAttribute("boardDtoList", boardDtoList);
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
+		
 		return new ModelAndView("views/board/list");
 	}
 	
@@ -351,6 +353,7 @@ public class ShowHandler {
 		int wuser_id = 1; //글쓰는 사람 유저 아이디
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
+		
 		return new ModelAndView("views/board/inputForm");
 	}
 
@@ -358,6 +361,8 @@ public class ShowHandler {
 	public ModelAndView boardInputProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		req.setCharacterEncoding( "utf-8" );
 		BoardDataBean boardDto = new BoardDataBean();
+		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
+		
 		boardDto.setTitle(req.getParameter("title"));
 		boardDto.setPasswd(req.getParameter("passwd"));
 		boardDto.setContent(req.getParameter("content"));
@@ -384,6 +389,9 @@ public class ShowHandler {
 		int res = boardDao.insertBoard(boardDto); //삽입
 		System.out.println(res);
 		req.setAttribute("res", res);
+
+		log.debug( userDto.getEmail() + "회원이 게시판 글 작성 - 스터디 '" + boardDto.getStudy_name() + "'" );
+		
 		return new ModelAndView("views/board/inputPro");
 	}
 	
@@ -392,12 +400,17 @@ public class ShowHandler {
 		req.setCharacterEncoding( "utf-8" );
 		int id = Integer.parseInt(req.getParameter("bid"));
 		int study_id = 1;
+		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
+		
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		map.put("id", id);
 		map.put("study_id", study_id);
 		BoardDataBean boardDto = boardDao.getArticle(map);
 		System.out.println(boardDto.getTitle());
 		req.setAttribute("boardDto", boardDto);
+		
+		log.debug( userDto.getEmail() + "회원이 게시판 글 조회- 스터디 '" + boardDto.getStudy_name() + "'" );
+		
 		return new ModelAndView("views/board/content");
 	}
 	
@@ -442,7 +455,7 @@ public class ShowHandler {
 	        }
 	        JSONArray json = new JSONArray();
 	        json.addAll(hmlist);
-	        System.out.println(json.toString());
+//	        System.out.println(json.toString());
 	        return new ResponseEntity(json.toString(), responseHeaders, HttpStatus.CREATED);
 	        
 	    }
@@ -451,15 +464,18 @@ public class ShowHandler {
 	   public String ajax_addComment(@ModelAttribute("commentDto")CommentDataBean commentDto, HttpServletRequest request) throws Exception{
 	        
 	        HttpSession session = request.getSession();
-	     	        
+	        
+			UserDataBean userDto = (UserDataBean) request.getSession().getAttribute( "userDto" );
+
 	        try{
 	        	commentDto.setWriter("익명");
-	        	System.out.println(commentDto.getContent());
+//	        	System.out.println(commentDto.getContent());
 	            boardDao.addComment(commentDto);
 	            
 	        } catch (Exception e){
 	            e.printStackTrace();
 	        }
+			log.debug( userDto.getEmail() + "회원이 게시판 댓글 작성 - 스터디 '" + showDao.getStudyInfo( commentDto.getStudy_id() ).getTitle() + "'" );
 	        
 	        return "success";
 	    }
