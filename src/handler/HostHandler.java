@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,12 +38,14 @@ import dbbean.ShowDao;
 public class HostHandler {
 	@Resource
 	private HostDao hostDao;
-	
+
 	@Resource
 	private SearchDao searchDao;
 	
 	@RequestMapping("/titleForm")
 	public ModelAndView titleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
+		log.debug("새 스터디 작성 시작");
 		List<StudyRegCategoryDataBean> catDtoList = hostDao.getStudyCategory();
 
 		req.setAttribute("catDtoList", catDtoList);
@@ -51,6 +54,7 @@ public class HostHandler {
 
 	@RequestMapping("/infoForm")
 	public ModelAndView infoFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		ServletContext cxt = req.getSession().getServletContext();
@@ -62,12 +66,12 @@ public class HostHandler {
 		if (!Folder.exists()) {
 			try {
 				Folder.mkdir();
-				System.out.println("폴더가 생성되었습니다.");
+				log.debug("폴더가 생성되었습니다.");
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
 		} else {
-			System.out.println("이미 폴더가 생성되어 있습니다.");
+			log.debug("이미 폴더가 생성되어 있습니다.");
 		}
 
 		StudyDataBean studyDto = new StudyDataBean();
@@ -84,15 +88,12 @@ public class HostHandler {
 			studyDto.setPicture(newFiledir);
 
 			// 디버깅
-			System.out.println("String filename = multi.getFilesystemName(\"picture\"): " + filename);
+		//	System.out.println("String filename = multi.getFilesystemName(\"picture\"): " + filename);
 			// }
 
-			System.out.println("세션에서 갖고 온 유저 아이디 : " + ((UserDataBean) req.getSession().getAttribute("userDto")).getId());
+			log.debug("세션에서 갖고 온 유저 아이디 : " + ((UserDataBean) req.getSession().getAttribute("userDto")).getId());
 			studyDto.setUser_id(((UserDataBean) req.getSession().getAttribute("userDto")).getId());
 			studyDto.setTitle(multi.getParameter("title"));
-			
-			System.out.println("multi.getParameter(\"category\").toString() : " + multi.getParameter("category").toString());
-			System.out.println("multi.getParameter(\"category\"): " + multi.getParameter("category"));
 			studyDto.setCat_id(Integer.parseInt(multi.getParameter("category")));
 			
 		//	studyDto.setCat_id(1);
@@ -107,6 +108,13 @@ public class HostHandler {
 			}
 
 			req.getSession().setAttribute("studyDto", studyDto);
+			log.debug("스터디 타이틀 : " + studyDto.getTitle());
+			log.debug("스터디 이미지: " + studyDto.getPicture());
+			log.debug("스터디 카테고리 : " + studyDto.getCat_id());
+			log.debug("스터디 형태 : " + studyDto.getTerm());
+			log.debug("스터디 모집인원 : " + studyDto.getMax_personnel());
+			log.debug("스터디 모집마감일 : " + studyDto.getDeadline());
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,6 +125,7 @@ public class HostHandler {
 
 	@RequestMapping("/scheduleForm")
 	public ModelAndView scheduleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = resp.getWriter();
@@ -134,7 +143,6 @@ public class HostHandler {
 				else {
 			for(int i=0;i<locDtoList.size();i++) {
 				if(locDtoList.get(i)== null) {
-			System.out.println("dd");
 				}
 			}
 		}
@@ -147,23 +155,36 @@ public class HostHandler {
 	
 			req.getSession().setAttribute("studyDto", studyDto);
 			req.setAttribute("locDtoList", locDtoList);
+			
+			log.debug("스터디 소개 : " + studyDto.getIntro());
+			log.debug("스터디 진행방식 : " + studyDto.getProcess());
+			log.debug("스터디 모집대상 : " + studyDto.getTarget());
+			log.debug("스터디 세부 커리큘럼 : " + studyDto.getCurriculum());
+			log.debug("스터디 채팅링크: " + studyDto.getChat_url());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 		return new ModelAndView("views/host/scheduleForm");
 	}
 
 	@RequestMapping("/sregister")
 	public ModelAndView attendProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");	
 		String form = req.getParameter("form");
 		if(form != null) {
 			int study_id = Integer.parseInt(req.getParameter("sid"));
 			StudyDataBean studyDto = hostDao.getStudy(study_id);
 			StudyTimeDataBean studytimeDto = hostDao.getStudyTime(study_id);
-			System.out.println(studytimeDto.getSday());
+			log.debug(studyDto.getId() +"번 스터디 마이페이지 스터디 삭제/수정 들어옴");
+			String loc = hostDao.getLocationById(studyDto.getLoc_id());
+			studyDto.setLocation(loc);	
+			String cat = hostDao.getCategoryById(studyDto.getCat_id());
+			studyDto.setCategory(cat);
 			req.setAttribute("studyDto", studyDto);
 			req.setAttribute("studytimeDto", studytimeDto);
-
 		}
 		else {
 			StudyTimeDataBean studytimeDto = new StudyTimeDataBean();
@@ -217,36 +238,46 @@ public class HostHandler {
 					studyDto.setCategory(cat);
 					req.setAttribute("studyDto", studyDto);
 					req.setAttribute("studytimeDto", studytimeDto);
+					log.debug("스터디 장소 : " + loc);
+					log.debug("스터디 세부장소 : " + studyDto.getPlace());
+					log.debug("스터디 회비 : " + studyDto.getScost());
+					log.debug("스터디 요일 : " + daylist);
+					log.debug("스터디 시간 : " + studytimeDto.getStime());
+					log.debug("스터디 시작일 : " + studytimeDto.getSdate());
+					log.debug("스터디 추가코멘트 : " + studyDto.getScomment());
+					log.debug("스터디 등록 완료");
+					
 			//	}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		
+		}	
 		return new ModelAndView("views/host/register");
 	}
 
 	@RequestMapping("/sdeletePro")
 	public ModelAndView deleteProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		System.out.println("디버깅 :" + 111);
+		Logger log = Logger.getLogger("studyloop");
+		StudyDataBean studyDto = hostDao.getStudy(Integer.parseInt(req.getParameter("sid")));
+		req.setAttribute("studyDto", studyDto);
 		int result = hostDao.deleteStudyInfo(Integer.parseInt(req.getParameter("sid")));
-		
-		System.out.println("multi.getParameter(\"sid\")" + req.getParameter("sid"));
+		log.debug(studyDto.getId() + "번 스터디 삭제 시작 : " + result);
 		req.setAttribute("result", result);
-
-		System.out.println("result : " + result);
+		log.debug(studyDto.getId() + "번 스터디 삭제 완료");	
 		return new ModelAndView("views/host/deleteStudyPro");
 	}
 
 	@RequestMapping("/sdelete")
 	public ModelAndView deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
+		Logger log = Logger.getLogger("studyloop");
+		
+		
 		return new ModelAndView("views/host/deleteStudy");
 	}
 
 	@RequestMapping("/smodify")
 	public ModelAndView modifyProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		System.out.println("디버깅 : 들어왔냐ㅑㅑㅑ");
+		Logger log = Logger.getLogger("studyloop");
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		StudyDataBean studyDto = hostDao.getStudy(Integer.parseInt(req.getParameter("sid")));
@@ -257,16 +288,15 @@ public class HostHandler {
 		req.setAttribute("studytimeDto", studytimeDto);
 		req.setAttribute("locDtoList", locDtoList);
 		req.setAttribute("catDtoList", catDtoList);
-		System.out.println("갔냐...");
-		
+		log.debug(studyDto.getId() + "번 스터디 수정 시작");
 		return new ModelAndView("views/host/modifyStudy");
 	}
 
 	@RequestMapping("/smodifyPro")
 	public ModelAndView modifyProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		Logger log = Logger.getLogger("studyloop");
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		int stid = Integer.parseInt(req.getParameter("stid"));
-		System.out.println("디버깅 : " + 222);
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		ServletContext cxt = req.getSession().getServletContext();
@@ -337,6 +367,29 @@ public class HostHandler {
 			int result = hostDao.modifyStudyInfo(studyDto);
 			hostDao.modifyStudyTimeInfo(studytimeDto);
 			req.setAttribute("result", result);
+			
+			log.debug("스터디 수정 : " + result);
+			log.debug(studyDto.getId() + "번 스터디 수정 타이틀 : " + studyDto.getTitle());
+			log.debug(studyDto.getId() + "번 스터디 수정 이미지: " + studyDto.getPicture());
+			log.debug(studyDto.getId() + "번 스터디 수정 카테고리 : " + studyDto.getCat_id());
+			log.debug(studyDto.getId() + "번 스터디 수정 형태 : " + studyDto.getTerm());
+			log.debug(studyDto.getId() + "번 스터디 수정 모집인원 : " + studyDto.getMax_personnel());
+			log.debug(studyDto.getId() + "번 스터디 수정 모집마감일 : " + studyDto.getDeadline());
+			log.debug(studyDto.getId() + "번 스터디 수정 소개 : " + studyDto.getIntro());
+			log.debug(studyDto.getId() + "번  스터디 수정 진행방식 : " + studyDto.getProcess());
+			log.debug(studyDto.getId() + "번 스터디 수정 모집대상 : " + studyDto.getTarget());
+			log.debug(studyDto.getId() + "번 스터디 수정 세부 커리큘럼 : " + studyDto.getCurriculum());
+			log.debug(studyDto.getId() + "번 스터디 수정 채팅링크: " + studyDto.getChat_url());
+			
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 장소 : " + studyDto.getLoc_id());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 세부장소 : " + studyDto.getPlace());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 회비 : " + studyDto.getScost());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + daylist);
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 시간 : " + studytimeDto.getStime());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 시작일 : " + studytimeDto.getSdate());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 추가코멘트 : " + studyDto.getScomment());
+			
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 등록 완료");
 			// }
 		} catch (Exception e) {
 			e.printStackTrace();
