@@ -293,7 +293,7 @@ public class MainSearchHandler {
 
 			GpsToAddress gps = new GpsToAddress();
 			
-			log.debug("접속 위치 :" +gps.coordToAddr(latitude, longtitude));
+			log.debug("접속 위치 : " +gps.coordToAddr(longtitude, latitude));
 		}
 		
 		CategoryDataBean categoryDto = searchDao.loadCategory();
@@ -380,7 +380,7 @@ public class MainSearchHandler {
 	@RequestMapping("/addinfo")
 	public ModelAndView addinfoPageProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
 		req.setCharacterEncoding( "utf-8" );
-		
+		Logger log = Logger.getLogger("studyloop");	
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("userDto");
 		int id = userDto.getId();
 		
@@ -388,13 +388,14 @@ public class MainSearchHandler {
 		//delete 
 		int delres = searchDao.cleanExistinginfo(id);
 	
-		
+		log.debug("개인 추가정보 수정 :");
 		//insert
 		String schoolname = req.getParameter("school");
-		
-		String schoolstatus = req.getParameter("radio-school");
-	
+		log.debug("학교명 : "+schoolname);		
+		String schoolstatus = req.getParameter("radio-school");	
 		String schoolmajor = req.getParameter("school-major");
+		log.debug("전공명 : "+schoolmajor);
+		log.debug("졸업유무 : "+schoolstatus);
 		SchoolDataBean schoolDto = new SchoolDataBean();
 		schoolDto.setName(schoolname);
 		schoolDto.setMajor(schoolmajor);
@@ -405,6 +406,7 @@ public class MainSearchHandler {
 		int cres = 0;
 		int lres = 0;
 		int ceres = 0;
+		log.debug("경력 사항 : ");
 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		for(int i =0; i<20;i++) {
 			if( req.getParameter("career"+i) !=null) {
@@ -417,9 +419,12 @@ public class MainSearchHandler {
 				expDto.setEnd_date(df.parse(end));
 				expDto.setUser_id(id);
 				cres = searchDao.insertCareerdata(expDto);
+				log.debug("경력명 : "+career);
+				log.debug("시작일 : "+start);
+				log.debug("종료일 : "+end);
 			}
 		}
-		
+		log.debug("어학 사항 : ");
 		for(int i =0; i<20; i++) {
 			if( req.getParameter("lang"+i) !=null) {
 			String lang = req.getParameter("lang"+i);
@@ -433,9 +438,15 @@ public class MainSearchHandler {
 			languageDto.setObtain_date(df.parse(getdate));
 			languageDto.setUser_id(id);
 			lres = searchDao.insertLanguagedata(languageDto);
+			
+			log.debug("언어명 : "+lang);
+			log.debug("시험명 : "+exam);
+			log.debug("성적 : "+score);
+			log.debug("취득일 : "+getdate);
+
 			}
 		}
-		
+		log.debug("자격증 사항 : ");
 		for(int i =0; i<20;i++) {
 			if( req.getParameter("cert"+i) !=null) {
 				String cert = req.getParameter("cert"+i);
@@ -447,6 +458,10 @@ public class MainSearchHandler {
 				certificateDto.setObtain_date(df.parse(certodate));
 				certificateDto.setUser_id(id);
 				ceres = searchDao.insertCertificatedata(certificateDto);
+				
+				log.debug("자격증명 : "+cert);
+				log.debug("성적 : "+grade);
+				log.debug("취득일 : "+certodate);
 			}
 		}
 		int res = 0;
