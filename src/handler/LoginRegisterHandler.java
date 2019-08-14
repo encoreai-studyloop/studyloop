@@ -224,7 +224,7 @@ public class LoginRegisterHandler {
 			UserDataBean userDto = new UserDataBean();
 			userDto = userDao.getUserinfo(email);
 			req.setAttribute("userDto", userDto);
-			log.debug(userDto.getEmail()+" 회원 로그인\n이름 : "+ userDto.getName()+ "/n생년월일 : "+ userDto.getBirth() + "/n성별 : "+ userDto.getGender());
+			log.debug(userDto.getEmail()+" 회원 로그인\n이름 : "+ userDto.getName()+ "\n생년월일 : "+ userDto.getBirth() + "\n성별 : "+ userDto.getGender());
 			logintime = System.currentTimeMillis();
 		}
 		req.setAttribute("email", email);
