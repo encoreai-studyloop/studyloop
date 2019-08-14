@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,13 +49,17 @@ public class ShowHandler {
 	@Resource
 	private UserDao userDao;
 	
+	private Logger log = Logger.getLogger("studyloop");
+
+	long applyintime;
+	long applyouttime;
 	
 	SimpleDateFormat inputFormat = new SimpleDateFormat( "MM/dd/yyyy" );
 	
 	@RequestMapping("/view")
 	public ModelAndView viewPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		HttpSession session = req.getSession( true );
-		
+
 		//int study_id = 1; // for temporary selected study data
 		int study_id = Integer.parseInt( req.getParameter("sid") );	// studyId parameter
 		
@@ -63,6 +68,8 @@ public class ShowHandler {
 		if(userDto != null) {
 			userDto = userDao.getUserById(userDto.getId());
 		}
+		
+		
 		
 		int cntAttendee = showDao.getCntAttendee( study_id );	// count attendee with regprocess_id=5
 		
@@ -105,6 +112,8 @@ public class ShowHandler {
 		req.setAttribute("boardDtoList", boardDtoList);
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
+		
+		log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + " 클릭");   
 		
 		return new ModelAndView("views/show/view");
 	}
@@ -181,8 +190,13 @@ public class ShowHandler {
 			int resultAttendee = showDao.insertAttendee( attendeeDto );
 			
 			req.setAttribute( "resultAttendee", resultAttendee );
-
-		
+			
+			log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + "에 신청 완료");  
+			applyouttime = System.currentTimeMillis();
+			long millis = (applyouttime - applyintime);
+			long minutes = (millis / 1000)  / 60;
+			int seconds = (int)((millis / 1000) % 60);	
+			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/show/apply");
 	}
 
@@ -190,7 +204,7 @@ public class ShowHandler {
 	public ModelAndView applyFormPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 		req.getSession().setAttribute( "userDto", userDto );
-		
+		applyintime = System.currentTimeMillis();
 		return new ModelAndView("views/show/applyForm");
 	}
 	

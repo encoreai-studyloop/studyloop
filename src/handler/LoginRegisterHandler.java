@@ -31,7 +31,7 @@ public class LoginRegisterHandler {
 	
 	private long logintime;
 	private long logouttime;
-	
+	private Logger log = Logger.getLogger("studyloop");
 
 	@RequestMapping("/register")
 	public ModelAndView registerprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -129,18 +129,18 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/logout")
 	public ModelAndView logoutProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		logouttime = System.currentTimeMillis();
 		long millis = (logouttime - logintime);
 		long minutes = (millis / 1000)  / 60;
 		int seconds = (int)((millis / 1000) % 60);			
-		log.debug("총 접속 시간 : "+ minutes+" 분 "+seconds+" 초");
+		log.debug("로그아웃 까지의 총 접속 시간 : "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/login/logout");
 	}
 	
 	@RequestMapping("/inputPro")
 	public ModelAndView inputProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		log.debug("회원가입 시도");
 		req.setCharacterEncoding("utf-8");
 	
@@ -188,7 +188,7 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/surveyfinish")
 	public ModelAndView surveyFormprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		log.debug("설문작성 시도");
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("tmpuserDto");
 		String visit = String.join("@",  req.getParameterValues("visit"));		
@@ -214,7 +214,7 @@ public class LoginRegisterHandler {
 	//로그인 처리하는 부분
 	@RequestMapping("/loginPro")
 	public ModelAndView loginProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		
 		String email = req.getParameter("email");
 		String passwd = req.getParameter("passwd");
@@ -224,7 +224,7 @@ public class LoginRegisterHandler {
 			UserDataBean userDto = new UserDataBean();
 			userDto = userDao.getUserinfo(email);
 			req.setAttribute("userDto", userDto);
-			log.debug(userDto.getEmail()+" 로그인");
+			log.debug(userDto.getEmail()+" 회원 로그인\n이름 : "+ userDto.getName()+ "/n생년월일 : "+ userDto.getBirth() + "/n성별 : "+ userDto.getGender());
 			logintime = System.currentTimeMillis();
 		}
 		req.setAttribute("email", email);
@@ -240,6 +240,7 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/primecheck")
 	public ModelAndView primeCheckprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		log.debug("프리미엄 구매 페이지 들어옴");
 		return new ModelAndView("views/login/prime");
 	}
 	

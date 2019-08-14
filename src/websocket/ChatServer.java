@@ -12,6 +12,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.apache.log4j.Logger;
+
 import databean.AlarmDataBean;
 import dbbean.SearchDao;
 
@@ -25,6 +27,8 @@ public class ChatServer {
    
    @Resource
    private SearchDao searchDao;
+   
+   private Logger log = Logger.getLogger("studyloop");
    
    public ChatServer() {
       String threadName = "Thread Name : " + Thread.currentThread().getName();
