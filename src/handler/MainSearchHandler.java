@@ -3,10 +3,12 @@ package handler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +87,6 @@ public class MainSearchHandler {
         }
         
         if( loclist != null ) {
-        	log.debug("지역 검색 : "+ loclist.toString()); 
             List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
             for(int i=0; i<studyDtoList.size(); i++) {
                 
@@ -96,17 +97,19 @@ public class MainSearchHandler {
                         exist = true;
                         break;
                     }
+                   
                 }
                 if(exist) {
                     studyDtoFilterList.add(studyDtoList.get(i));
                 }
             }
             studyDtoList = studyDtoFilterList;
+            log.debug("지역검색 : " + (Arrays.toString(loclist)));
         }
         
         if(daylist != null) { //화목 
-        	log.debug("요일 검색 : "+ daylist.toString()); 
         	List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
+        	
         	for(int i=0; i<studyDtoList.size(); i++) {
         		StudyDataBean studyDto = studyDtoList.get(i);
         		String sdays = searchDao.getStudyTimeDays(studyDto.getStudytime_id()); //화금
@@ -127,9 +130,29 @@ public class MainSearchHandler {
         			//studyDtoList.remove(i);
         			studyDtoFilterList.add(studyDto);
         		}
+        		
+	    		//log.debug("요일검색 :" + (Arrays.toString(daylist)));
+        		//String[] daylist = req.getParameterValues("sday");
+	    		Map<Integer, String> days = new HashMap<Integer,String>();
+		    		
+		    		days.put(0, "월");
+		    		days.put(1,"화");
+		    		days.put(2,"수");
+		    		days.put(3,"목");
+		    		days.put(4,"금");
+		    		days.put(5,"토");
+		    		days.put(6,"일");
+		    		
+		    		for(int x=0; x<daylist.length; x++) {
+		    			System.out.println(days.));
+		    		}
         	}
         	studyDtoList = studyDtoFilterList;
+        
+        	log.debug("요일검색 :" + Arrays.asList(daylist));
+        	
         }
+       
         
         if(sort != null) {
         	if(sort.equals("1")) { //프리미엄 순
