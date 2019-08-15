@@ -103,13 +103,15 @@ public class MainSearchHandler {
                     studyDtoFilterList.add(studyDtoList.get(i));
                 }
             }
+           
             studyDtoList = studyDtoFilterList;
+     
             log.debug("지역검색 : " + (Arrays.toString(loclist)));
         }
         
         if(daylist != null) { //화목 
         	List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
-        	
+        	String name_day = "";
         	for(int i=0; i<studyDtoList.size(); i++) {
         		StudyDataBean studyDto = studyDtoList.get(i);
         		String sdays = searchDao.getStudyTimeDays(studyDto.getStudytime_id()); //화금
@@ -130,26 +132,27 @@ public class MainSearchHandler {
         			//studyDtoList.remove(i);
         			studyDtoFilterList.add(studyDto);
         		}
-        		
-	    		//log.debug("요일검색 :" + (Arrays.toString(daylist)));
-        		//String[] daylist = req.getParameterValues("sday");
-	    		Map<Integer, String> days = new HashMap<Integer,String>();
-		    		
-		    		days.put(0, "월");
-		    		days.put(1,"화");
-		    		days.put(2,"수");
-		    		days.put(3,"목");
-		    		days.put(4,"금");
-		    		days.put(5,"토");
-		    		days.put(6,"일");
-		    		
-		    		for(int x=0; x<daylist.length; x++) {
-		    			System.out.println(days.));
-		    		}
         	}
-        	studyDtoList = studyDtoFilterList;
-        
-        	log.debug("요일검색 :" + Arrays.asList(daylist));
+        	studyDtoList = studyDtoFilterList;  
+        	
+    		Map<String, String> days = new HashMap<String,String>();
+    		
+    		days.put("0","월");
+    		days.put("1","화");
+    		days.put("2","수");
+    		days.put("3","목");
+    		days.put("4","금");
+    		days.put("5","토");
+    		days.put("6","일");
+	    		// daylist = {"0", "2", "6"}
+    		for(int x=0; x<daylist.length; x++) {
+    			// x = 0 
+    			// x = 1
+    			name_day += days.get(daylist[x])+ " ";
+    			//name_day = 월;
+    			//name_day = 월 수;
+    		}
+        	log.debug("요일검색 :" + name_day);
         	
         }
        
