@@ -156,23 +156,30 @@ function updateStatus(hsid, uid, now, idx){
     
 // select All
 
-//  function selectAll(num, att) {
-//    for( var i=0; i<num; i++) {
-//    	var check = document.getElementsByName("flat-radio"+i);
-//	  		for( var j = 0; j < check.length; j++ ) {
-//	  			if( check[j].type == "radio" && att == 0 && check[j].value == 0) {
-//	  				check[j].checked == true;
-//	  			} else if (check[j].type == "radio" && att == 1 && check[j].value == 1 ) {
-//	  				check[j].checked == true;
-//	  			} else if (check[j].type == "radio" && att ==2 && check[j].value == 2) {
-//	  				check[j].checked == true;
-//	  			} else {
-//	  				check[j].checked == false;
-//	  			}
-//	  				
-//	  			}
-//	  		}
-//  		}
-// 
+  function selectAll(num, att) {
+    for( var i=0; i<num; i++) {
+    	var check = document.getElementsByName("flat-radio"+i);
+	  		for( var j = 0; j < check.length; j++ ) {
+	  			if( check[j].type == "radio" && att == 0 && check[j].value == 0) {
+	  				check[j].checked == true;
+	  			} else if (check[j].type == "radio" && att == 1 && check[j].value == 1 ) {
+	  				check[j].checked == true;
+	  			} else if (check[j].type == "radio" && att ==2 && check[j].value == 2) {
+	  				check[j].checked == true;
+	  			} else {
+	  				check[j].checked == false;
+	  			}
+	  				
+	  			}
+	  		}
+  		}
  
+ 
+
+    
+    
+    
+    
+    
+    
   

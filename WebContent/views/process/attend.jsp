@@ -87,27 +87,29 @@
                     
                     <!-- 참여중인 스터디를 눌렀을 경우 출석관리 탭을 disabled로 바꿔주기 -->
                       
-	                    
+	                <!--  
                     <li class="nav-small-cap">--- 날짜검색</li>
-                    
+                    -->
+                    <!--  
                      <div class="example">
+                     -->
                        <%
                         //현재날짜 가져오기
                         Date today = new Date();
    						SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
    						SimpleDateFormat string = new SimpleDateFormat("dd@MM@yyyy");
-   						
-                       %>
-                     
+   						%>
+   					
+                     <!-- <%--
                       <div class="input-daterange input-group" id="date-range">
                           <input type="text" class="form-control" name="start" id="datepicker-autoclose" placeholder="<%=date.format(today)%>"/>
                           <span class="input-group-addon bg-info b-0 text-white">to</span>
                           <input type="text" class="form-control" name="end" id="datepicker-autoclose" placeholder="<%=date.format(today)%>"/>
                       </div>
                   	</div>
-                        
+                      --%> -->  
                          
-                         
+                      <!--    
 	                  <li class="nav-small-cap">---출석현황</li>
 	
 	                    <div class="input-group">
@@ -132,6 +134,9 @@
 		                   	<button class="btn btn-fail waves-effect waves-light" type="button"><span class="btn-label"><i class="fa ti-close"></i></span>초기화</button>
 	                        
 	                   </div>
+	                   
+	                   -->
+	                  
                	</ul>
             </div>
         </div>
@@ -173,7 +178,7 @@
 					                            
 					                            <p class="text-muted m-b-30">출석 여부를 체크해 주세요.</p>
 					                            <!-- select All -->
-			                    				<div class="col-sm-14">
+			                    				<%-- <div class="col-sm-14">
 			                        
 						                            <div class="button-box">
 						                                <div class="btn-group m-r-10">
@@ -197,10 +202,30 @@
 						                                    
 						                                    <button type="button" class="fcbtn btn btn-info btn-outline btn-1f">저장</button>
 						                                </div>
-						                                
+						                               
 						                            </div>
 				                        
-				                   				</div>
+				                   				</div> --%>
+				                   				
+				                   				<div class="col-md-4" align="center">
+				                   				
+				                                     	  
+                                                     <select class="form-control" data-placeholder="한번에 출석체크" tabindex="1">
+                                                         <option value="Category 1" onclick="selectAll()" value="0">모두 출석</option>
+                                                         <option value="Category 2" onclick="selectAll()" value="1">모두 지각</option>
+                                                         <option value="Category 3" onclick="selectAll()" value="2">모두 결석</option>
+                                                         
+                                                         
+                                                     </select>
+                                                     <br>
+                                                </div>
+                                                <div class="col-md-6">
+                                                <button type="button" class="fcbtn btn btn-info btn-outline btn-1f">저장</button>
+                                                 </div>    
+                                                   
+                                                
+				                   				<br>
+				                   				
 				                   				<!-- select All End -->
 					                            
 					                            
@@ -232,7 +257,8 @@
 					                                            <td>
 					                                           		
 					                                            	<ul class="icheck-list">
-									                                   <li>						                                   		
+									                                   <li>	
+									                                   				                                   		
 									                                       <input type="radio" class="check" id="flat-radio-a<%=nn.getId()%>" name="flat-radio<%=idx%>" data-radio="icheckbox_flat-green" value="0">
 									                                       <label for="flat-radio-a<%=nn.getId()%>">출석</label> &nbsp;&nbsp;
 									                                   
@@ -243,7 +269,7 @@
 									                                       <label for="flat-radio-c<%=nn.getId()%>">결석</label> &nbsp;&nbsp;&nbsp;
 									                                   	
 								                                   			<input type="button" class="btn btn-info btn-outline" value="저장" name = "save" onclick="updateStatus(<%=hsid%>, <%=nn.getId()%>, '<%=string.format(today)%>', <%=idx%>)">  
-								 															                                   		
+								 														                                   		
 									                                   </li>
 								                               		</ul>
 								                               </td>

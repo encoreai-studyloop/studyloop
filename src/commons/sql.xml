@@ -576,7 +576,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</select>
 	
 	<select id="getStudyforAt" parameterType="int" resultType="databean.StudyDataBean">
-		select * from ws_studyinfo where user_id = #{id}
+		select * from ws_studyinfo where user_id = #{id} and chat_url != '종료'
 	</select>
 	
 	<select id="getAttendee" parameterType="int" resultType="databean.StudyDataBean">
@@ -641,6 +641,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<update id="updatePoint" parameterType="java.util.Map">
 		update ws_user set point = #{point} where id = #{id}
 	</update>
+	
+	<select id="repCat" parameterType="int" resultType="String">
+		select name from ws_reportcategory where id = #{id}
+	</select>
 	
 	<insert id="putUserRep" parameterType="databean.UserReportDataBean">
 		insert into ws_userreport values (seq_ws_attend_id.NEXTVAL, #{content}, systimestamp, #{reporter_nick}, #{suspect_nick}, #{repcat_id})
