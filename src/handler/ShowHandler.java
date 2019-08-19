@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import databean.ApplyDataBean;
 import databean.AttendeeDataBean;
 import databean.BoardDataBean;
+import databean.CategoryTempBean;
 import databean.CertificateDataBean;
 import databean.CommentDataBean;
 import databean.ExpDataBean;
@@ -76,6 +77,7 @@ public class ShowHandler {
 		StudyTimeDataBean studytimeDto = showDao.getStudyTime( study_id );
 		LocationDataBean locationDto = showDao.getLocation( study_id );
 		ApplyDataBean masterData = showDao.loadPrevData( studyDto.getUser_id() );	// study master-user data
+		CategoryTempBean categoryDto = showDao.getStudyCategoryNames( studyDto.getCat_id() );
 		//UserDataBean userDto = showDao.getMyData( userDto.getId() );
 		if(userDto != null) {
 			ApplyDataBean applyDto = showDao.loadPrevData( userDto.getId() );
@@ -112,7 +114,27 @@ public class ShowHandler {
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
 		
-		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "' 클릭" );
+		log.debug( "[스터디 클릭]" );
+//		log.debug( "[회원]" + userDto.getEmail() + " 이 [스터디]{ " + studyDto.getTitle() + " } 클릭" );
+//		log.debug( "[클릭한 스터디 정보]" );
+//		log.debug( "[소개]{ " + studyDto.getIntro() + " }" );
+//		log.debug( "[진행방식]{ " + studyDto.getTitle() + " }" );
+//		log.debug( "[모집대상]{ " + studyDto.getTarget() + " }" );
+//		log.debug( "[커리큘럼]{ " + studyDto.getCurriculum() + " }" );
+//		log.debug( "[코멘트]{ " + studyDto.getScomment() + " }" );
+//		log.debug( "[비용]{ " + studyDto.getScost() + " }" );
+//		log.debug( "[참석인원] " + studyDto.getCur_personnel() );
+//		log.debug( "[최대인원] " + studyDto.getMax_personnel() );
+//		log.debug( "[스터디형태] " + studyDto.getTerm() );
+//		log.debug( "[등록일] " + studyDto.getRegdate() );
+//		log.debug( "[모집마감] " + studyDto.getDeadline() );
+//		log.debug( "[상세장소]{ " + studyDto.getPlace() + " }" );
+//		log.debug( "[지역] " + locationDto.getState_city() );
+//		log.debug( "[상세지역] " + locationDto.getDetail_loc() );
+//		log.debug( "[카테고리] " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() );
+//		log.debug( "[스터디일시]" + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
+		
+		log.debug( userDto.getEmail() + ", {" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
 		
 		return new ModelAndView("views/show/view");
 	}
@@ -129,6 +151,9 @@ public class ShowHandler {
 			CertificateDataBean certDto = new CertificateDataBean();
 			UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 			StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
+			CategoryTempBean categoryDto = showDao.getStudyCategoryNames( studyDto.getCat_id() );
+			LocationDataBean locationDto = (LocationDataBean) req.getAttribute( "locationDto" );
+			StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getAttribute( "studytimeDto" );
 
 			
 			attendeeDto.setPurpose( req.getParameter( "purpose" ) );
@@ -189,12 +214,14 @@ public class ShowHandler {
 			
 			req.setAttribute( "resultAttendee", resultAttendee );
 			
-			log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + "에 신청 완료");  
+			log.debug( "[스터디 신청 완료 - 작성소요시간 & 스터디정보]" );
+//			log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + "에 신청 완료");  
 			applyouttime = System.currentTimeMillis();
 			long millis = (applyouttime - applyintime);
 			long minutes = (millis / 1000)  / 60;
-			int seconds = (int)((millis / 1000) % 60);	
-			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
+			int seconds = (int)((millis / 1000) % 60);
+//			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
+			log.debug( minutes + ", " + seconds + ", " + userDto.getEmail() + ", {" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
 			
 		return new ModelAndView("views/show/apply");
 	}
@@ -203,10 +230,18 @@ public class ShowHandler {
 	public ModelAndView applyFormPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 		StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
+		CategoryTempBean categoryDto = showDao.getStudyCategoryNames( studyDto.getCat_id() );
+		LocationDataBean locationDto = (LocationDataBean) req.getAttribute( "locationDto" );
+		StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getAttribute( "studytimeDto" );
+		
 		req.getSession().setAttribute( "userDto", userDto );
+		req.setAttribute( "studytimeDto", studytimeDto );
+		req.setAttribute( "locationDto", locationDto );
 		
 		applyintime = System.currentTimeMillis();
-		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "'" + applyintime + "에 신청 시도" );
+//		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "'" + applyintime + "에 신청 시도" );
+		log.debug( "[스터디 신청 시도 - 시각 & 스터디정보]" );
+		log.debug( applyintime + ", " + userDto.getEmail() + ", {" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
 		
 		return new ModelAndView("views/show/applyForm");
 	}
@@ -392,7 +427,8 @@ public class ShowHandler {
 		System.out.println(res);
 		req.setAttribute("res", res);
 
-		log.debug( userDto.getEmail() + "회원이 게시판 글 작성 - 스터디 '" + boardDto.getStudy_name() + "'" );
+		log.debug( "[게시판 글 작성]" );
+		log.debug( userDto.getEmail() + ", " + boardDto.getStudy_name() );
 		
 		return new ModelAndView("views/board/inputPro");
 	}
@@ -410,8 +446,9 @@ public class ShowHandler {
 		BoardDataBean boardDto = boardDao.getArticle(map);
 		System.out.println(boardDto.getTitle());
 		req.setAttribute("boardDto", boardDto);
-		
-		log.debug( userDto.getEmail() + "회원이 게시판 글 조회- 스터디 '" + boardDto.getStudy_name() + "'" );
+
+		log.debug( "[게시판 글 조회]" );
+		log.debug( userDto.getEmail() + ", " + boardDto.getStudy_name() );
 		
 		return new ModelAndView("views/board/content");
 	}
@@ -427,8 +464,9 @@ public class ShowHandler {
 		map.put("study_id", sid);
 		int res = boardDao.deleteArticle(map);
 		req.setAttribute("res", res);
-		
-		log.debug( userDto.getEmail() + "회원 - 스터디 '" + studyDto.getTitle() + "'에서 게시판 글 삭제" );
+
+		log.debug( "[게시판 글 삭제]" );
+		log.debug( userDto.getEmail() + ", " + studyDto.getTitle() );
 
 		return new ModelAndView("views/board/deletePro");
 	}
@@ -482,7 +520,9 @@ public class ShowHandler {
 	        } catch (Exception e){
 	            e.printStackTrace();
 	        }
-			log.debug( userDto.getEmail() + "회원이 게시판 댓글 작성 - 스터디 '" + showDao.getStudyInfo( commentDto.getStudy_id() ).getTitle() + "'" );
+
+			log.debug( "[게시판 댓글 작성]" );
+			log.debug( userDto.getEmail() + ", " + showDao.getStudyInfo( commentDto.getStudy_id() ).getTitle() );
 	        
 	        return "success";
 	    }
@@ -497,11 +537,14 @@ public class ShowHandler {
 //			id_map.put( "board_id", board_id );
 //			id_map.put( "study_id", study_id );
 		   	int comment_id = Integer.parseInt( commentId );
+		   	CommentDataBean commentDto = showDao.getCommentByCommentId( comment_id );
 			
 			boardDao.delComment( comment_id );
 			
-	        return "success";
-	    }
-	   
-	   
+			log.debug( "[게시판 댓글 삭제]" );
+			log.debug( commentDto.getContent() + ", " + commentDto.getWriter() + ", " + commentDto.getRegdate() );
+			
+			return "success";
+		}
+
 }

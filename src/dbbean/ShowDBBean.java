@@ -6,7 +6,9 @@ import java.util.Map;
 import commons.SqlMapClient;
 import databean.ApplyDataBean;
 import databean.AttendeeDataBean;
+import databean.CategoryTempBean;
 import databean.CertificateDataBean;
+import databean.CommentDataBean;
 import databean.ExpDataBean;
 import databean.LanguageDataBean;
 import databean.LocationDataBean;
@@ -106,5 +108,10 @@ public class ShowDBBean implements ShowDao{
     public int subCurPersonnel( int study_id ) {
         return SqlMapClient.getSession().update( "Studyloop.subCurPersonnel", study_id );
     }
-	
+	public CategoryTempBean getStudyCategoryNames( int cat_id ) {
+		return SqlMapClient.getSession().selectOne( "Studyloop.getStudyCategoryNames", cat_id );
+	}
+	public CommentDataBean getCommentByCommentId( int comment_id ) {
+		return SqlMapClient.getSession().selectOne( "Studyloop.getCommentByCommentId", comment_id );
+	}
 }

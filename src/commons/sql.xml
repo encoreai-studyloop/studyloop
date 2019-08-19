@@ -375,24 +375,28 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		select * from WS_CERTIFICATE where user_id=#{user_id}
 	</select>
 	
-	 <select id="loadPrevData" parameterType="int" resultType="databean.ApplyDataBean">
-        select distinct a.id attendee_id, purpose, goal, a.user_id user_id, 
-            s.name school_name, s.major school_major, s.status school_status, 
-            e.experience experience, e.start_date exp_start, e.end_date exp_end, 
-            language, l.name lang_name, l.score lang_score, l.obtain_date lang_obtain, 
-            c.name cert_name, c.score cert_score, c.obtain_date cert_obtain, u.rate 
-            from WS_ATTENDEE a 
-            left outer join WS_SCHOOL s on a.user_id=s.user_id 
-            left outer join WS_EXP e on a.user_id=e.user_id 
-            left outer join WS_LANGUAGE l on a.user_id=l.user_id 
-            left outer join WS_CERTIFICATE c on a.user_id=c.user_id 
-            left outer join WS_USER u on a.user_id=u.id 
-            where a.id in ( 
-                select max(id) from ( 
-                    select * from WS_ATTENDEE where user_id=#{user_id} order by regdate desc 
-                ) 
-            )
-    </select>
+	<select id="getRateByUserId" parameterType="int" resultType="double">
+		select rate from WS_USER where id=#{user_id}
+	</select>
+	
+	<select id="loadPrevData" parameterType="int" resultType="databean.ApplyDataBean">
+		select distinct a.id attendee_id, purpose, goal, a.user_id user_id, 
+			s.name school_name, s.major school_major, s.status school_status, 
+			e.experience experience, e.start_date exp_start, e.end_date exp_end, 
+			language, l.name lang_name, l.score lang_score, l.obtain_date lang_obtain, 
+			c.name cert_name, c.score cert_score, c.obtain_date cert_obtain, u.rate 
+			from WS_ATTENDEE a 
+			left outer join WS_SCHOOL s on a.user_id=s.user_id 
+			left outer join WS_EXP e on a.user_id=e.user_id 
+			left outer join WS_LANGUAGE l on a.user_id=l.user_id 
+			left outer join WS_CERTIFICATE c on a.user_id=c.user_id 
+			left outer join WS_USER u on a.user_id=u.id 
+			where a.id in ( 
+				select max(id) from ( 
+					select * from WS_ATTENDEE where user_id=#{user_id} order by regdate desc 
+				) 
+			)
+	</select>
 	
 	<insert id="insertAttendee" parameterType="databean.AttendeeDataBean">
 		insert into WS_ATTENDEE( id, purpose, goal, intro, request, regdate, user_id, study_id, regprocess_id ) 
@@ -462,6 +466,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		delete from ws_board where study_id = #{study_id} and id = #{id}
 	</delete>
 	
+	<delete id="deleteComment" parameterType="int">
+		delete from WS_COMMENT
+		where id = #{comment_id}
+	</delete>
+	
 	<select id="selectBoardCommentByCode" parameterType="int" resultType="databean.CommentDataBean">
 		select * from ws_comment where study_id = 1 and board_id = #{board_id} order by id desc
 	</select>
@@ -479,6 +488,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<select id="getStudyIdbyUserId" parameterType="int" resultType="int">
 		select user_id from ws_studyinfo where id = #{study_id}
 	</select>
+	
+	<select id="getStudyCategoryNames" parameterType="int" resultType="databean.CategoryTempBean">
+		select big, middle, small from WS_CATEGORY where id=#{cat_id}
+	</select>
+	
+	<select id="getCommentByCommentId" parameterType="int" resultType="databean.CommentDataBean">
+		select * from ws_comment where id=#{comment_id}
+	</select>
+	
 	
 	<!-- host -->
 	<select id="getStudyLocation" parameterType="int" resultType="databean.LocationDataBean">
@@ -711,14 +729,5 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		u.repcat_id = r.id
 	</select>
 	
-	<select id="getRateByUserId" parameterType="int" resultType="double">
-       select rate from WS_USER where id=#{user_id}
-   </select>
-	
-	<delete id="deleteComment" parameterType="int">
-	       delete from WS_COMMENT
-	       where id = #{comment_id}
-	</delete>
-   
 </mapper>
 

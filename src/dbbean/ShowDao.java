@@ -6,7 +6,9 @@ import java.util.Map;
 import commons.SqlMapClient;
 import databean.ApplyDataBean;
 import databean.AttendeeDataBean;
+import databean.CategoryTempBean;
 import databean.CertificateDataBean;
+import databean.CommentDataBean;
 import databean.ExpDataBean;
 import databean.LanguageDataBean;
 import databean.LocationDataBean;
@@ -37,4 +39,6 @@ public interface ShowDao {
 	public int getStudyIdbyUserId(Integer study_id);
 	public int addCurPersonnel( int study_id );
 	public int subCurPersonnel( int study_id );
+	public CategoryTempBean getStudyCategoryNames( int cat_id );
+	public CommentDataBean getCommentByCommentId( int comment_id );
 }
