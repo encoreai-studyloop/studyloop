@@ -6,20 +6,24 @@ var FormStuff = {
   init: function() {
     this.applyConditionalRequired();
     this.bindUIActions();
+  
   },
   
   bindUIActions: function() {
-    $("input[type='radio'], input[type='checkbox']").on("change", this.applyConditionalRequired);
+    $("input[type='radio'], input[type='checkbox']", "select[type=option]").on("change", this.applyConditionalRequired);
   },
-  
+
   applyConditionalRequired: function() {
     
     $(".require-if-active").each(function() {
       var el = $(this);
       if ($(el.data("require-pair")).is(":checked")) {
         el.prop("required", true);
+        
+    	
       } else {
         el.prop("required", false);
+        alert("신고가 접수되었습니다.");
       }
     });
     
@@ -50,9 +54,6 @@ function updateReport(){
 	
 	//숫자로 와야하는 넘들을 잡아서 parseint를 if문 조건에 넣으세요 그리고 return false;
 	
-	
-	alert("신고가 접수되었습니다.");
 
-	
 }
 

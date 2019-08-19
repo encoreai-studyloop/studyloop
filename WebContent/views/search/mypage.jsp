@@ -359,7 +359,13 @@
 			                                             	<br>
 			                                            	오픈채팅 URL : ${pstudyDto.getChat_url() }
 			                                        </address>
-			                                        <button class="fcbtn btn btn-outline btn-primary btn-1f pull-right" onclick="location='rateForm.do?sid=${ostudyDto.getId()}'">평점주기</button>
+			                                        
+			                                        <!-- if 평점 안 했으면 이 코드 쓰고 했으면 alert onclick 해주기 -->
+			                                        <!-- pastudyDtoList 체크 -->
+			                                        
+			                                        
+			                                        
+			                                        <button class="fcbtn btn btn-outline btn-primary btn-1f pull-right" onclick="location='rateForm.do?sid=${pstudyDto.getId()}'">평점주기</button>
 		                                	</div>                    
 					                    </div>
 										</c:if>
@@ -375,7 +381,7 @@
 									<li role="presentation" class="nav-item"><a
 										href="#myregstatus" class="nav-link"
 										aria-controls="myregstatus" role="tab" data-toggle="tab"
-										aria-expanded="false"><span class="visible-xs"><i
+										aria-expanded="true"><span class="visible-xs"><i
 												class="ti-user"></i></span> <span class="hidden-xs">신청 현황</span></a></li>
 									<li role="presentation" class="nav-item"><a
 										href="#holdingstudy" class="nav-link"
@@ -538,6 +544,10 @@
 			                                             	장소 : ${ostudyDto.getLocation()} - ${ostudyDto.getPlace()}
 			                                             	<br>
 			                                            	오픈채팅 URL : ${ostudyDto.getChat_url() }
+			                                            	
+			                                            	
+			                                            	
+			                                            	<!-- if 평점 안 했으면 이 코드 쓰고 했으면 alert onclick 해주기 -->
 			                                    <button class="fcbtn btn btn-outline btn-primary btn-1f pull-right" onclick="location='rateForm.do?sid=${ostudyDto.getId()}'">평점주기</button>			                                   
 			                                        </address>
 		                                	</div>                    

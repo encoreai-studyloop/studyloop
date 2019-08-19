@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,13 +38,21 @@ import databean.StudyReportDataBean;
 import databean.UserDataBean;
 import databean.UserReportDataBean;
 import dbbean.ProcessDao;
+import dbbean.ShowDao;
 
 @Controller 
 public class ProcessHandler {
+	Logger log = Logger.getLogger("studyloop");
 	
 	@Resource
 	private ProcessDao processDao;
+	@Resource
+	private ShowDao showDao;
 	
+	private long inTime;
+	private long outTime;
+	
+
 	@RequestMapping("/calendar")
 	public ModelAndView calendarPageprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		int study_id = Integer.parseInt(req.getParameter("sid"));
@@ -146,15 +155,28 @@ public class ProcessHandler {
     
     @RequestMapping("/attend")
 	public ModelAndView attendprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+    	
+    	outTime = System.currentTimeMillis();
+    	
+		long millis = (outTime - inTime);
+		long minutes = (millis / 1000)  / 60;
+		int seconds = (int)((millis / 1000) % 60);			
+		log.debug("(3) 스터디 별 출석부 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
 		
+
+	
     	UserDataBean userDto = (UserDataBean)(req.getSession().getAttribute("userDto"));
+
     	
     	// getStudy
     	// getAttendee
     	List<StudyDataBean> studyDtoList = processDao.getStudyforAt(userDto.getId());
     	List<StudyDataBean> ateeDtoList = processDao.getAttendee(userDto.getId());
+    	
+    	
     	req.setAttribute("studyDtoList", studyDtoList);
     	req.setAttribute("ateeDtoList", ateeDtoList);
+    	
     	
     	//주최자 스터디 제목
     	Map<String,Integer> htitleMap = new HashMap<String,Integer>();
@@ -162,19 +184,16 @@ public class ProcessHandler {
 
  
 		int hsid = Integer.parseInt(req.getParameter("hsid"));
+		
     	htitleMap.put("id", id);
     	htitleMap.put("study_id", hsid);
-    	
-    	
+    
 		
 		//참여자 스터디 제목
-		Map<String,Integer> ptitleMap = new HashMap<String,Integer>();
-		
-		
-		
 		List<UserDataBean> getHattendCheckTable  = processDao.getHattendCheckTable(htitleMap);
 		req.setAttribute("getHattendCheckTable", getHattendCheckTable);
 		req.setAttribute("hsid", htitleMap.get("study_id"));
+		
 		
 		List<AttendanceCheckDataBean> atckDtoList = processDao.getAttendanceStatus(htitleMap.get("study_id"));
 		if(atckDtoList != null) {
@@ -184,9 +203,19 @@ public class ProcessHandler {
 		if(noedit != null) {
 			req.setAttribute("noedit", 1);
 		}
+		
+		log.debug("(1) 출석부 유저 닉네임 : " + userDto.getNick());
+	
+		StudyDataBean getStudyInfo = (StudyDataBean)showDao.getStudyInfo(hsid);
+		log.debug("(2) 출석부 스터디 제목 : " + getStudyInfo.getTitle());
+
 
 		
-		return new ModelAndView("views/process/attend");	
+		inTime = System.currentTimeMillis();
+		
+		return new ModelAndView("views/process/attend");
+		
+		
 	}
 	
 	@RequestMapping("/updateStatus")
@@ -232,8 +261,8 @@ public class ProcessHandler {
 		String now = req.getParameter("now");
 		String status = req.getParameter("status");
 		
-		System.out.println(hsid);
-		System.out.println(uid);
+		//System.out.println(hsid);
+		//System.out.println(uid);
 		
 		AttendDataBean attendDto = new AttendDataBean();
 		
@@ -248,12 +277,12 @@ public class ProcessHandler {
 		String year = dateParts[2]; //년 //2019
 		
 		String current = day + "-" + month + "-" + year;
-		System.out.println(current);
+		//System.out.println(current);
 		
 
 		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = formatter.parse(current);  
-		System.out.println(date);
+		//System.out.println(date);
 		
 		attendDto.setAttend_date(date);
 		attendDto.setAttendance(status);
@@ -284,6 +313,9 @@ public class ProcessHandler {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		
+		inTime = System.currentTimeMillis();
+
+		
 		
 		return new ModelAndView("views/process/reportForm");
 		
@@ -296,30 +328,37 @@ public class ProcessHandler {
 		resp.setContentType("text/html;charset=UTF-8");
 		
 		
-		System.out.println("핸들러 들어옴");
+		// System.out.println("핸들러 들어옴");
 		UserDataBean userDto = (UserDataBean)(req.getSession().getAttribute("userDto"));
 		String reporter_nick = userDto.getNick();
+		log.debug("신고하는 사람 닉네임 : " + reporter_nick);
 		
 		int cases = Integer.parseInt(req.getParameter("radio")); // 사용자, 스터디, 게시글
-		System.out.println("cases : " + cases);
+		// System.out.println("cases : " + cases);
 		
 		int reason = Integer.parseInt(req.getParameter("reason")); // repcat_id
-		System.out.println("reason : " + reason);
+		String reasonName = processDao.repCat(reason);
+		
 		
 		String content = req.getParameter("content"); // content
-		System.out.println("content : " + content);
-	
+		// System.out.println("content : " + content);
+		
+		
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
 		if(cases == 0) {
 			String detail = req.getParameter("which-user"); 
-			System.out.println("detail : " + detail);
+			// System.out.println("detail : " + detail);
 			//사용자
+			log.debug("신고 당한 사용자 닉네임 : " + detail);
 			
 			UserReportDataBean urDto = new UserReportDataBean();
 			urDto.setContent(content);
+			log.debug("신고 내용 : " + content);
+			
 			urDto.setRepcat_id(reason);
+			log.debug("신고 이유 : " + reasonName);
 			urDto.setReporter_nick(reporter_nick);
 			urDto.setTime(timestamp);
 			urDto.setSuspect_nick(detail);
@@ -331,14 +370,18 @@ public class ProcessHandler {
 			
 		} else if (cases == 1) {
 			String detail1 = req.getParameter("which-study-title"); 
-			String detail2 = req.getParameter("which-study-hname");
+			log.debug("신고 당한 스터디 제목 : " + detail1);
 			
-			System.out.println("detail1 : " + detail1);
-			System.out.println("detail2 : " + detail2);
+			String detail2 = req.getParameter("which-study-hname");
+			log.debug("신고 당한 스터디 주최자 닉네임 : " + detail2);
+
 			//스터디
 			StudyReportDataBean srDto = new StudyReportDataBean();
 			srDto.setContent(content);
+			log.debug("신고 내용 : " + content);
 			srDto.setRepcat_id(reason);
+			log.debug("신고 이유 : " + reasonName);
+			
 			srDto.setReporter_nick(reporter_nick);
 			srDto.setTime(timestamp);
 			srDto.setStudy_title(detail1);
@@ -352,19 +395,28 @@ public class ProcessHandler {
 			
 		} else if (cases == 2) {
 			String detail1 = req.getParameter("which-article-hname");
-			String detail2 = req.getParameter("which-article-stitle");
-			String detail3 = req.getParameter("which-article-title");
+			log.debug("신고 당한 게시글을 작성한 사용자 닉네임 : " + detail1);
 			
-			System.out.println("detail1 : " + detail1);
-			System.out.println("detail2 : " + detail2);
-			System.out.println("detail3 : " + detail3);
+			String detail2 = req.getParameter("which-article-stitle");
+			log.debug("신고 당한 게시글의 스터디 제목 : + " + detail2);
+			
+			String detail3 = req.getParameter("which-article-title");
+			log.debug("신고 당한 게시글 제목 : " + detail3);
+			
+			// System.out.println("detail1 : " + detail1);
+			// System.out.println("detail2 : " + detail2);
+			// System.out.println("detail3 : " + detail3);
 			//게시글
 			ArticleReportDataBean arDto = new ArticleReportDataBean();
 			
 			arDto.setContent(content);
+			log.debug("신고 내용 : " + content);
+			
 			arDto.setArticle_title(detail3);
 			arDto.setReporter_nick(reporter_nick);
 			arDto.setRepcat_id(reason);
+			log.debug("신고 이유 : " + reasonName);
+			
 			arDto.setStudy_title(detail2);
 			arDto.setSuspect_nick(detail1);
 			arDto.setTime(timestamp);
@@ -374,7 +426,13 @@ public class ProcessHandler {
 		}
 		
 		
-	
+		outTime = System.currentTimeMillis();
+		
+    	
+		long millis = (outTime - inTime);
+		long minutes = (millis / 1000)  / 60;
+		int seconds = (int)((millis / 1000) % 60);			
+		log.debug("신고 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/process/updateRepPro");
 		
 	}
@@ -384,19 +442,25 @@ public class ProcessHandler {
 	@RequestMapping("/rateForm")
 	public ModelAndView rateprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
 		
+		inTime = System.currentTimeMillis();
+
+		
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		
 		UserDataBean userDto = (UserDataBean)(req.getSession().getAttribute("userDto"));
 		
 		int study_id = Integer.parseInt(req.getParameter("sid"));
-		
+		StudyDataBean getStudyInfo = (StudyDataBean)showDao.getStudyInfo(study_id);
+
 		//int study_id =1;
 		
 		Map<String, Integer> rateMap = new HashMap<String,Integer>();
 		
 		rateMap.put("id", userDto.getId());
 		rateMap.put("study_id", study_id);
+		
+		log.debug("종료된 스터디 제목 : " + getStudyInfo.getTitle());
 		
 		List<UserDataBean> getHattendCheckTable  = (List<UserDataBean>)processDao.getHattendCheckTable(rateMap);
 		req.setAttribute("getHattendCheckTable", getHattendCheckTable);
@@ -430,11 +494,15 @@ public class ProcessHandler {
 			UserDataBean user = processDao.getUser(Integer.parseInt(idsList.get(i)));
 			
 			double rate = (user.getRate() + Double.parseDouble(ratesList.get(i)) )/ 2;
+			int rateLog = Integer.parseInt(ratesList.get(i));
 		
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("id", user.getId());
 			map.put("rate", rate);
-
+			
+			log.debug("사용자 닉네임 : " + user.getNick() + " 의" + " 평점은 : " + rateLog);
+		
+			
 			result = processDao.updateRate(map);
 		}
 		
@@ -446,7 +514,13 @@ public class ProcessHandler {
 		
 		req.setAttribute("result", result);
 		
+		outTime = System.currentTimeMillis();
 		
+    	
+		long millis = (outTime - inTime);
+		long minutes = (millis / 1000)  / 60;
+		int seconds = (int)((millis / 1000) % 60);			
+		log.debug("평점 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/process/updateRegPro");
 		
 	}

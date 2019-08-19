@@ -123,12 +123,11 @@
 										  </div>
 										  
 										 
-				                                 <div class="form-group">
-				                                 	<label for="selectType" class="control-label">신고 사유</label>
+				                                 <div class="form-group" class="require-if-active"> 
+				                                 	<label for="selectType" class="require-pair">신고 사유</label>
 				                                 
-						                                 <select class="form-control select2" id="reason" name="reason">
+						                                 <select class="form-control select2" id="reason" name="reason" required>
 							                            	<option>신고 사유를 선택하세요</option>
-							                            
 							                                <option value="1">욕설</option>
 							                                <option value="2">비방</option>
 							                           		<option value="3">사기</option>
@@ -137,6 +136,7 @@
 						                               		<option value="6">음란한 글</option>
 							                                <option value="7">광고성 글</option>
 							                                <option value="8">도배성 글</option>
+							                                <option value="9">기타</option>
 							                                
 								                        </select>
 								                   
@@ -153,7 +153,7 @@
 						                 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
-                                            <button type="submit" class="btn btn-danger waves-effect waves-light" onclick="updateReport()">신고하기</button>
+                                            <button type="submit" class="btn btn-danger waves-effect waves-light">신고하기</button>
                                         </div>
                                         
                                      	</form>

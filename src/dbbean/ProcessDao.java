@@ -37,6 +37,7 @@ public interface ProcessDao {
 	public int putUserRep (UserReportDataBean ureportDto);
 	public int putArticleRep (ArticleReportDataBean areportDto);
 	public int putStudyRep (StudyReportDataBean sreportDto);
+	public String repCat (int rep_id);
 	
 	public List<AttendanceCheckDataBean> getAttendanceStatus(int study_id);
 }

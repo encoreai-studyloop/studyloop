@@ -139,6 +139,12 @@ public class ProcessDBBean implements ProcessDao{
 	}
 	
 	@Override
+	public String repCat(int rep_id) {
+
+		return SqlMapClient.getSession().selectOne("Studyloop.repCat", rep_id);
+	}
+	
+	@Override
 	public List<AttendanceCheckDataBean> getAttendanceStatus(int study_id) {
 		
 		return SqlMapClient.getSession().selectList("Studyloop.getAttendanceStatus", study_id);
