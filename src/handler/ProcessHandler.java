@@ -65,7 +65,8 @@ public class ProcessHandler {
 		map.put("id", id);
 		List<UserDataBean> userDtoList = processDao.getHattendCheckTable(map);
 		userDtoList.add(((UserDataBean) req.getSession().getAttribute("userDto")));
-		log.debug(showDao.getStudyInfo(study_id).getTitle());
+		
+		log.debug(id+","+showDao.getStudyInfo(study_id).getId());
 		req.setAttribute("userDtoList", userDtoList);
 		
 		return new ModelAndView("views/process/calendar");
@@ -210,7 +211,7 @@ public class ProcessHandler {
 		log.debug("[출석부 사용자, 스터디]");
 	
 		StudyDataBean getStudyInfo = (StudyDataBean)showDao.getStudyInfo(hsid);
-		log.debug(userDto.getNick()+","+getStudyInfo.getTitle());
+		log.debug(userDto.getId()+","+getStudyInfo.getId()+","+userDto.getNick()+","+getStudyInfo.getTitle());
 
 
 		
@@ -504,7 +505,7 @@ public class ProcessHandler {
 			map.put("id", user.getId());
 			map.put("rate", rate);
 			
-			log.debug(user.getNick() +","+ rateLog + "," + rate); // 닉네임,현재 받은 점수,나의 평점
+			log.debug(user.getId()+","+user.getNick() +","+ rateLog + "," + rate); // 닉네임,현재 받은 점수,나의 평점
 		
 			
 			result = processDao.updateRate(map);

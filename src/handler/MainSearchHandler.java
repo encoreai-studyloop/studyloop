@@ -68,7 +68,8 @@ public class MainSearchHandler {
         }
         else {
         	log.debug("[회원 검색]");
-        	log.debug(userDao.getUserById(((UserDataBean)req.getSession().getAttribute("userDto")).getId()).getEmail());
+        	UserDataBean userDto = userDao.getUserById(((UserDataBean)req.getSession().getAttribute("userDto")).getId());
+        	log.debug(userDto.getId() + ","+ userDto.getEmail());
         }
         
         if(keyword == null) {
@@ -76,7 +77,8 @@ public class MainSearchHandler {
             log.debug("[전체 검색]");   
         }
         else {
-        	log.debug("[검색키워드] : "+ keyword);   
+        	log.debug("[검색키워드]");  
+        	log.debug(keyword);  
         }
     
         List<StudyDataBean> studyDtoList = searchDao.searchByKeyWord(keyword);
@@ -84,7 +86,8 @@ public class MainSearchHandler {
         List<LocTmpDataBean> locationList = searchDao.getLocationList(keyword);
         
         if(cat != null) {
-        	log.debug("[카테고리 검색] : "+ cat); 
+        	log.debug("[카테고리 검색]"); 
+        	log.debug(cat);  
         	List<StudyDataBean> studyDtoFilterList = new ArrayList<StudyDataBean>();
         	for(int i=0; i<studyDtoList.size(); i++) {       		
         		if(studyDtoList.get(i).getCategory().equals(cat)) {
@@ -114,7 +117,8 @@ public class MainSearchHandler {
            
             studyDtoList = studyDtoFilterList;
      
-            log.debug("[지역검색] : " + (Arrays.toString(loclist)));
+            log.debug("[지역검색]");
+            log.debug((Arrays.toString(loclist)));  
         }
         
         if(daylist != null) { //화목 
@@ -160,7 +164,8 @@ public class MainSearchHandler {
     			//name_day = 월;
     			//name_day = 월 수;
     		}
-        	log.debug("[요일검색] : " + name_day);
+        	log.debug("[요일검색]");
+        	log.debug(name_day);
         	
         }
        
@@ -234,7 +239,8 @@ public class MainSearchHandler {
 		req.setAttribute("userDto", userDto);
 		int myId = userDto.getId();
 
-		log.debug("[마이페이지] "+userDto.getEmail());
+		log.debug("[마이페이지]");
+		log.debug(userDto.getId()+","+userDto.getEmail()+","+userDto.getGender());
 		//유저 status 변경
 		if(req.getParameter("tid") != null) {
             int tid = Integer.parseInt(req.getParameter("tid"));
@@ -270,7 +276,9 @@ public class MainSearchHandler {
                     }
                 }
             }
-            log.debug("스터디 "+userDao.getStudyById(sid)+"에 신청한 유저 "+ userDao.getUserById(tid).getNick() +" 의 상태를 "+userDao.getStatus(status)+"로 변경");
+            //log.debug("스터디 "+userDao.getStudyById(sid)+"에 신청한 유저 "+ userDao.getUserById(tid).getNick() +" 의 상태를 "+userDao.getStatus(status)+"로 변경");
+            log.debug("[신청 상태 변경]");
+            log.debug(userDao.getStudyById(sid).getId()+","+userDao.getUserById(tid).getId()+","+userDao.getStatus(status));
         }
 
 		
@@ -294,15 +302,15 @@ public class MainSearchHandler {
 		
 		log.debug("[참여중인 스터디] "+pstudyDtoList.size()+" 개");
 		for(StudyDataBean s : pstudyDtoList) {
-			log.debug(s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}	
 		log.debug("[주최한 스터디] "+ostudyDtoList.size()+" 개");
 		for(StudyDataBean s : ostudyDtoList) {
-			log.debug(s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}
 		log.debug("[신청한 스터디] "+rstudyDtoList.size()+" 개");
 		for(StudyDataBean s : rstudyDtoList) {
-			log.debug(s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}
 		
 		return new ModelAndView("views/search/mypage");
@@ -323,7 +331,7 @@ public class MainSearchHandler {
 			double longtitude = (double) req.getSession().getAttribute("long");				
 			cord.replace("lat", latitude);
 			cord.replace("long", longtitude);
-			log.debug("[접속 좌표] " + latitude + "," + longtitude);
+			//log.debug("[접속 좌표] " + latitude + "," + longtitude);
 
 			GpsToAddress gps = new GpsToAddress();
 			
@@ -384,7 +392,8 @@ public class MainSearchHandler {
 		List<LanguageDataBean> languageDtoList = searchDao.getLanguageinfo(id);
 		List<CertificateDataBean> certificateDtoList = searchDao.getCertificateinfo(id);
 		List<ExpDataBean> expDtoList = searchDao.getExpinfo(id);
-		
+		log.debug("[신청자 정보]");
+		log.debug(userDto.getId()+","+userDto.getEmail());
 		if(schoolDto !=null) {
 			req.setAttribute("schoolDto", schoolDto);
 			log.debug("[추가정보] [학교]:\n" + schoolDto.getName()+","+ schoolDto.getMajor() +"," +schoolDto.getStatus());
@@ -426,6 +435,7 @@ public class MainSearchHandler {
 		int delres = searchDao.cleanExistinginfo(id);
 	
 		log.debug("[개인 추가정보 수정]");
+		log.debug(userDto.getId()+","+userDto.getEmail());
 		//insert
 		String schoolname = req.getParameter("school");
 		log.debug("[학교]");		

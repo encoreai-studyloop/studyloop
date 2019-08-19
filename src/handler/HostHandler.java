@@ -49,8 +49,11 @@ public class HostHandler {
 	
 	@RequestMapping("/titleForm")
 	public ModelAndView titleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		log.debug("[주최자 정보]");
+		log.debug(((UserDataBean) req.getSession().getAttribute("userDto")).getId());
 		
 		log.debug("[새 스터디 작성 시작]");
+		
 		List<StudyRegCategoryDataBean> catDtoList = hostDao.getStudyCategory();
 
 		req.setAttribute("catDtoList", catDtoList);
