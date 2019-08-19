@@ -75,9 +75,12 @@ public class UserDBBean implements UserDao{
 	public List<StudyDataBean> getParticipateStudy(int user_id){
 		List<StudyDataBean> pstudyDtoList = SqlMapClient.getSession().selectList("Studyloop.getParticipateStudy", user_id);
 		for(int i =0; i<pstudyDtoList.size();i++) {
-			int id = pstudyDtoList.get(i).getLoc_id();
-			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",id);
+			int lid = pstudyDtoList.get(i).getLoc_id();
+			int cid = pstudyDtoList.get(i).getCat_id();
+			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",lid);
+			String category = SqlMapClient.getSession().selectOne("Studyloop.getSpecCategory",cid);
 			pstudyDtoList.get(i).setLocation(location);
+			pstudyDtoList.get(i).setCategory(category);
 		}
 		return pstudyDtoList;
 	}
@@ -85,9 +88,12 @@ public class UserDBBean implements UserDao{
 	public List<StudyDataBean> getOpenStudy(int user_id) {
 		List<StudyDataBean> ostudyDtoList = SqlMapClient.getSession().selectList("Studyloop.getOpenStudy", user_id);
 		for(int i =0; i<ostudyDtoList.size();i++) {
-			int id = ostudyDtoList.get(i).getLoc_id();
-			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",id);
+			int lid = ostudyDtoList.get(i).getLoc_id();
+			int cid = ostudyDtoList.get(i).getCat_id();
+			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",lid);
+			String category = SqlMapClient.getSession().selectOne("Studyloop.getSpecCategory",cid);
 			ostudyDtoList.get(i).setLocation(location);
+			ostudyDtoList.get(i).setCategory(category);
 		}
 		return ostudyDtoList;
 	}
@@ -95,9 +101,12 @@ public class UserDBBean implements UserDao{
 	public List<StudyDataBean> getRegisterStudy(int user_id) {
 		List<StudyDataBean> rstudyDtoList = SqlMapClient.getSession().selectList("Studyloop.getRegisterStudy", user_id);
 		for(int i =0; i<rstudyDtoList.size();i++) {
-			int id = rstudyDtoList.get(i).getLoc_id();
-			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",id);
+			int lid = rstudyDtoList.get(i).getLoc_id();
+			int cid = rstudyDtoList.get(i).getCat_id();
+			String location = SqlMapClient.getSession().selectOne("Studyloop.getSpecLocation",lid);
+			String category = SqlMapClient.getSession().selectOne("Studyloop.getSpecCategory",cid);
 			rstudyDtoList.get(i).setLocation(location);
+			rstudyDtoList.get(i).setCategory(category);
 		}
 		return rstudyDtoList;
 	}

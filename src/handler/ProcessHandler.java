@@ -55,6 +55,8 @@ public class ProcessHandler {
 
 	@RequestMapping("/calendar")
 	public ModelAndView calendarPageprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		log.debug("[캘린더 진입]");
+		
 		int study_id = Integer.parseInt(req.getParameter("sid"));
 		req.setAttribute("study_id", study_id);
 		int id = ((UserDataBean) req.getSession().getAttribute("userDto")).getId();
@@ -63,6 +65,7 @@ public class ProcessHandler {
 		map.put("id", id);
 		List<UserDataBean> userDtoList = processDao.getHattendCheckTable(map);
 		userDtoList.add(((UserDataBean) req.getSession().getAttribute("userDto")));
+		log.debug(showDao.getStudyInfo(study_id).getTitle());
 		req.setAttribute("userDtoList", userDtoList);
 		
 		return new ModelAndView("views/process/calendar");
@@ -161,7 +164,7 @@ public class ProcessHandler {
 		long millis = (outTime - inTime);
 		long minutes = (millis / 1000)  / 60;
 		int seconds = (int)((millis / 1000) % 60);			
-		log.debug("(3) 스터디 별 출석부 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
+		log.debug("[스터디 별 출석부 이용 시간] "+ minutes+" 분 "+seconds+" 초");
 		
 
 	
@@ -204,10 +207,10 @@ public class ProcessHandler {
 			req.setAttribute("noedit", 1);
 		}
 		
-		log.debug("(1) 출석부 유저 닉네임 : " + userDto.getNick());
+		log.debug("[출석부 사용자, 스터디]");
 	
 		StudyDataBean getStudyInfo = (StudyDataBean)showDao.getStudyInfo(hsid);
-		log.debug("(2) 출석부 스터디 제목 : " + getStudyInfo.getTitle());
+		log.debug(userDto.getNick()+","+getStudyInfo.getTitle());
 
 
 		
@@ -331,7 +334,7 @@ public class ProcessHandler {
 		// System.out.println("핸들러 들어옴");
 		UserDataBean userDto = (UserDataBean)(req.getSession().getAttribute("userDto"));
 		String reporter_nick = userDto.getNick();
-		log.debug("신고하는 사람 닉네임 : " + reporter_nick);
+		log.debug("[신고하는 사람 닉네임] " + reporter_nick);
 		
 		int cases = Integer.parseInt(req.getParameter("radio")); // 사용자, 스터디, 게시글
 		// System.out.println("cases : " + cases);
@@ -351,14 +354,14 @@ public class ProcessHandler {
 			String detail = req.getParameter("which-user"); 
 			// System.out.println("detail : " + detail);
 			//사용자
-			log.debug("신고 당한 사용자 닉네임 : " + detail);
+			log.debug("[신고 당한 사용자 닉네임] " + detail);
 			
 			UserReportDataBean urDto = new UserReportDataBean();
 			urDto.setContent(content);
-			log.debug("신고 내용 : " + content);
+			log.debug("[신고 내용] " + content);
 			
 			urDto.setRepcat_id(reason);
-			log.debug("신고 이유 : " + reasonName);
+			log.debug("[신고 이유] " + reasonName);
 			urDto.setReporter_nick(reporter_nick);
 			urDto.setTime(timestamp);
 			urDto.setSuspect_nick(detail);
@@ -370,17 +373,17 @@ public class ProcessHandler {
 			
 		} else if (cases == 1) {
 			String detail1 = req.getParameter("which-study-title"); 
-			log.debug("신고 당한 스터디 제목 : " + detail1);
+			log.debug("[신고 당한 스터디 제목] " + detail1);
 			
 			String detail2 = req.getParameter("which-study-hname");
-			log.debug("신고 당한 스터디 주최자 닉네임 : " + detail2);
+			log.debug("[신고 당한 스터디 주최자 닉네임] " + detail2);
 
 			//스터디
 			StudyReportDataBean srDto = new StudyReportDataBean();
 			srDto.setContent(content);
-			log.debug("신고 내용 : " + content);
+			log.debug("[신고 내용] " + content);
 			srDto.setRepcat_id(reason);
-			log.debug("신고 이유 : " + reasonName);
+			log.debug("[신고 이유] " + reasonName);
 			
 			srDto.setReporter_nick(reporter_nick);
 			srDto.setTime(timestamp);
@@ -395,13 +398,13 @@ public class ProcessHandler {
 			
 		} else if (cases == 2) {
 			String detail1 = req.getParameter("which-article-hname");
-			log.debug("신고 당한 게시글을 작성한 사용자 닉네임 : " + detail1);
+			log.debug("[신고 당한 게시글을 작성한 사용자 닉네임] " + detail1);
 			
 			String detail2 = req.getParameter("which-article-stitle");
-			log.debug("신고 당한 게시글의 스터디 제목 : + " + detail2);
+			log.debug("[신고 당한 게시글의 스터디 제목] + " + detail2);
 			
 			String detail3 = req.getParameter("which-article-title");
-			log.debug("신고 당한 게시글 제목 : " + detail3);
+			log.debug("[신고 당한 게시글 제목] " + detail3);
 			
 			// System.out.println("detail1 : " + detail1);
 			// System.out.println("detail2 : " + detail2);
@@ -410,12 +413,12 @@ public class ProcessHandler {
 			ArticleReportDataBean arDto = new ArticleReportDataBean();
 			
 			arDto.setContent(content);
-			log.debug("신고 내용 : " + content);
+			log.debug("[신고 내용] " + content);
 			
 			arDto.setArticle_title(detail3);
 			arDto.setReporter_nick(reporter_nick);
 			arDto.setRepcat_id(reason);
-			log.debug("신고 이유 : " + reasonName);
+			log.debug("[신고 이유] " + reasonName);
 			
 			arDto.setStudy_title(detail2);
 			arDto.setSuspect_nick(detail1);
@@ -432,7 +435,7 @@ public class ProcessHandler {
 		long millis = (outTime - inTime);
 		long minutes = (millis / 1000)  / 60;
 		int seconds = (int)((millis / 1000) % 60);			
-		log.debug("신고 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
+		log.debug("[신고 이용 시간] "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/process/updateRepPro");
 		
 	}
@@ -460,7 +463,7 @@ public class ProcessHandler {
 		rateMap.put("id", userDto.getId());
 		rateMap.put("study_id", study_id);
 		
-		log.debug("종료된 스터디 제목 : " + getStudyInfo.getTitle());
+		log.debug("[종료된 스터디 제목] " + getStudyInfo.getTitle());
 		
 		List<UserDataBean> getHattendCheckTable  = (List<UserDataBean>)processDao.getHattendCheckTable(rateMap);
 		req.setAttribute("getHattendCheckTable", getHattendCheckTable);
@@ -489,6 +492,7 @@ public class ProcessHandler {
 		List<String> ratesList = (Arrays.asList(rates.split("a")));// "343" - > 3,4,3
 		
 		int result = 0;
+		log.debug("[평점 부여]"); 
 		for(int i =0; i<num; i++) {
 			
 			UserDataBean user = processDao.getUser(Integer.parseInt(idsList.get(i)));
@@ -500,7 +504,7 @@ public class ProcessHandler {
 			map.put("id", user.getId());
 			map.put("rate", rate);
 			
-			log.debug("사용자 닉네임 : " + user.getNick() + " 의" + " 평점은 : " + rateLog);
+			log.debug(user.getNick() +","+ rateLog);
 		
 			
 			result = processDao.updateRate(map);
@@ -520,7 +524,7 @@ public class ProcessHandler {
 		long millis = (outTime - inTime);
 		long minutes = (millis / 1000)  / 60;
 		int seconds = (int)((millis / 1000) % 60);			
-		log.debug("평점 이용 시간 : "+ minutes+" 분 "+seconds+" 초");
+		log.debug("[평점 이용 시간] "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/process/updateRegPro");
 		
 	}
