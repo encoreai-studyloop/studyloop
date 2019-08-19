@@ -463,7 +463,7 @@ public class ProcessHandler {
 		rateMap.put("id", userDto.getId());
 		rateMap.put("study_id", study_id);
 		
-		log.debug("[종료된 스터디 제목] " + getStudyInfo.getTitle());
+		log.debug("[평점 부여된 스터디 제목] " + getStudyInfo.getTitle());
 		
 		List<UserDataBean> getHattendCheckTable  = (List<UserDataBean>)processDao.getHattendCheckTable(rateMap);
 		req.setAttribute("getHattendCheckTable", getHattendCheckTable);

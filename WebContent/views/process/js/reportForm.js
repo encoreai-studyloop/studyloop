@@ -23,7 +23,6 @@ var FormStuff = {
     	
       } else {
         el.prop("required", false);
-        alert("신고가 접수되었습니다.");
       }
     });
     
