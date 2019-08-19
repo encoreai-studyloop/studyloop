@@ -2,11 +2,15 @@ package handler;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -110,7 +114,9 @@ public class HostHandler {
 			req.getSession().setAttribute("studyDto", studyDto);
 			log.debug("스터디 타이틀 : " + studyDto.getTitle());
 			log.debug("스터디 이미지: " + studyDto.getPicture());
-			log.debug("스터디 카테고리 : " + studyDto.getCat_id());
+			String cat = hostDao.getCategoryById(studyDto.getCat_id());
+			studyDto.setCategory(cat);
+			log.debug("스터디 카테고리 : " + cat);
 			log.debug("스터디 형태 : " + studyDto.getTerm());
 			log.debug("스터디 모집인원 : " + studyDto.getMax_personnel());
 			log.debug("스터디 모집마감일 : " + studyDto.getDeadline());
@@ -241,7 +247,24 @@ public class HostHandler {
 					log.debug("스터디 장소 : " + loc);
 					log.debug("스터디 세부장소 : " + studyDto.getPlace());
 					log.debug("스터디 회비 : " + studyDto.getScost());
-					log.debug("스터디 요일 : " + daylist);
+					String[] dataArr = daylist.split("@");
+					String newArr = Arrays.toString(dataArr);
+				
+					Map<String,String> days = new HashMap<String, String>();
+					days.put("0", "월");
+					days.put("1", "화");
+					days.put("2", "수");
+					days.put("3", "목");
+					days.put("4", "금");
+					days.put("5", "토");
+					days.put("6", "일");		
+
+					for(int i=0; i<newArr.length(); i++) {
+						 String strday = days.get(newArr) + " ";
+						 log.debug(studyDto.getId() + "번  스터디 요일 : " + strday);		  
+						}
+				//	log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + strday);
+				//	log.debug("스터디 요일 : " + studytimeDto.getSday());
 					log.debug("스터디 시간 : " + studytimeDto.getStime());
 					log.debug("스터디 시작일 : " + studytimeDto.getSdate());
 					log.debug("스터디 추가코멘트 : " + studyDto.getScomment());
@@ -263,15 +286,14 @@ public class HostHandler {
 		int result = hostDao.deleteStudyInfo(Integer.parseInt(req.getParameter("sid")));
 		log.debug(studyDto.getId() + "번 스터디 삭제 시작 : " + result);
 		req.setAttribute("result", result);
-		log.debug(studyDto.getId() + "번 스터디 삭제 완료");	
+		long deletetime = System.currentTimeMillis();
+		log.debug(deletetime/(1000*60*60) + "시" + deletetime/(1000*60) + "분" + deletetime/1000 + "초 : " + studyDto.getId() + "번 스터디 삭제 완료 ");	
 		return new ModelAndView("views/host/deleteStudyPro");
 	}
 
 	@RequestMapping("/sdelete")
 	public ModelAndView deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		Logger log = Logger.getLogger("studyloop");
-		
-		
 		return new ModelAndView("views/host/deleteStudy");
 	}
 
@@ -297,6 +319,7 @@ public class HostHandler {
 		Logger log = Logger.getLogger("studyloop");
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		int stid = Integer.parseInt(req.getParameter("stid"));
+		
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		ServletContext cxt = req.getSession().getServletContext();
@@ -358,20 +381,26 @@ public class HostHandler {
 			studytimeDto.setStime(multi.getParameter("modstime"));
 			String[] sdays = multi.getParameterValues("sday");
 			String daylist = "";
+
 			for (String day : sdays) {
 				daylist += day + "@";
 			}
-			studytimeDto.setSday(daylist);
+		
+			studytimeDto.setSday(daylist);		
 			studytimeDto.setId(studyDto.getStudytime_id());
 			System.out.println("studyDto.setScomment(req.getParameter(\"modscomment\")) :" + multi.getParameter("modscomment"));
 			int result = hostDao.modifyStudyInfo(studyDto);
 			hostDao.modifyStudyTimeInfo(studytimeDto);
 			req.setAttribute("result", result);
-			
 			log.debug("스터디 수정 : " + result);
 			log.debug(studyDto.getId() + "번 스터디 수정 타이틀 : " + studyDto.getTitle());
 			log.debug(studyDto.getId() + "번 스터디 수정 이미지: " + studyDto.getPicture());
-			log.debug(studyDto.getId() + "번 스터디 수정 카테고리 : " + studyDto.getCat_id());
+			
+			String loc = hostDao.getLocationById(studyDto.getLoc_id());
+			studyDto.setLocation(loc);	
+			String cat = hostDao.getCategoryById(studyDto.getCat_id());
+			studyDto.setCategory(cat);
+			log.debug(studyDto.getId() + "번 스터디 수정 카테고리 : " + cat);
 			log.debug(studyDto.getId() + "번 스터디 수정 형태 : " + studyDto.getTerm());
 			log.debug(studyDto.getId() + "번 스터디 수정 모집인원 : " + studyDto.getMax_personnel());
 			log.debug(studyDto.getId() + "번 스터디 수정 모집마감일 : " + studyDto.getDeadline());
@@ -381,15 +410,40 @@ public class HostHandler {
 			log.debug(studyDto.getId() + "번 스터디 수정 세부 커리큘럼 : " + studyDto.getCurriculum());
 			log.debug(studyDto.getId() + "번 스터디 수정 채팅링크: " + studyDto.getChat_url());
 			
-			log.debug(studyDto.getId() + "번 스터디 수정 스터디 장소 : " + studyDto.getLoc_id());
+			log.debug(studyDto.getId() + "번 스터디 수정 스터디 장소 : " + loc);
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 세부장소 : " + studyDto.getPlace());
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 회비 : " + studyDto.getScost());
-			log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + daylist);
+			
+			
+		
+		//	String strdaylist = "";
+			
+			String[] dataArr = daylist.split("@");
+			String newArr = Arrays.toString(dataArr);
+//			log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + newArr);	
+			Map<String,String> days = new HashMap<String, String>();
+			days.put("0", "월");
+			days.put("1", "화");
+			days.put("2", "수");
+			days.put("3", "목");
+			days.put("4", "금");
+			days.put("5", "토");
+			days.put("6", "일");
+			
+		//	System.out.println(dataArr);
+				
+			for(int i=0; i<newArr.length(); i++) {
+				 String strday = days.get(newArr) + " ";
+				 log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + strday);		  
+				}
+			
+		//	log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + studytimeDto.getSday());
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 시간 : " + studytimeDto.getStime());
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 시작일 : " + studytimeDto.getSdate());
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 추가코멘트 : " + studyDto.getScomment());
 			
-			log.debug(studyDto.getId() + "번 스터디 수정 스터디 등록 완료");
+			long regtime = System.currentTimeMillis();	
+			log.debug(regtime/(1000*60*60) + "시" + regtime/(1000*60) + "분" + regtime/1000 + "초 : " + studyDto.getId() + "번 스터디 수정 스터디 등록 완료");
 			// }
 		} catch (Exception e) {
 			e.printStackTrace();
