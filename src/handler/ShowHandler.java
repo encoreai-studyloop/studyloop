@@ -202,9 +202,11 @@ public class ShowHandler {
 	@RequestMapping("/applyForm")
 	public ModelAndView applyFormPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
+		StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
 		req.getSession().setAttribute( "userDto", userDto );
 		
 		applyintime = System.currentTimeMillis();
+		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "'" + applyintime + "에 신청 시도" );
 		
 		return new ModelAndView("views/show/applyForm");
 	}
@@ -419,10 +421,15 @@ public class ShowHandler {
 		int id = Integer.parseInt(req.getParameter("id"));
 		int sid = Integer.parseInt(req.getParameter("id"));
 		Map<String,Integer> map = new HashMap<String,Integer>();
+		UserDataBean userDto = showDao.getMyData( id );
+		StudyDataBean studyDto = showDao.getStudyInfo( sid );
 		map.put("id", id);
 		map.put("study_id", sid);
 		int res = boardDao.deleteArticle(map);
 		req.setAttribute("res", res);
+		
+		log.debug( userDto.getEmail() + "회원 - 스터디 '" + studyDto.getTitle() + "'에서 게시판 글 삭제" );
+
 		return new ModelAndView("views/board/deletePro");
 	}
 	
