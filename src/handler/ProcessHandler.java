@@ -42,7 +42,7 @@ import dbbean.ShowDao;
 
 @Controller 
 public class ProcessHandler {
-	Logger log = Logger.getLogger("studyloop");
+	Logger log = Logger.getLogger("process");
 	
 	@Resource
 	private ProcessDao processDao;

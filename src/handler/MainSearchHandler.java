@@ -52,10 +52,11 @@ public class MainSearchHandler {
 	private SearchDao searchDao;
 	@Resource
 	private ShowDao showDao;
+	Logger log = Logger.getLogger("main");
 	
 	@RequestMapping("/search")
     public ModelAndView searchprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
         String keyword  = req.getParameter("searchVal");
         String[] loclist = req.getParameterValues("loclist");
         String cat = req.getParameter("cat");
@@ -221,7 +222,7 @@ public class MainSearchHandler {
 	@RequestMapping("/mypage")
 	public ModelAndView myPageprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		//회원 정보
-		Logger log = Logger.getLogger("studyloop");
+	
 		
 		UserDataBean user = (UserDataBean) req.getSession().getAttribute("userDto");
 		if(user == null) {
@@ -309,7 +310,7 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/main")
 	public ModelAndView mainFormprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		
 		
 		Map<String,Double> cord = new HashMap<String,Double>();
@@ -375,7 +376,7 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/addinfoForm")
 	public ModelAndView addinfoFormPageProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-		Logger log = Logger.getLogger("studyloop");	
+		
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("userDto");
 		int id = userDto.getId();
 		
@@ -416,7 +417,7 @@ public class MainSearchHandler {
 	@RequestMapping("/addinfo")
 	public ModelAndView addinfoPageProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
 		req.setCharacterEncoding( "utf-8" );
-		Logger log = Logger.getLogger("studyloop");	
+			
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("userDto");
 		int id = userDto.getId();
 		
@@ -528,7 +529,7 @@ public class MainSearchHandler {
     public void ajax_setMePrime( HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int user_id = Integer.parseInt( req.getParameter( "id" ) );
         int updateResult = searchDao.updateUserPrime( user_id );
-        Logger log = Logger.getLogger("studyloop");
+       
         log.debug("[프리미엄구매]");
         log.debug(userDao.getUserById(user_id).getEmail());
         
@@ -537,7 +538,7 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/closeStudy")
 	public void closeStudyProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-		Logger log = Logger.getLogger("studyloop");	
+		
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		searchDao.closeStudy(sid);
 		log.debug("[스터디 종료]");

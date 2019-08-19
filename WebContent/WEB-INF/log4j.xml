@@ -9,10 +9,61 @@
         </layout>  
     </appender>
     
-    
-    <appender name="rolling" class="org.apache.log4j.RollingFileAppender">
+    <appender name="login" class="org.apache.log4j.RollingFileAppender">
 		<!-- 로그 파일 생성위치 -->
-		<param name="file" value="c:/logs/studyloop.log" />
+		<param name="file" value="c:/logs/login.log" />
+		<param name="Append" value="true" />
+		<!-- 로그 파일 하나당 사이즈 5m -->
+		<param name="MaxFileSize" value="20000kb" />
+		<!-- 최대 생성 파일수 ( 50개가 넘으면 순차적으로 파일이 삭제됨 -->
+		<param name="MaxBackupIndex" value="5000" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+			<!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" /> -->
+		</layout>
+	</appender>
+	    <appender name="main" class="org.apache.log4j.RollingFileAppender">
+		<!-- 로그 파일 생성위치 -->
+		<param name="file" value="c:/logs/main.log" />
+		<param name="Append" value="true" />
+		<!-- 로그 파일 하나당 사이즈 5m -->
+		<param name="MaxFileSize" value="20000kb" />
+		<!-- 최대 생성 파일수 ( 50개가 넘으면 순차적으로 파일이 삭제됨 -->
+		<param name="MaxBackupIndex" value="5000" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+			<!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" /> -->
+		</layout>
+	</appender>
+	    <appender name="host" class="org.apache.log4j.RollingFileAppender">
+		<!-- 로그 파일 생성위치 -->
+		<param name="file" value="c:/logs/host.log" />
+		<param name="Append" value="true" />
+		<!-- 로그 파일 하나당 사이즈 5m -->
+		<param name="MaxFileSize" value="20000kb" />
+		<!-- 최대 생성 파일수 ( 50개가 넘으면 순차적으로 파일이 삭제됨 -->
+		<param name="MaxBackupIndex" value="5000" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+			<!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" /> -->
+		</layout>
+	</appender>
+	    <appender name="show" class="org.apache.log4j.RollingFileAppender">
+		<!-- 로그 파일 생성위치 -->
+		<param name="file" value="c:/logs/show.log" />
+		<param name="Append" value="true" />
+		<!-- 로그 파일 하나당 사이즈 5m -->
+		<param name="MaxFileSize" value="20000kb" />
+		<!-- 최대 생성 파일수 ( 50개가 넘으면 순차적으로 파일이 삭제됨 -->
+		<param name="MaxBackupIndex" value="5000" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %m%n" />
+			<!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n" /> -->
+		</layout>
+	</appender>
+	    <appender name="process" class="org.apache.log4j.RollingFileAppender">
+		<!-- 로그 파일 생성위치 -->
+		<param name="file" value="c:/logs/process.log" />
 		<param name="Append" value="true" />
 		<!-- 로그 파일 하나당 사이즈 5m -->
 		<param name="MaxFileSize" value="20000kb" />
@@ -30,10 +81,30 @@
         <appender-ref ref="infoConsole" />
         <appender-ref ref="rolling" />
     </root> -->
- 	<logger name="studyloop" additivity="false">
+ 	<logger name="login" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="infoConsole" />
-		<appender-ref ref="rolling" />
+		<appender-ref ref="login" />
+	</logger>
+	 <logger name="main" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="infoConsole" />
+		<appender-ref ref="main" />
+	</logger>
+	 <logger name="show" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="infoConsole" />
+		<appender-ref ref="show" />
+	</logger>
+	 <logger name="host" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="infoConsole" />
+		<appender-ref ref="host" />
+	</logger>
+	 <logger name="process" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="infoConsole" />
+		<appender-ref ref="process" />
 	</logger>
 
 </log4j:configuration>

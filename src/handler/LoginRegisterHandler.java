@@ -31,7 +31,7 @@ public class LoginRegisterHandler {
 	
 	private long logintime;
 	private long logouttime;
-	private Logger log = Logger.getLogger("studyloop");
+	private Logger log = Logger.getLogger("login");
 
 	@RequestMapping("/register")
 	public ModelAndView registerprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -72,7 +72,8 @@ public class LoginRegisterHandler {
 	@RequestMapping("/delPro")
 	public ModelAndView delProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		log.debug("[회원 탈퇴]");
-		log.debug(userDao.getUserById(Integer.parseInt(req.getParameter("id"))).getEmail());
+		UserDataBean userDto = userDao.getUserById(Integer.parseInt(req.getParameter("id")));
+		log.debug(userDto.getId()+","+userDto.getEmail());
 		int result = userDao.deleteUserById(Integer.parseInt(req.getParameter("id")));
 		req.setAttribute("result", result);
 		return new ModelAndView("views/login/delPro");
@@ -136,7 +137,7 @@ public class LoginRegisterHandler {
 		long millis = (logouttime - logintime);
 		long minutes = (millis / 1000)  / 60;
 		int seconds = (int)((millis / 1000) % 60);			
-		log.debug("[로그아웃 까지의 총 접속 시간 ] "+ minutes+" 분 "+seconds+" 초");
+		log.debug("[로그아웃 까지의 총 접속 시간] "+ minutes+" 분 "+seconds+" 초");
 		return new ModelAndView("views/login/logout");
 	}
 	
@@ -206,9 +207,9 @@ public class LoginRegisterHandler {
 		String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 3))));
 		req.setAttribute("result", result);
 		log.debug("[회원가입 & 설문작성 완료]");
-		log.debug("정보 : "+userDto.getName()+","+userDto.getGender()+","+userDto.getAddress()+","+ userDto.getRegdate()
+		log.debug("[정보]\n"+userDto.getId()+","+userDto.getName()+","+userDto.getGender()+","+userDto.getAddress()+","+ userDto.getRegdate()
 		+","+age);
-		log.debug("설문 : "+visit+","+interest+","+goal+","+open+","+part);
+		log.debug("[설문]\n"+visit+","+interest+","+goal+","+open+","+part);
 		return new ModelAndView("views/login/inputPro");
 	}
 	
@@ -229,7 +230,7 @@ public class LoginRegisterHandler {
 			req.setAttribute("userDto", userDto);
 			String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 3))));
 			log.debug("[로그인]");
-			log.debug(userDto.getEmail()+","+ userDto.getName()+ ","+ age + ","+ userDto.getGender());
+			log.debug(userDto.getId()+","+userDto.getEmail()+","+ userDto.getName()+ ","+ age + ","+ userDto.getGender());
 			logintime = System.currentTimeMillis();
 		}
 		req.setAttribute("email", email);

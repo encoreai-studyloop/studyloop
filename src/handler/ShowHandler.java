@@ -50,7 +50,7 @@ public class ShowHandler {
 	@Resource
 	private UserDao userDao;
 	
-	private Logger log = Logger.getLogger( "studyloop" );
+	private Logger log = Logger.getLogger( "show" );
 
 	long applyintime;
 	long applyouttime;

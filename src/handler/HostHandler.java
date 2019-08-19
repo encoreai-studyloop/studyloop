@@ -45,10 +45,11 @@ public class HostHandler {
 
 	@Resource
 	private SearchDao searchDao;
+	Logger log = Logger.getLogger("host");
 	
 	@RequestMapping("/titleForm")
 	public ModelAndView titleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		log.debug("[새 스터디 작성 시작]");
 		List<StudyRegCategoryDataBean> catDtoList = hostDao.getStudyCategory();
 
@@ -58,7 +59,7 @@ public class HostHandler {
 
 	@RequestMapping("/infoForm")
 	public ModelAndView infoFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		ServletContext cxt = req.getSession().getServletContext();
@@ -95,7 +96,7 @@ public class HostHandler {
 		//	System.out.println("String filename = multi.getFilesystemName(\"picture\"): " + filename);
 			// }
 
-			log.debug("세션에서 갖고 온 유저 아이디 : " + ((UserDataBean) req.getSession().getAttribute("userDto")).getId());
+			//log.debug("세션에서 갖고 온 유저 아이디 : " + ((UserDataBean) req.getSession().getAttribute("userDto")).getId());
 			studyDto.setUser_id(((UserDataBean) req.getSession().getAttribute("userDto")).getId());
 			studyDto.setTitle(multi.getParameter("title"));
 			studyDto.setCat_id(Integer.parseInt(multi.getParameter("category")));
@@ -133,7 +134,7 @@ public class HostHandler {
 
 	@RequestMapping("/scheduleForm")
 	public ModelAndView scheduleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = resp.getWriter();
@@ -181,7 +182,7 @@ public class HostHandler {
 
 	@RequestMapping("/sregister")
 	public ModelAndView attendProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");	
+		
 		String form = req.getParameter("form");
 		if(form != null) {
 			int study_id = Integer.parseInt(req.getParameter("sid"));
@@ -287,7 +288,7 @@ public class HostHandler {
 
 	@RequestMapping("/sdeletePro")
 	public ModelAndView deleteProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		StudyDataBean studyDto = hostDao.getStudy(Integer.parseInt(req.getParameter("sid")));
 		req.setAttribute("studyDto", studyDto);
 		int result = hostDao.deleteStudyInfo(Integer.parseInt(req.getParameter("sid")));
@@ -300,13 +301,13 @@ public class HostHandler {
 
 	@RequestMapping("/sdelete")
 	public ModelAndView deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		return new ModelAndView("views/host/deleteStudy");
 	}
 
 	@RequestMapping("/smodify")
 	public ModelAndView modifyProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+		
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		StudyDataBean studyDto = hostDao.getStudy(Integer.parseInt(req.getParameter("sid")));
@@ -323,7 +324,7 @@ public class HostHandler {
 
 	@RequestMapping("/smodifyPro")
 	public ModelAndView modifyProProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		Logger log = Logger.getLogger("studyloop");
+	
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		int stid = Integer.parseInt(req.getParameter("stid"));
 		
