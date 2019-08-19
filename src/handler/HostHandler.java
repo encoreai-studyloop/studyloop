@@ -49,7 +49,7 @@ public class HostHandler {
 	@RequestMapping("/titleForm")
 	public ModelAndView titleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		Logger log = Logger.getLogger("studyloop");
-		log.debug("새 스터디 작성 시작");
+		log.debug("[새 스터디 작성 시작]");
 		List<StudyRegCategoryDataBean> catDtoList = hostDao.getStudyCategory();
 
 		req.setAttribute("catDtoList", catDtoList);
@@ -70,12 +70,12 @@ public class HostHandler {
 		if (!Folder.exists()) {
 			try {
 				Folder.mkdir();
-				log.debug("폴더가 생성되었습니다.");
+				//log.debug("폴더가 생성되었습니다.");
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
 		} else {
-			log.debug("이미 폴더가 생성되어 있습니다.");
+			//log.debug("이미 폴더가 생성되어 있습니다.");
 		}
 
 		StudyDataBean studyDto = new StudyDataBean();
@@ -112,19 +112,21 @@ public class HostHandler {
 			}
 
 			req.getSession().setAttribute("studyDto", studyDto);
-			log.debug("스터디 타이틀 : " + studyDto.getTitle());
-			log.debug("스터디 이미지: " + studyDto.getPicture());
+			//log.debug("스터디 타이틀 : " + studyDto.getTitle());
+			//log.debug("스터디 이미지: " + studyDto.getPicture());
 			String cat = hostDao.getCategoryById(studyDto.getCat_id());
-			studyDto.setCategory(cat);
-			log.debug("스터디 카테고리 : " + cat);
-			log.debug("스터디 형태 : " + studyDto.getTerm());
-			log.debug("스터디 모집인원 : " + studyDto.getMax_personnel());
-			log.debug("스터디 모집마감일 : " + studyDto.getDeadline());
+			//studyDto.setCategory(cat);
+			//log.debug("스터디 카테고리 : " + cat);
+			//log.debug("스터디 형태 : " + studyDto.getTerm());
+			//log.debug("스터디 모집인원 : " + studyDto.getMax_personnel());
+			//log.debug("스터디 모집마감일 : " + studyDto.getDeadline());
+			
+			log.debug(studyDto.getTitle()+","+cat+","+studyDto.getTerm()+","+studyDto.getMax_personnel()+","+studyDto.getDeadline());
 			
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}	
 
 		return new ModelAndView("views/host/infoForm");
 	}
@@ -162,11 +164,12 @@ public class HostHandler {
 			req.getSession().setAttribute("studyDto", studyDto);
 			req.setAttribute("locDtoList", locDtoList);
 			
-			log.debug("스터디 소개 : " + studyDto.getIntro());
-			log.debug("스터디 진행방식 : " + studyDto.getProcess());
-			log.debug("스터디 모집대상 : " + studyDto.getTarget());
-			log.debug("스터디 세부 커리큘럼 : " + studyDto.getCurriculum());
-			log.debug("스터디 채팅링크: " + studyDto.getChat_url());
+			//log.debug("스터디 소개 : " + studyDto.getIntro());
+			//log.debug("스터디 진행방식 : " + studyDto.getProcess());
+			//log.debug("스터디 모집대상 : " + studyDto.getTarget());
+			//log.debug("스터디 세부 커리큘럼 : " + studyDto.getCurriculum());
+			//log.debug("스터디 채팅링크: " + studyDto.getChat_url());
+			log.debug(studyDto.getIntro()+","+studyDto.getProcess() +","+studyDto.getTarget() +","+ studyDto.getCurriculum());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,7 +187,7 @@ public class HostHandler {
 			int study_id = Integer.parseInt(req.getParameter("sid"));
 			StudyDataBean studyDto = hostDao.getStudy(study_id);
 			StudyTimeDataBean studytimeDto = hostDao.getStudyTime(study_id);
-			log.debug(studyDto.getId() +"번 스터디 마이페이지 스터디 삭제/수정 들어옴");
+			log.debug("["+studyDto.getId() +"번 스터디 마이페이지 스터디 삭제/수정 들어옴]");
 			String loc = hostDao.getLocationById(studyDto.getLoc_id());
 			studyDto.setLocation(loc);	
 			String cat = hostDao.getCategoryById(studyDto.getCat_id());
@@ -244,11 +247,14 @@ public class HostHandler {
 					studyDto.setCategory(cat);
 					req.setAttribute("studyDto", studyDto);
 					req.setAttribute("studytimeDto", studytimeDto);
-					log.debug("스터디 장소 : " + loc);
-					log.debug("스터디 세부장소 : " + studyDto.getPlace());
-					log.debug("스터디 회비 : " + studyDto.getScost());
+					//log.debug("스터디 장소 : " + loc);
+					//log.debug("스터디 세부장소 : " + studyDto.getPlace());
+					//log.debug("스터디 회비 : " + studyDto.getScost());
+					log.debug(","+loc+","+studyDto.getPlace()+","+studyDto.getScost());
 					String[] dataArr = daylist.split("@");
-					String newArr = Arrays.toString(dataArr);
+					String strday="";
+					
+				//	String newArr = Arrays.toString(dataArr);
 				
 					Map<String,String> days = new HashMap<String, String>();
 					days.put("0", "월");
@@ -258,17 +264,18 @@ public class HostHandler {
 					days.put("4", "금");
 					days.put("5", "토");
 					days.put("6", "일");		
-
-					for(int i=0; i<newArr.length(); i++) {
-						 String strday = days.get(newArr) + " ";
-						 log.debug(studyDto.getId() + "번  스터디 요일 : " + strday);		  
+					for(int i=0; i<dataArr.length; i++) {
+						 strday += days.get(dataArr[i]) + " ";
+						 //log.debug(studyDto.getId() + "번  스터디 요일 : " + strday);		  
 						}
-				//	log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + strday);
+		
 				//	log.debug("스터디 요일 : " + studytimeDto.getSday());
-					log.debug("스터디 시간 : " + studytimeDto.getStime());
-					log.debug("스터디 시작일 : " + studytimeDto.getSdate());
-					log.debug("스터디 추가코멘트 : " + studyDto.getScomment());
-					log.debug("스터디 등록 완료");
+					//log.debug("스터디 시간 : " + studytimeDto.getStime());
+					//log.debug("스터디 시작일 : " + studytimeDto.getSdate());
+					//log.debug("스터디 추가코멘트 : " + studyDto.getScomment());
+					
+					log.debug(","+strday+","+studytimeDto.getStime()+","+studytimeDto.getSdate()+","+studyDto.getScomment());
+					log.debug("[스터디 등록 완료]");
 					
 			//	}
 			} catch (Exception e) {
@@ -405,7 +412,7 @@ public class HostHandler {
 			log.debug(studyDto.getId() + "번 스터디 수정 모집인원 : " + studyDto.getMax_personnel());
 			log.debug(studyDto.getId() + "번 스터디 수정 모집마감일 : " + studyDto.getDeadline());
 			log.debug(studyDto.getId() + "번 스터디 수정 소개 : " + studyDto.getIntro());
-			log.debug(studyDto.getId() + "번  스터디 수정 진행방식 : " + studyDto.getProcess());
+			log.debug(studyDto.getId() + "번 스터디 수정 진행방식 : " + studyDto.getProcess());
 			log.debug(studyDto.getId() + "번 스터디 수정 모집대상 : " + studyDto.getTarget());
 			log.debug(studyDto.getId() + "번 스터디 수정 세부 커리큘럼 : " + studyDto.getCurriculum());
 			log.debug(studyDto.getId() + "번 스터디 수정 채팅링크: " + studyDto.getChat_url());
@@ -419,7 +426,8 @@ public class HostHandler {
 		//	String strdaylist = "";
 			
 			String[] dataArr = daylist.split("@");
-			String newArr = Arrays.toString(dataArr);
+			String strday="";
+	//		String newArr = Arrays.toString(dataArr);
 //			log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + newArr);	
 			Map<String,String> days = new HashMap<String, String>();
 			days.put("0", "월");
@@ -432,10 +440,10 @@ public class HostHandler {
 			
 		//	System.out.println(dataArr);
 				
-			for(int i=0; i<newArr.length(); i++) {
-				 String strday = days.get(newArr) + " ";
+			for(int i=0; i<dataArr.length; i++) {
+				 strday = days.get(dataArr[i]) + " ";
 				 log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + strday);		  
-				}
+			}
 			
 		//	log.debug(studyDto.getId() + "번 스터디 수정 스터디 요일 : " + studytimeDto.getSday());
 			log.debug(studyDto.getId() + "번 스터디 수정 스터디 시간 : " + studytimeDto.getStime());

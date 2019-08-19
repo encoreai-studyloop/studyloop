@@ -62,7 +62,14 @@ public class MainSearchHandler {
         String[] daylist = req.getParameterValues("sday");
         String sort = req.getParameter("sort");
               
-      
+        if(req.getSession().getAttribute("userDto") == null) {
+        	log.debug("[비회원 검색]");
+        }
+        else {
+        	log.debug("[회원 검색]");
+        	log.debug(userDao.getUserById(((UserDataBean)req.getSession().getAttribute("userDto")).getId()).getEmail());
+        }
+        
         if(keyword == null) {
         	keyword = "";
             log.debug("[전체 검색]");   

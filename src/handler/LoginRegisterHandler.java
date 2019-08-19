@@ -71,6 +71,8 @@ public class LoginRegisterHandler {
 	
 	@RequestMapping("/delPro")
 	public ModelAndView delProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		log.debug("[회원 탈퇴]");
+		log.debug(userDao.getUserById(Integer.parseInt(req.getParameter("id"))).getEmail());
 		int result = userDao.deleteUserById(Integer.parseInt(req.getParameter("id")));
 		req.setAttribute("result", result);
 		return new ModelAndView("views/login/delPro");
@@ -141,10 +143,9 @@ public class LoginRegisterHandler {
 	@RequestMapping("/inputPro")
 	public ModelAndView inputProprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		
-		log.debug("회원가입 시도");
+		log.debug("[회원가입 시도]");
 		req.setCharacterEncoding("utf-8");
 	
-		
 		UserDataBean userDto = new UserDataBean();
 
 		userDto.setEmail(req.getParameter("email"));
@@ -227,6 +228,7 @@ public class LoginRegisterHandler {
 			userDto = userDao.getUserinfo(email);
 			req.setAttribute("userDto", userDto);
 			String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 3))));
+			log.debug("[로그인]");
 			log.debug(userDto.getEmail()+","+ userDto.getName()+ ","+ age + ","+ userDto.getGender());
 			logintime = System.currentTimeMillis();
 		}
