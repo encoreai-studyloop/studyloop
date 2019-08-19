@@ -99,8 +99,8 @@ public class ShowHandler {
 		req.setAttribute( "masterData", masterData );
 		req.setAttribute( "cntAttendee", cntAttendee );
 		session.setAttribute( "studyDto", studyDto );	// studyDto -> on session
-		req.setAttribute( "studytimeDto", studytimeDto );
-		req.setAttribute( "locationDto", locationDto );
+		session.setAttribute( "studytimeDto", studytimeDto );
+		session.setAttribute( "locationDto", locationDto );
 		
 		session.setAttribute( "userDto", userDto );		// userDto -> on session
 		session.setMaxInactiveInterval( -1 );
@@ -134,7 +134,11 @@ public class ShowHandler {
 //		log.debug( "[카테고리] " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() );
 //		log.debug( "[스터디일시]" + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
 		
-		log.debug( userDto.getEmail() + ", {" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
+		if ( userDto != null ) {
+			log.debug( userDto.getEmail() + ", {" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
+		} else {
+			log.debug( "{" + studyDto.getTitle() + "}, {" + studyDto.getIntro() + "}, {" + studyDto.getTitle() + "}, {" + studyDto.getTarget() + "}, {" + studyDto.getCurriculum() + "}, {" + studyDto.getScomment() + "}, {" + studyDto.getScost() + "}, " + studyDto.getCur_personnel() + ", " + studyDto.getMax_personnel() + ", " + studyDto.getTerm() + ", " + studyDto.getRegdate() + ", " + studyDto.getDeadline() + ", {" + studyDto.getPlace() + "}, " + locationDto.getState_city() + ", " + locationDto.getDetail_loc() + ", " + categoryDto.getBig() + ", " + categoryDto.getMiddle() + ", " + categoryDto.getSmall() + ", " + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
+		}
 		
 		return new ModelAndView("views/show/view");
 	}
@@ -152,8 +156,8 @@ public class ShowHandler {
 			UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 			StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
 			CategoryTempBean categoryDto = showDao.getStudyCategoryNames( studyDto.getCat_id() );
-			LocationDataBean locationDto = (LocationDataBean) req.getAttribute( "locationDto" );
-			StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getAttribute( "studytimeDto" );
+			LocationDataBean locationDto = (LocationDataBean) req.getSession().getAttribute( "locationDto" );
+			StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getSession().getAttribute( "studytimeDto" );
 
 			
 			attendeeDto.setPurpose( req.getParameter( "purpose" ) );
@@ -231,12 +235,12 @@ public class ShowHandler {
 		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute( "userDto" );
 		StudyDataBean studyDto = (StudyDataBean) req.getSession().getAttribute( "studyDto" );
 		CategoryTempBean categoryDto = showDao.getStudyCategoryNames( studyDto.getCat_id() );
-		LocationDataBean locationDto = (LocationDataBean) req.getAttribute( "locationDto" );
-		StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getAttribute( "studytimeDto" );
+		LocationDataBean locationDto = (LocationDataBean) req.getSession().getAttribute( "locationDto" );
+		StudyTimeDataBean studytimeDto = (StudyTimeDataBean) req.getSession().getAttribute( "studytimeDto" );
 		
 		req.getSession().setAttribute( "userDto", userDto );
-		req.setAttribute( "studytimeDto", studytimeDto );
-		req.setAttribute( "locationDto", locationDto );
+		req.getSession().setAttribute( "studytimeDto", studytimeDto );
+		req.getSession().setAttribute( "locationDto", locationDto );
 		
 		applyintime = System.currentTimeMillis();
 //		log.debug( userDto.getEmail() + " 회원 - 스터디 '" + studyDto.getTitle() + "'" + applyintime + "에 신청 시도" );
