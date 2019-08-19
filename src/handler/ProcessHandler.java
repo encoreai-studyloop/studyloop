@@ -504,7 +504,7 @@ public class ProcessHandler {
 			map.put("id", user.getId());
 			map.put("rate", rate);
 			
-			log.debug(user.getNick() +","+ rateLog);
+			log.debug(user.getNick() +","+ rateLog + "," + rate); // 닉네임,현재 받은 점수,나의 평점
 		
 			
 			result = processDao.updateRate(map);
