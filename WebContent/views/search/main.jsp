@@ -70,8 +70,8 @@
 		<div class="cssload-speeding-wheel"></div>
 	</div>
 		<jsp:include page="upperBar.jsp" flush="false"/>
-		            <div class="fix-width text-center banner-part">
-                        <div class="min-h">
+		            <div class="fix-width text-center banner-part" style="height: 50px">
+                        <div>
                             <h1 class="banner-title"></h1></div>
                     </div>
 		<!-- Page Content -->
@@ -99,29 +99,29 @@
 							class="active"></li>
 						<li data-slide-to="2" data-target="#carousel-211883"></li>
 					</ol>
-					<div class="carousel-inner">
+					<div class="carousel-inner" data-interval="3000">
 						<div class="carousel-item">
 							<img class="d-block w-100" alt="Carousel Bootstrap First"
-								src="../../studyloop/views/search/images/study1.jpg" style="width: 100%; height: 500px;">
+								src="../../studyloop/views/search/images/study1.png" style="width: 100%; height: 500px;">
 							<div class="carousel-caption">
-								<h4>아직도 혼자 공부하니?</h4> 
-								<p>다같이 즐겁게 공부하자!</p>
+								<h4>같이 공부할 수록 재미가 더해져요!</h4> 
+								<p>올 방학 나의 목표를 스터디루프를 통해 달성해보세요</p>
 							</div>
 						</div>
 						<div class="carousel-item active">
 							<img class="d-block w-100" alt="Carousel Bootstrap Second"
 								src="../../studyloop/views/search/images/study2.jpg" style="width: 100%; height: 500px;">
 							<div class="carousel-caption">
-								<h4></h4>
-								<p></p>
+								<h4>아직도 혼자 공부하니?</h4>
+								<p>다같이 즐겁게 공부하자!</p>
 							</div>
 						</div>
 						<div class="carousel-item">
 							<img class="d-block w-100" alt="Carousel Bootstrap Third"
-								src="../../studyloop/views/search/images/study3.jpg" style="width: 100%; height: 500px;">
+								src="../../studyloop/views/search/images/1.jpeg" style="width: 100%; height: 500px;">
 							<div class="carousel-caption">
-								<h4></h4>
-								<p></p>
+								<h4>공부가 재미없으시다구요?</h4>
+								<p>지금 당장 나에게 맞는 스터디를 찾아보세요</p>
 							</div>
 						</div>
 					</div>
@@ -133,6 +133,12 @@
 						<span class="sr-only">Next</span></a>
 				</div>
 			</div>
+			<div class = "near_study_rec" style="margin-top: 3%; margin-bottom: 2%;" >
+			
+               <div class="title" style="padding-left:80px"><strong>카테고리 검색</strong></div>
+               <div class="sub_title" style="padding-left:80px">다양한 카테고리에서 관심 분야를 선택해보세요.</div>
+           
+            </div>
 			<section>
 				<div class="sttabs tabs-style-bar">
 					<nav>
@@ -1263,7 +1269,7 @@
     $(function() {
         $(".banner-title").typed({
             strings: ["스터디루프에서 목적에 딱 맞는 스터디를 찾아보세요", "원하는 스터디를 빠르고 쉽게 찾을 수 있습니다"],
-            typeSpeed: 50,
+            typeSpeed: 5,
             loop: true
         });
     });
