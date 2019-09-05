@@ -178,7 +178,7 @@ public class ShowHandler {
 			schoolDto.setUser_id( userDto.getId() );
 			showDao.insertSchool( schoolDto );
 			
-
+			log.debug(schoolDto.getUser_id()+","+ studyDto.getId()+","+schoolDto.getName()+","+schoolDto.getMajor()+","+schoolDto.getName()+","+schoolDto.getStatus());
 			showDao.deleteCareer( userDto.getId() );
 			for ( int i = 1; i < 21; i++ ) {
 				if ( req.getParameter( "career" + Integer.toString( i ) ) != null && 
@@ -188,6 +188,7 @@ public class ShowHandler {
 					expDto.setEnd_date( inputFormat.parse( req.getParameter( "workend" + Integer.toString( i ) ) ) );
 					expDto.setUser_id( userDto.getId() );
 					showDao.insertCareer( expDto );
+					log.debug(expDto.getUser_id()+","+ studyDto.getId()+","+expDto.getExperience()+","+expDto.getStart_date()+","+expDto.getEnd_date());
 				}
 			}
 
@@ -201,9 +202,10 @@ public class ShowHandler {
 					langDto.setObtain_date( inputFormat.parse( req.getParameter( "langodate" + Integer.toString( i ) ) ) );
 					langDto.setUser_id( userDto.getId() );
 					showDao.insertLanguage( langDto );
+					log.debug(langDto.getUser_id()+","+ studyDto.getId()+","+langDto.getName()+","+langDto.getLanguage()+","+langDto.getScore()+","+langDto.getObtain_date());
 				}
 			}
-
+;
 			showDao.deleteCertificate( userDto.getId() );
 			for ( int i = 1; i < 21; i++ ) {
 				if ( req.getParameter( "cert" + Integer.toString( i ) ) != null &&
@@ -213,6 +215,7 @@ public class ShowHandler {
 					certDto.setObtain_date( inputFormat.parse( req.getParameter( "certodate" + Integer.toString( i ) ) ) );
 					certDto.setUser_id( userDto.getId() );
 					showDao.insertCertificate( certDto );
+					log.debug(certDto.getUser_id()+","+ studyDto.getId()+","+certDto.getName()+","+certDto.getScore()+","+certDto.getObtain_date());
 				}
 			}
 
@@ -228,8 +231,7 @@ public class ShowHandler {
 			int seconds = (int)((millis / 1000) % 60);
 //			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
 			log.debug( minutes + "," + seconds + "," + userDto.getEmail() + ",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
-
-			
+			log.debug(userDto.getId()+","+ studyDto.getId()+","+attendeeDto.getPurpose()+","+attendeeDto.getGoal()+","+attendeeDto.getIntro()+","+attendeeDto.getRequest());
 		return new ModelAndView("views/show/apply");
 	}
 
@@ -380,9 +382,10 @@ public class ShowHandler {
 	
 	@RequestMapping("/boardlist")
 	public ModelAndView boardListProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		int study_id = 1; //스터디 아이디
-		int wuser_id = 1; //글쓰는 사람 유저 아이디
-
+//		int study_id = 1; //스터디 아이디
+//		int wuser_id = 1; //글쓰는 사람 유저 아이디
+		int study_id = Integer.parseInt(req.getParameter("sid"));
+		int wuser_id = ((UserDataBean) req.getSession().getAttribute("userDto")).getId();
 		List<BoardDataBean> boardDtoList = boardDao.loadBoardlist(study_id);
 		req.setAttribute("boardDtoList", boardDtoList);
 		req.setAttribute("study_id", study_id);
@@ -393,8 +396,10 @@ public class ShowHandler {
 	
 	@RequestMapping("/boardInput")
 	public ModelAndView boardInputProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		int study_id = 1; //스터디 아이디
-		int wuser_id = 1; //글쓰는 사람 유저 아이디
+	//	int study_id = 1; //스터디 아이디
+	//	int wuser_id = 1; //글쓰는 사람 유저 아이디
+		int study_id = Integer.parseInt(req.getParameter("sid"));
+		int wuser_id = ((UserDataBean) req.getSession().getAttribute("userDto")).getId();
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
 		

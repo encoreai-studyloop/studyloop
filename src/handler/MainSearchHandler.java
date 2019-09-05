@@ -302,15 +302,15 @@ public class MainSearchHandler {
 		
 		log.debug("[참여중인 스터디] "+pstudyDtoList.size()+" 개");
 		for(StudyDataBean s : pstudyDtoList) {
-			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(myId+","+s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}	
 		log.debug("[주최한 스터디] "+ostudyDtoList.size()+" 개");
 		for(StudyDataBean s : ostudyDtoList) {
-			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(myId+","+s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}
 		log.debug("[신청한 스터디] "+rstudyDtoList.size()+" 개");
 		for(StudyDataBean s : rstudyDtoList) {
-			log.debug(s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
+			log.debug(myId+","+s.getId()+","+s.getTitle() + ","+s.getCategory()+ ","+s.getLocation());
 		}
 		
 		return new ModelAndView("views/search/mypage");
@@ -318,9 +318,7 @@ public class MainSearchHandler {
 	
 	@RequestMapping("/main")
 	public ModelAndView mainFormprocess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		
-		
-		
+
 		Map<String,Double> cord = new HashMap<String,Double>();
 		cord.put("lat", (double) 0);
 		cord.put("long", (double) 0);
@@ -335,7 +333,7 @@ public class MainSearchHandler {
 
 			GpsToAddress gps = new GpsToAddress();
 			
-			log.debug("[접속 위치] " +gps.coordToAddr(longtitude, latitude));
+			log.debug("[접속 위치]\n" +gps.coordToAddr(longtitude, latitude));
 		}
 		
 		CategoryDataBean categoryDto = searchDao.loadCategory();
@@ -539,9 +537,9 @@ public class MainSearchHandler {
     public void ajax_setMePrime( HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int user_id = Integer.parseInt( req.getParameter( "id" ) );
         int updateResult = searchDao.updateUserPrime( user_id );
-       
+        UserDataBean userDto = userDao.getUserById(user_id);
         log.debug("[프리미엄구매]");
-        log.debug(userDao.getUserById(user_id).getEmail());
+        log.debug(userDto.getId()+","+userDto.getEmail());
         
         resp.sendRedirect( "/studyloop/mypage.do?id=" + user_id );
     }
@@ -551,8 +549,10 @@ public class MainSearchHandler {
 		
 		int sid = Integer.parseInt(req.getParameter("sid"));
 		searchDao.closeStudy(sid);
+		StudyDataBean studyDto = userDao.getStudyById(sid);
+		UserDataBean userDto = (UserDataBean) req.getSession().getAttribute("userDto");
 		log.debug("[스터디 종료]");
-		log.debug(userDao.getStudyById(sid).getTitle());
+		log.debug(userDto.getId()+","+studyDto.getId()+","+studyDto.getTitle());
 		resp.sendRedirect("mypage.do");
 	}
 	 
