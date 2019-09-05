@@ -299,7 +299,8 @@ public class ProcessHandler {
 		else {
 			processDao.updateHattendListTable(attendDto);
 		}
-		
+		log.debug("[출결 업데이트]");
+		log.debug(attendDto.getUser_id()+","+attendDto.getStudy_id()+","+attendDto.getAttendance()+","+attendDto.getAttend_date());
 		
 		String noedit = req.getParameter("noedit");
 		if(noedit != null) {
