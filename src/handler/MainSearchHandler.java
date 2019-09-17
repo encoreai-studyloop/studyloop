@@ -555,5 +555,11 @@ public class MainSearchHandler {
 		log.debug(userDto.getId()+","+studyDto.getId()+","+studyDto.getTitle());
 		resp.sendRedirect("mypage.do");
 	}
+	
+	@RequestMapping("/live_chat.do")
+	public ModelAndView livechat(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+		
+		return new ModelAndView("views/chat/chat");
+	}
 	 
 }

@@ -28,9 +28,8 @@
 			</li>
 		</ul>
 		<ul class="nav navbar-top-links navbar-right pull-right">
+			<li class="nav-item"><a class="nav-link" href="live_chat.do" target="_blank">실시간 문의</a></li>		
 			<li class="nav-item"><a class="nav-link" href="service_intro.do">서비스 소개</a></li>
-			
-
 			<c:if test="${userDto == null }">
 				<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
 				<li class="nav-item"><a class="nav-link" href="register.do">회원
