@@ -223,7 +223,7 @@
 												<i class="ti-star"></i>
 											</div>
 											<textarea class="form-control" name="target" id="targetInfo"
-												readonly="readonly" rows="10">${studyDto.process}</textarea>
+												readonly="readonly" rows="10">${studyDto.target}</textarea>
 										</div>
 									</div>
 									<div class="form-group">
