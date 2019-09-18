@@ -213,10 +213,11 @@
     	           		    contentType: 'application/json;charset=utf-8',
     	           		    type: 'POST',
     	           		    dataType: 'json',
-    	           		    url: "https://dialogflow.googleapis.com/v2/projects/newagent-vytmwu/agent/sessions/6fffdbe7-256d-9484-9764-058e0303a570:detectIntent?key=AIzaSyBJf1uT85PceBdVLIJyH9atrQEGKFSdSUU",
+    	           		    url: "https://dialogflow.googleapis.com/v2/projects/newagent-vytmwu/agent/sessions/6fffdbe7-256d-9484-9764-058e0303a570:detectIntent",
     	           		    data: JSON.stringify(data),
     	           		  	headers: {
-    	           		    	"Authorization": "Bearer "+"ya29.c.ElqGB9eIEFgPaPeBW9vK5Dse0d7BpafsxkH_dQO1q2skO5s13IwC-JZu9HqTU95E-tVZ1_hTbeWGrp0mKZy_1sJL8veRR0glCu0IqETcBhYyyjJxKRCPWcYIK-o"
+    	           		    	"Authorization": "Bearer "+"ya29.c.ElqHBzBV4gsVacOUCEaVdXnwyK5FDRl2_b2nhXEaC4aS0_kuVSjOGg9Xy9qVjsRmx67llRn2nH7zagyABFwDE00AijAuYbjnM9NUEf_8QBbQel2wDQiqhLC3pNw"
+
     	           		  	},
     	           		    error: function (data) {
     	           		        console.log(data);
