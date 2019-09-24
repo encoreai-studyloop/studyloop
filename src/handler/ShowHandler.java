@@ -235,8 +235,10 @@ public class ShowHandler {
 				}
 			}
 			log.debug("certnum,"+ Integer.toString(certnum));
+			applyouttime = System.currentTimeMillis();
 			long millis = (applyouttime - applyintime);
-			log.debug(userDto.getId()+","+ studyDto.getId()+","+attendeeDto.getPurpose()+","+attendeeDto.getGoal()+","+attendeeDto.getIntro()+","+attendeeDto.getRequest()+","+millis);
+			
+			log.debug(userDto.getId()+","+ userDto.getBirth()+","+ userDto.getRate()+","+ userDto.getPrime()+","+ userDto.getPart()+","+studyDto.getId()+","+attendeeDto.getPurpose()+","+attendeeDto.getGoal()+","+attendeeDto.getIntro()+","+attendeeDto.getRequest()+","+millis);
 			log.debug("[신청서 정보 끝]");
 			int resultAttendee = showDao.insertAttendee( attendeeDto );
 			
@@ -244,7 +246,7 @@ public class ShowHandler {
 			
 			log.debug( "[스터디 신청 완료]" );
 //			log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + "에 신청 완료");  
-			applyouttime = System.currentTimeMillis();
+			
 			
 			long minutes = (millis / 1000)  / 60;
 			int seconds = (int)((millis / 1000) % 60);
