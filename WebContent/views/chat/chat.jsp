@@ -42,8 +42,6 @@
     </div>
     <div id="wrapper">
         <!-- Page Content -->
-
-            
                 <!-- .row -->
                 <!-- .chat-row -->
                 <div class="chat-main-box">

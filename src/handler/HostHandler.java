@@ -42,11 +42,9 @@ import dbbean.ShowDao;
 public class HostHandler {
 	@Resource
 	private HostDao hostDao;
-
 	@Resource
 	private SearchDao searchDao;
 	Logger log = Logger.getLogger("host");
-	
 	@RequestMapping("/titleForm")
 	public ModelAndView titleFormProcess(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		//log.debug("[주최자 정보]");

@@ -204,7 +204,7 @@ public class LoginRegisterHandler {
 		userDto.setOpen(open);
 		userDto.setPart(part);
 		int result = userDao.insertUser(userDto);
-		String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 3))));
+		String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(6, 10))));
 		req.setAttribute("result", result);
 		log.debug("[회원가입 & 설문작성 완료]");
 		log.debug("[정보]\n"+userDto.getId()+","+userDto.getName()+","+userDto.getGender()+","+userDto.getAddress()+","+ userDto.getRegdate()
@@ -237,9 +237,13 @@ public class LoginRegisterHandler {
 		req.setAttribute("result", result);
 		
 	
-		if(!req.getParameter("lat").equals(null) && !req.getParameter("lat").equals("")) {
+		if(!req.getParameter("lat").equals(null) && !req.getParameter("lat").equals("") && !req.getParameter("lat").equals("null")) {
 			req.getSession().setAttribute("lat", Double.parseDouble(req.getParameter("lat")));
 			req.getSession().setAttribute("long", Double.parseDouble(req.getParameter("long")));
+		}
+		else {
+			req.getSession().setAttribute("lat",37.582);
+			req.getSession().setAttribute("long", 126.984);
 		}
 		return new ModelAndView("views/login/loginPro");
 	}

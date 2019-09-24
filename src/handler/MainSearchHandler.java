@@ -279,6 +279,9 @@ public class MainSearchHandler {
             //log.debug("스터디 "+userDao.getStudyById(sid)+"에 신청한 유저 "+ userDao.getUserById(tid).getNick() +" 의 상태를 "+userDao.getStatus(status)+"로 변경");
             log.debug("[신청 상태 변경]");
             log.debug(userDao.getStudyById(sid).getId()+","+userDao.getUserById(tid).getId()+","+userDao.getStatus(status));
+            UserDataBean userDto2 = userDao.getUserById(tid);
+            StudyDataBean studyDto = userDao.getStudyById(sid);
+            
         }
 
 		

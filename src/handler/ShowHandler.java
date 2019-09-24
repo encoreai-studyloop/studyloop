@@ -114,7 +114,7 @@ public class ShowHandler {
 		req.setAttribute("study_id", study_id);
 		req.setAttribute("wuser_id", wuser_id);
 		
-		log.debug( "[스터디 클릭]" );
+		
 //		log.debug( "[회원]" + userDto.getEmail() + " 이 [스터디]{ " + studyDto.getTitle() + " } 클릭" );
 //		log.debug( "[클릭한 스터디 정보]" );
 //		log.debug( "[소개]{ " + studyDto.getIntro() + " }" );
@@ -135,11 +135,20 @@ public class ShowHandler {
 //		log.debug( "[스터디일시]" + studytimeDto.getSdate() + ", " + studytimeDto.getSday() + ", " + studytimeDto.getStime() );
 		
 		if ( userDto != null ) {
-			log.debug("[회원]");
-			log.debug( userDto.getId() +","+userDto.getEmail() + ","+studyDto.getId()+",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
+			log.debug("[회원 스터디 클릭]");
+			String cur = studyDto.getCurriculum();
+			if(cur != null) {
+				cur = cur.replace(","," ");
+			}
+			String tar = studyDto.getTarget();
+			if(tar !=null) {
+				tar = tar.replace(",", " ");
+			}
+			log.debug("0.5"+","+userDto.getId() +","+userDto.getEmail() +","+userDto.getGender()+","+userDto.getBirth()+","+userDto.getAddress()+","+userDto.getInterest()+","+userDto.getGoal()+","+userDto.getOpen()+","+userDto.getPart()+ ","+studyDto.getId()+",{" + studyDto.getTitle().replace(",", " ") + "},{" + studyDto.getIntro().replace(",", " ") + "},{" + tar + "},{" +cur + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
+			log.debug("[회원 스터디 클릭 끝]");
 		} else {
-			log.debug("[비회원]");
-			log.debug(studyDto.getId()+ ",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
+			//log.debug("[비회원]");
+			//log.debug(studyDto.getId()+ ",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
 		}
 		
 		return new ModelAndView("views/show/view");
@@ -178,8 +187,11 @@ public class ShowHandler {
 			schoolDto.setUser_id( userDto.getId() );
 			showDao.insertSchool( schoolDto );
 			
-			log.debug(schoolDto.getUser_id()+","+ studyDto.getId()+","+schoolDto.getName()+","+schoolDto.getMajor()+","+schoolDto.getName()+","+schoolDto.getStatus());
+			log.debug(schoolDto.getUser_id()+","+ studyDto.getId()+","+schoolDto.getName()+","+schoolDto.getMajor()+","+schoolDto.getStatus());
 			showDao.deleteCareer( userDto.getId() );
+			int careernum = 0;
+			int langnum = 0;
+			int certnum = 0;
 			for ( int i = 1; i < 21; i++ ) {
 				if ( req.getParameter( "career" + Integer.toString( i ) ) != null && 
 						! req.getParameter( "career" + Integer.toString( i ) ).equals( "" ) ) {
@@ -188,10 +200,12 @@ public class ShowHandler {
 					expDto.setEnd_date( inputFormat.parse( req.getParameter( "workend" + Integer.toString( i ) ) ) );
 					expDto.setUser_id( userDto.getId() );
 					showDao.insertCareer( expDto );
-					log.debug(expDto.getUser_id()+","+ studyDto.getId()+","+expDto.getExperience()+","+expDto.getStart_date()+","+expDto.getEnd_date());
+					//log.debug(expDto.getUser_id()+","+ studyDto.getId()+","+expDto.getExperience()+","+expDto.getStart_date()+","+expDto.getEnd_date());
+					careernum++;
 				}
+				
 			}
-
+			log.debug("careernum,"+ Integer.toString(careernum));
 			showDao.deleteLanguage( userDto.getId() );
 			for ( int i = 1; i < 21; i++ ) {
 				if ( req.getParameter( "lang" + Integer.toString( i ) ) != null &&
@@ -202,10 +216,11 @@ public class ShowHandler {
 					langDto.setObtain_date( inputFormat.parse( req.getParameter( "langodate" + Integer.toString( i ) ) ) );
 					langDto.setUser_id( userDto.getId() );
 					showDao.insertLanguage( langDto );
-					log.debug(langDto.getUser_id()+","+ studyDto.getId()+","+langDto.getName()+","+langDto.getLanguage()+","+langDto.getScore()+","+langDto.getObtain_date());
+					//log.debug(langDto.getUser_id()+","+ studyDto.getId()+","+langDto.getName()+","+langDto.getLanguage()+","+langDto.getScore()+","+langDto.getObtain_date());
+					langnum++;
 				}
 			}
-;
+			log.debug("langnum,"+ Integer.toString(langnum));
 			showDao.deleteCertificate( userDto.getId() );
 			for ( int i = 1; i < 21; i++ ) {
 				if ( req.getParameter( "cert" + Integer.toString( i ) ) != null &&
@@ -215,24 +230,38 @@ public class ShowHandler {
 					certDto.setObtain_date( inputFormat.parse( req.getParameter( "certodate" + Integer.toString( i ) ) ) );
 					certDto.setUser_id( userDto.getId() );
 					showDao.insertCertificate( certDto );
-					log.debug(certDto.getUser_id()+","+ studyDto.getId()+","+certDto.getName()+","+certDto.getScore()+","+certDto.getObtain_date());
+					//log.debug(certDto.getUser_id()+","+ studyDto.getId()+","+certDto.getName()+","+certDto.getScore()+","+certDto.getObtain_date());
+					certnum++;
 				}
 			}
-
+			log.debug("certnum,"+ Integer.toString(certnum));
+			long millis = (applyouttime - applyintime);
+			log.debug(userDto.getId()+","+ studyDto.getId()+","+attendeeDto.getPurpose()+","+attendeeDto.getGoal()+","+attendeeDto.getIntro()+","+attendeeDto.getRequest()+","+millis);
+			log.debug("[신청서 정보 끝]");
 			int resultAttendee = showDao.insertAttendee( attendeeDto );
 			
 			req.setAttribute( "resultAttendee", resultAttendee );
 			
-			log.debug( "[스터디 신청 완료 - 작성소요시간 & 스터디정보]" );
+			log.debug( "[스터디 신청 완료]" );
 //			log.debug(userDto.getEmail() +" 회원 - 스터디  "+ studyDto.getTitle() + "에 신청 완료");  
 			applyouttime = System.currentTimeMillis();
-			long millis = (applyouttime - applyintime);
+			
 			long minutes = (millis / 1000)  / 60;
 			int seconds = (int)((millis / 1000) % 60);
-//			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");
-			log.debug( minutes + "," + seconds + "," + userDto.getEmail() + ",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
-			log.debug(userDto.getId()+","+ studyDto.getId()+","+attendeeDto.getPurpose()+","+attendeeDto.getGoal()+","+attendeeDto.getIntro()+","+attendeeDto.getRequest());
-		return new ModelAndView("views/show/apply");
+//			log.debug("스터디 신청 작성 시간 : "+ minutes+" 분 "+seconds+" 초");			log.debug( minutes + "," + seconds + "," + userDto.getEmail() + ",{" + studyDto.getTitle() + "},{" + studyDto.getIntro() + "},{" + studyDto.getTitle() + "},{" + studyDto.getTarget() + "},{" + studyDto.getCurriculum() + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
+			
+			String cur = studyDto.getCurriculum();
+			if(cur != null) {
+				cur = cur.replace(","," ");
+			}
+			String tar = studyDto.getTarget();
+			if(tar !=null) {
+				tar = tar.replace(",", " ");
+			}
+			
+			log.debug("1.0"+","+userDto.getId() +","+userDto.getEmail() +","+userDto.getGender()+","+userDto.getBirth()+","+userDto.getAddress()+","+userDto.getInterest()+","+userDto.getGoal()+","+userDto.getOpen()+","+userDto.getPart()+ ","+studyDto.getId()+",{" + studyDto.getTitle().replace(",", " ") + "},{" + studyDto.getIntro().replace(",", " ") + "},{" + tar + "},{" +cur + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
+			log.debug( "[스터디 신청 완료 끝]" );
+			return new ModelAndView("views/show/apply");
 	}
 
 	@RequestMapping("/applyForm")
