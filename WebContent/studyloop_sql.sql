@@ -492,6 +492,16 @@ create table ws_attendrate
   primary key (id)
 );
 
+
+create table ws_studyrecommend
+(
+  id number NOT NULL,
+  user_cid number NOT NULL,
+  studyc_id number NOT NULL,
+  pre_rate number NOT NULL,
+  primary key (id)
+);
+
 /* Create Foreign Keys */
 
 
@@ -849,91 +859,154 @@ INSERT INTO WS_REGPROCESS VALUES(SEQ_WS_REGPROCESS_id.NEXTVAL, '최종거절');
 INSERT INTO WS_REGPROCESS VALUES(SEQ_WS_REGPROCESS_id.NEXTVAL, '최종수락');
 
 /* 유저 데이터 */
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'fff@fff.fff','김이름','ireum12345','pic',to_date('89/07/24','RR/MM/DD'),'남','010-1234-5667','12345','0',0,0,to_date('19/07/24','RR/MM/DD'),'경기 성남시 분당구 판교역로 235 (삼평동)@101호','13494', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'alice91897@gmail.com','신유진','신뉴','pic',to_date('96/09/18','RR/MM/DD'),'여','01095793739','Dtmth9918!!','1',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 삼성로 150 (대치동)@107동 303호','06288', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'jaeyoung@gmail.com','대조영','조02','pic',to_date('09/12/16','RR/MM/DD'),'남','0111234567','!234o','1',0,0,to_date('19/07/24','RR/MM/DD'),'경기 고양시 일산서구 일현로 123 (탄현동)@발해아파트 2동 9호','10241', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'joonil@naver.com','윤준일','chocoz','pic',to_date('19/06/30','RR/MM/DD'),'남','01095959595','1234','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강동구 풍산로 237 (강일동)@어딘가','05208', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'abcde@abc.de','천둥','thunder','pic',to_date('10/01/01','RR/MM/DD'),'여','010-1234-7890','12345','1',0,0,to_date('19/07/24','RR/MM/DD'),'제주특별자치도 제주시 첨단로 242 (영평동)@산 242','63309', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'abc@email.com','마이클','michael','pic',to_date('19/07/09','RR/MM/DD'),'여','010-0101-1111','111','0',0,0,to_date('19/07/24','RR/MM/DD'),'경기 성남시 분당구 판교역로28번길 3-5 (백현동)@백화점','13536', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'abcd@naver.com','강나다','다나강','pic',to_date('19/07/27','RR/MM/DD'),'여','01056789012','!234o6','1',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 개포로32길 13 (개포동, 삼성파크빌)@3동 701호','06309', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'abcde@hanmail.net','홍길동','redroad','pic',to_date('89/12/14','RR/MM/DD'),'여','01034567890','!234o67','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 개포로124길 27 (일원동, 삼성사원아파트)@6동 8호','06339', '0', '0', '0', '0', '0');
-Insert into ENCORE.WS_USER  values (SEQ_WS_USER_id.NEXTVAL,'yoojinshin9918@gmail.com','신유진','신뉴99','pic',to_date('96/09/18','RR/MM/DD'),'성별','01041639857','111!!','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 삼성로 150 (대치동)@미도아파트 207동 1407호','06288', '0', '0', '0', '0', '0');
-
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'fff@fff.fff','김이름','ireum12345','pic',to_date('89/07/24','RR/MM/DD'),'남','010-1234-5667','12345','0',0,0,to_date('19/07/24','RR/MM/DD'),'경기 성남시 분당구 판교역로 235 (삼평동)@101호','13494','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'alice91897@gmail.com','신유진','신뉴','pic',to_date('96/09/18','RR/MM/DD'),'여','01095793739','Dtmth9918!!','1',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 삼성로 150 (대치동)@107동 303호','06288','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'jaeyoung@gmail.com','대조영','조02','pic',to_date('09/12/16','RR/MM/DD'),'남','0111234567','!234o','1',0,0,to_date('19/07/24','RR/MM/DD'),'경기 고양시 일산서구 일현로 123 (탄현동)@발해아파트 2동 9호','10241','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'joonil@naver.com','윤준일','chocoz','pic',to_date('19/06/30','RR/MM/DD'),'남','01095959595','1234','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강동구 풍산로 237 (강일동)@어딘가','05208','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'abcde@abc.de','천둥','thunder','pic',to_date('10/01/01','RR/MM/DD'),'여','010-1234-7890','12345','1',0,0,to_date('19/07/24','RR/MM/DD'),'제주특별자치도 제주시 첨단로 242 (영평동)@산 242','63309','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'abc@email.com','마이클','michael','pic',to_date('19/07/09','RR/MM/DD'),'여','010-0101-1111','111','0',0,0,to_date('19/07/24','RR/MM/DD'),'경기 성남시 분당구 판교역로28번길 3-5 (백현동)@백화점','13536','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'abcd@naver.com','강나다','다나강','pic',to_date('19/07/27','RR/MM/DD'),'여','01056789012','!234o6','1',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 개포로32길 13 (개포동, 삼성파크빌)@3동 701호','06309','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'abcde@hanmail.net','홍길동','redroad','pic',to_date('89/12/14','RR/MM/DD'),'여','01034567890','!234o67','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 개포로124길 27 (일원동, 삼성사원아파트)@6동 8호','06339','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'yoojinshin9918@gmail.com','신유진','신뉴99','pic',to_date('96/09/18','RR/MM/DD'),'성별','01041639857','111!!','0',0,0,to_date('19/07/24','RR/MM/DD'),'서울 강남구 삼성로 150 (대치동)@미도아파트 207동 1407호','06288','0','0','0','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'eee@dd.co','dd','dd','pic',to_date('19/08/27','RR/MM/DD'),'여','dd','dd','0',0,0,to_date('19/08/12','RR/MM/DD'),'dd@dd','dd','on@on@on','PC','MJ','0','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'seongsuu@gmail.com','조성수','조성수다','pic',to_date('91/12/28','RR/MM/DD'),'남','01033757609','tjdtnWld!234','0',0,0,to_date('19/08/29','RR/MM/DD'),'서울 강동구 고덕로 130 (암사동, 프라이어팰리스)@안알랴쥼','05256','on@on','BG','LA','0','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'shinnew124@gmail.com','신유진','배고파124','pic',to_date('90/02/07','RR/MM/DD'),'여','01093234299','124','0',0,0,to_date('19/09/16','RR/MM/DD'),'경기 고양시 일산서구 일현로 123 (탄현동)@엔코아 건물 3층 301호','10241','on@on','BG','JB','2','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'encore@naver.com','김철수','chulsoo123','pic',to_date('95/02/15','RR/MM/DD'),'남','01053232322','1234','0',0,0,to_date('19/09/16','RR/MM/DD'),'서울 강남구 강남대로 298 (역삼동)@빌딩','06253','on','PU','CT','1','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'cindy@naver.com','신디영','cindy0','pic',to_date('19/09/26','RR/MM/DD'),'여','01066981926','1234','1',0,0,to_date('19/09/16','RR/MM/DD'),'서울 강남구 개포로 205 (개포동)@3동 505호','06303','on','BG','MJ','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'encore@daum.net','엔코아','encore123','pic',to_date('91/01/10','RR/MM/DD'),'남','01019191191','1111','1',0,0,to_date('19/09/18','RR/MM/DD'),'서울 서대문구 봉원사2길 10-2 (신촌동)@신촌','03721','on','PU','JB','0','1');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'playdata@naver.com','플레이','playdata123','pic',to_date('00/06/01','RR/MM/DD'),'여','0106565656','111','0',0,0,to_date('19/09/18','RR/MM/DD'),'서울 서초구 서초중앙로 지하 31 (서초동)@남터','06718','on','CK','CT','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'wtf@naver.com','박재우','jaewoop3344','pic',to_date('99/02/17','RR/MM/DD'),'남','01095666565','111','0',0,0,to_date('19/09/18','RR/MM/DD'),'경기 고양시 덕양구 간절로 77 (향동동)@고양아파트 202동 401호','10546','on','NE','JB','1','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'ncman@naver.com','김엔씨','게임회사취직','pic',to_date('93/02/10','RR/MM/DD'),'남','01039393939','111','0',0,0,to_date('19/09/18','RR/MM/DD'),'경기 성남시 분당구 대왕판교로644번길 12 (삼평동)@엔씨소프트건물','13494','on','BG','JB','0','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'qwerty1234@gmail.com','김쿼티','qwerty','pic',to_date('94/03/04','RR/MM/DD'),'남','01011112222','1234','1',0,0,to_date('19/09/18','RR/MM/DD'),'경기 성남시 분당구 분당로 190 (분당동, 샛별마을라이프아파트)@101동 1013호','13581','on@on','FR','JB','3','2');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'poiuy0987@gmail.com','이호산','poiuy','pic',to_date('91/12/23','RR/MM/DD'),'여','01098765432','0987','0',0,0,to_date('19/09/18','RR/MM/DD'),'인천 연수구 선학로 14 (선학동, 선학동 시영아파트)@17동 1307호','21938','on@on','BG','JB','3','3');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'needjob@naver.com','구직중','gujik','pic',to_date('94/06/08','RR/MM/DD'),'남','01097979797','111','1',0,0,to_date('19/09/19','RR/MM/DD'),'경기 성남시 분당구 경부고속도로 409 (삼평동)@삼평아파트','13473','on','BG','JB','0','1');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'needspec@naver.com','스펙왕','스펙짱','pic',to_date('98/01/30','RR/MM/DD'),'여','01068686868','111','0',0,0,to_date('19/09/19','RR/MM/DD'),'서울 양천구 공항대로 552 (목동)@목동아파트','07946','on','IT','CT','1','1');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'goyangmajor@naver.com','김전공','고양시전공우먼','pic',to_date('00/02/09','RR/MM/DD'),'여','0100101010','111','0',0,0,to_date('19/09/19','RR/MM/DD'),'경기 고양시 덕양구 화중로 164 (화정동, 은빛마을5단지아파트)@503동 1102호','10474','on','IT','CT','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'etc@naver.com','기타맨','etcman','pic',to_date('99/02/04','RR/MM/DD'),'남','01029292929','111','0',0,0,to_date('19/09/19','RR/MM/DD'),'서울 강남구 개포로 202 (개포동)@개포동','06307','on','CO','AC','0','0');
+Insert into ENCORE.WS_USER (ID,EMAIL,NAME,NICK,PIC,BIRTH,GENDER,PHONE,PASSWD,PRIME,RATE,POINT,REGDATE,ADDRESS,ZIPCODE,VISIT,INTEREST,GOAL,OPEN,PART) values (SEQ_WS_USER_id.NEXTVAL,'abcd@gmail.com','박영희','yhp','pic',to_date('95/01/17','RR/MM/DD'),'여','01029293949','1234','0',0,0,to_date('19/09/16','RR/MM/DD'),'서울 서초구 과천대로 786 (방배동)@절','06761','on','PC','JB','0','0');
+---------------------------------------------
 
 /*스터디 시간 데이터 */
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/09/20','RR/MM/DD'),'3@6@','15:45');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/07/26','RR/MM/DD'),'2@3@','16:45');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/08/19','RR/MM/DD'),'1@2@3@4@5@6@','08:45');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/08/19','RR/MM/DD'),'0@2@4@','14:00');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/11/19','RR/MM/DD'),'2@4@','20:00');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/09/19','RR/MM/DD'),'0@1@2@3@','15:45');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/08/01','RR/MM/DD'),'0@1@2@3@4@5@6@','14:00');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/07/25','RR/MM/DD'),'3@','00:00');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/09/11','RR/MM/DD'),'2@5@','19:15');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL,to_date('19/08/03','RR/MM/DD'),'5@','15:03');
-Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (SEQ_WS_STUDYTIME_id.NEXTVAL ,to_date('19/08/19','RR/MM/DD'),'0@1@2@3@4@6@','05:00');
-
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (46,to_date('19/10/07','RR/MM/DD'),'0@','20:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (47,to_date('19/10/12','RR/MM/DD'),'5@','16:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (48,to_date('19/10/20','RR/MM/DD'),'6@','14:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (49,to_date('19/09/25','RR/MM/DD'),'0@2@4@','05:30');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (22,to_date('19/10/17','RR/MM/DD'),'3@5@','19:45');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (23,to_date('19/10/25','RR/MM/DD'),'5@','13:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (24,to_date('19/08/24','RR/MM/DD'),'3@','13:45');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (25,to_date('19/10/05','RR/MM/DD'),'5@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (26,to_date('19/09/25','RR/MM/DD'),'5@','14:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (27,to_date('19/10/25','RR/MM/DD'),'0@4@','18:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (28,to_date('19/10/19','RR/MM/DD'),'2@6@','12:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (29,to_date('19/10/19','RR/MM/DD'),'5@6@','14:45');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (30,to_date('19/10/11','RR/MM/DD'),'0@2@4@','16:45');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (31,to_date('19/09/28','RR/MM/DD'),'5@','15:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (32,to_date('19/08/19','RR/MM/DD'),'3@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (21,to_date('19/09/19','RR/MM/DD'),'1@5@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (33,to_date('19/11/01','RR/MM/DD'),'2@4@','13:50');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (34,to_date('19/10/05','RR/MM/DD'),'1@3@','16:45');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (35,to_date('19/08/19','RR/MM/DD'),'0@1@2@3@4@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (36,to_date('19/10/01','RR/MM/DD'),'2@4@','17:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (37,to_date('19/08/19','RR/MM/DD'),'1@4@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (38,to_date('19/08/19','RR/MM/DD'),'0@2@4@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (39,to_date('19/08/19','RR/MM/DD'),'2@4@','13:45:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (40,to_date('19/10/01','RR/MM/DD'),'0@1@2@3@4@5@6@','09:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (41,to_date('19/10/01','RR/MM/DD'),'1@2@3@4@','19:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (42,to_date('19/10/01','RR/MM/DD'),'1@2@3@4@','19:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (43,to_date('19/11/01','RR/MM/DD'),'5@6@','14:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (44,to_date('19/11/01','RR/MM/DD'),'0@1@2@3@4@5@6@','19:00');
+Insert into ENCORE.WS_STUDYTIME (ID,SDATE,SDAY,STIME) values (45,to_date('19/11/01','RR/MM/DD'),'5@6@','13:00');
 
 
 /* 스터디 데이터 */
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'나라건국할 사람!!!!','같이 나라 건국에 대해 의견 공유를 해봅시당','하루 6시간 잡고 3시간 정치토론, 3시간 무술스터디 진행예정
-','쫄보 아니면 됨','차차 진행해보면서 커리큘럼 넣을 예정인데 제가 나라 건국해 본 경험 있어서 믿고 따라오면 됨
-일단 사회학 중심으로 공부해봅시다',null,'5000','https://open.kakao.com/o/sBXxwAxb',1,3333,'1','\studyloop\views\host\img\T3s2Bnn.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/20','RR/MM/DD'),'종로역 1번 출구 앞 스벅',3,3,43,1);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'돈이 없어서 취업 빨리 하실분 구합니다','취업이 궁하신분들을 위한 속성 스터디입니다.','일단 저희 스터디는 다른거 없고 빠르게 취직하기 위해 서로에게 자극을 주는 방식으로 진행됩니다.
-욕설, 폭언, 폭행 모두 가능합니다. ','걍 빨리 취직하고싶은 사람','따로 없음','올때 멘탈강화 하고오셈','4천원','https://open.kakao.com/o/sBXxwAxb',1,5,'0','\studyloop\views\host\img\eclipse.png',to_date('19/07/24','RR/MM/DD'),to_date('19/09/19','RR/MM/DD'),'사당역 5출 스타벅스',4,8,7,2);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'정보보안 스터디','정보보안기사 자격증과 모의해킹 스터디입니다.','하반기 정보보안기사 자격증 필기, 실기 함께 준비해요. 
-
-하루 최소 2시간씩 공부하며, 
-
-필기 합격 후 실기 준비와 실습 병행합니다.','컴퓨터 전공이거나 관련 공부 경험 있으신 분, 
-보안 쪽 진로 희망하시는 분이면 좋겠습니다.','- 정보보안개론
-
-- 운영체제
-
-- 네트워크보안
-
-- 시스템보안
-
-- 해킹사례연구','파스쿠찌 음료 비용 개인적으로 준비하시면 됩니다~','0','https://open.kakao.com/o/sBXxwAxb',2,5,'1','\studyloop\views\host\img\image_readtop_2018_194894_15221182793253362.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/19','RR/MM/DD'),'강남역 파스쿠찌',1,1,31,3);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'심리학 학과보충 _  심리학 연구 방법론 공부 및 직접 실험 설계','심리학 학과 보충 수업으로 심리학 연구 방법론 같이 공부 하실 분 구해요. ','Introduction to Psychology Research Methods _ Howitt and Cramer 교재로 같이 공부 
-
-챕터별로 피피티 자료 나눠드릴 거임 
-
-연구 방법론 배우고 후에는 배운거 토대로 실제 실험 설계 및 가상 이론까지 정리','심라학 2~3학년 
-2학기 대비 또는 재수강땐 만점을 얻고 싶은 분','매번 올 때 마다 챕터 한개 끝나고 끝난 후에 서로 퀴즈 문제 내기
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (46,'유기화학스터디 같이해요','화학전공자들이 같이 공부하는 모임','1시간 유기화학기초, 1시간 고분자 등 심화과목 공부 진행할 예정입니다.','화학에 대해 기본 지식이 있는 전공자 1~3학년',null,'없음','0','https://open.kakao.com/o/sUB5AwEb',1,6,'1','/studyloop/views/host/img/화학.png',to_date('19/09/19','RR/MM/DD'),to_date('19/09/30','RR/MM/DD'),'쿠카쿠 카페',64,36,32,46);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (47,'물리학 스터디 같이 하실 분','물리학 전공도들의 모임','30분 정도 토론하고 1시간 정도는 전공책, 논문, 각종 자료 갖고 공부하죠','물리학에 관심있는 모든 물리학도 환영(고등학생은 x)','없음','회비는 각종 유료 논문 자료를 구입하는 데 이용될 예정입니다.','2000','https://open.kakao.com/o/sUB5AwEb',1,4,'1','/studyloop/views/host/img/물리하.jfif',to_date('19/09/19','RR/MM/DD'),to_date('19/09/28','RR/MM/DD'),'카페7그램',64,27,45,47);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (48,'한국사 시험 같이 1급 따요','코앞에 닥친 한국사 시험을 벼락치기로 같이 준비','1시간 기출 풀이, 1시간 오답풀이 및 분석 을 한 주기로 3회 반복','한국사 1급 목표인 아무나','잡담, 사담 없을 예정',null,'0','https://open.kakao.com/o/sUB5AwEb',1,3,'0','/studyloop/views/host/img/한국사1.png',to_date('19/09/19','RR/MM/DD'),to_date('19/10/12','RR/MM/DD'),'스타벅스',64,45,21,48);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (49,'아침 조깅 같이 해요','하루 일과 시작 전 새벽, 아침 조깅 같이 해요','10분 스트레칭, 40분 조깅, 10분 마무리 스트레칭으로 진행하려고 합니다~','20~30대 관심있는 누구나!','오전 5시반부터 6시반까지 진행될 예정입니다.','열심히 같이 건강해져봐요ㅎㅎ','0','https://open.kakao.com/o/sUB5AwEb',1,2,'1','/studyloop/views/host/img/조깅.jfif',to_date('19/09/19','RR/MM/DD'),to_date('19/09/24','RR/MM/DD'),'양재천 입구',64,8,51,49);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (22,'삼성자소서 준비 같이 하실 분 구해요','성실하게 스터디 참여해서 같이 삼성가실 분 구합니다.','스터디 전까지 각자의 자소서를 작성해온 후 스터디 시간에 각자의 자소서를 첨삭하는 시간을 갖도록 하겠습니다.','25 ~ 29세까지 받습니다.
+토익 800 이상 및 오픽 IM이상의 성적 소유자 받습니다.',null,null,'0','https://open.kakao.com/o/sUB5AwEb',1,5,'1','/studyloop/views/host/img/삼성.png',to_date('19/09/16','RR/MM/DD'),to_date('19/10/05','RR/MM/DD'),'강남역 파스쿠찌',64,1,1,22);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (23,'코딩테스트_파이썬 같이 준비해요! (GRWM)','코딩테스트_파이썬으로 같이 준비해요!','시중에 나와있는 코딩데스트 사이트 풀고 오고 서로 모르는거 같이 공부해요!
 
 
-하루에 약 2시간에서 2시간 반 정도 소모
+언어는 파이썬만!','- 평소에 프로그래밍 언어 실력향상을 원하시는 분
 
-/
+- 초보자 포함(입문자는 제외) 
 
-일주일에 3번 할 예정( 요일과 시간은 협의 가능 ) ',null,'음료값 정도','https://open.kakao.com/o/sBXxwAxb',1,10,'1','\studyloop\views\host\img\시카고.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/01','RR/MM/DD'),'강남역 11출 할리스',2,1,41,4);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'자바 공부할 사람?.?','자바를 같이 공부해봅시다','하루 4시간 잡고 1시간 이론 공부, 3시간 코딩해봅시다','코딩 좋아하면 상관없음',null,null,'0','https://open.kakao.com/o/sBXxwAxb',1,7,'1','\studyloop\views\host\img\자바개발자(1).jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/10/20','RR/MM/DD'),'강남역 11번 출구 앞 할리스',3,1,31,5);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'오라클 DB 스터디','오라클 DB 아직도 모르니?','형이 친절하게 알려줄게
-1. oracle 11g xe 를 깐다
-2. cmd 창을 켠다
-3. 접속한다.
-4. 쿼리 날린다.
+- 성실하고 스터디 분위기 안 흐리실 분
 
-쉽지?','오라클 개초보','일단 깔아봐',null,'없음','https://open.kakao.com/o/sBXxwAxb',1,15,'0','\studyloop\views\host\img\oracle11g.png',to_date('19/07/24','RR/MM/DD'),to_date('19/08/19','RR/MM/DD'),'인사동 카페골목',4,13,12,6);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'커뮤니케이션 졸업 포트폴리오용 영상 만들기','커뮤니케이션 학 _졸업 포트폴리오용 영상 만들기 ','대본, 연출, 연기, 카메라 / 음향 감독 전부 다 구함
+- 성별 무관
 
-','- 졸작 겁나 급하신 분
+','첫 날 제외, 첫날은 ot 느낌으로 _ 이름, 나이, 전공유무, 평소에 헷갈렸던 부분 위주로,  이메일주소 교환, 앞으로 스터디 날짜 등 
 
-- 방송국 / 영화사 취업하려는데 영상 포트폴리오 필요하신 분
 
-- 시간 약속 잘 지킬거구 저처럼 똥줄 타신 분 만( 추진력을 위해 )','그 날 아이디어 또는 진전 있을 때 까지 집에 못감
+그 뒤로는 프로그래머스와 백준 저지등을 활용
 
-정확한 시간은 오픈 채팅으로 구할거고 그 뒤로는 대본에 따라 촬영할 시간에 각자 알아서 필요한거 챙기고 오시면 됌',null,'알아서 돈 필요할거 같음 가져와','https://open.kakao.com/o/sBXxwAxb',1,20,'1','\studyloop\views\host\img\시카고1.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/01','RR/MM/DD'),'홍대 8출 ',2,2,44,7);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'26일 시험 벼락치기 스터디','스터디원 급구입니다!!','26일 시험 대비로 
-25일 모여서 밤샘공부합니다.','열심히 공부하실분 아무나 오세요!!!','시험 예상문제 각자 준비해서 공유하고 질의응답 하는 방식으로 진행합니다.','출결은 자유롭게 열심히 합시다~','10000','https://open.kakao.com/o/sBXxwAxb',1,5,'0','\studyloop\views\host\img\thunderstorm-71366_1280.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/07/25','RR/MM/DD'),'엔코아 지하',5,1,31,8);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'컴퓨터공학 스터디','java와 javascript 공부 모임입니다','2시간 java 공부
-1시간 oracle 공부
-1시간 javascript 공부 입니다','java, javascript 프로젝트 경험이 있는 분을 우대합니다','일단 한달정도 스터디를 진행해보고 한달 후 회의해서 세부 커리큘럼을 만들겠습니다','목동 및 마포 거주자 우대합니다','회당 10000원','abc.kakao.com',1,5,'1','\studyloop\views\host\img\agent2.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/19','RR/MM/DD'),'오목교역 탐앤탐스',6,5,31,9);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'같이 체력단련해봅시다','나라 건국할 사람 스터디원이 같이 병행하면 좋을 스터디!','하루 3시간 잡고 2시간 칼, 1시간 맨몸 ㄱㄱ','운동 꽤 좀 하는 사람이면 좋을 듯. 빡세게 나갈 거임','세부 커리큘럼 이런 거 생각 안 해 봄. 난 쿨남이니까','열심히 해봅시다','3000','https://open.kakao.com/o/sBXxwAxb',1,43,'0','\studyloop\views\host\img\쥬몽.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/07/30','RR/MM/DD'),'신사역 3번 출구 앞 헬스장',3,4,50,10);
-Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (SEQ_WS_STUDYINFO_id.NEXTVAL,'아침 조깅','아침 조깅 할 사람 ','그딴거 없고 걍 뛸 거임 
-살 빼','빨리 와 안그럼 누나한테 혼난다','걍 뛰어',null,'지각할 때마다 5천만원','https://open.kakao.com/o/sBXxwAxb',1,20,'1','\studyloop\views\host\img\다운로드.jpg',to_date('19/07/24','RR/MM/DD'),to_date('19/08/19','RR/MM/DD'),'강남역부터 한강까지 한바퀴 뛸 거임',9,1,51,11);
 
+하나씩 단계별로 풀어나가며 모르는거 공유
+
+
+적어도 첫날 까지는 두 개 사이트 회원가입 해서 첫날 자기소개 시 이메일 주소도 공유합시다.
+
+','앞으로의 시간/장소 협의 가능','각자 음료값 정도만','https://open.kakao.com/o/sUB5AwEb',1,10,'1','/studyloop/views/host/img/python.png',to_date('19/09/16','RR/MM/DD'),to_date('19/10/15','RR/MM/DD'),'강남역 11출 파스쿠치 카페',61,1,2,23);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (24,'한전 NCS 스터디 구합니다','한전 NCS 같이 열심히 준비해서 뚫는 스터디입니다.','같이 모여서 NCS 1회 풀고 저번에 풀어온 것 채점, 의견 공유 ','한전 지원 예정자(다른 한전과 유사한 NCS 를 가진 기타 공기업 준비생도 상관없음)','풀어온 모의고사 1회 채점 + 풀이
+모의고사 같이 시간재서 풀기
+총 3시간 소요 예정','스터디룸 비용 당일날 결산','3000','https://open.kakao.com/o/sUB5AwEb',1,8,'1','/studyloop/views/host/img/20081220062201_donglee_1.jpg',to_date('19/09/16','RR/MM/DD'),to_date('18/09/11','RR/MM/DD'),'사당역 스터디룸(미정)',65,9,5,24);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (25,'생명공학 전공 스터디 같이 하실 분 구해요','생명공학 스터디 같이 해요','생명공학 전공이신 분들 같이 공부해요!
+교재는 캠밸로 진행할 예정이며 없으신 분들 제본나눔해드립니다.
+2시간 진행예정입니다.','대학 갓 입학해서 뭐가 뭔지 잘 모르는 생명학도들을 대상으로 합니다.
+쉬운 내용일 수 있어 대학교 1~2학년 정도가 적합할 것 같습니다.
+',null,null,'1000','https://open.kakao.com/o/sUB5AwEb',1,4,'1','/studyloop/views/host/img/dna.jpg',to_date('19/09/16','RR/MM/DD'),to_date('19/09/28','RR/MM/DD'),'건대역 엔제리너스',64,18,35,25);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (26,'흐스크 4급 같이 공부해요!','HSK 4급 한자정리 부터 기출문제 풀이 까지 같이 공부할 사람','4급에 나오는 단어 정리부터 기출 문제, 자주 나오는 유형 등 하나부터 열까지 같이 궝부!','- hsk 4급 꼭 따고 싶으신 분
+
+- 제대로 공부할 사람
+
+- 성별 상관 없음
+
+','하루 약 3시간 잡아서 1시간은 단어 정리 (외우기는 각자, 시험도 생략)
+
+나머지 2시간은 문제 유형 공부 또는 기출 문제 풀이 하며 각자 문제의 접근방법 공유',null,'각자 음료값 정도만','https://open.kakao.com/o/sUB5AwEb',1,10,'1','/studyloop/views/host/img/hsk.jpg',to_date('19/09/16','RR/MM/DD'),to_date('19/09/25','RR/MM/DD'),'강남역 1번 출구 스타벅스 카페 ',61,1,28,26);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (27,'7급 공무원 시험 준비 같이 하실분','7급 공무원 시험 (지방직) 준비 같이 하실분 구합니다.','1, 과목 별로 인강 공유
+2. 각자 공부하고 문제 풀어오기
+3. 같이 모여서 문풀','7급 준비 빡세게 같이 하실분 구합니다.(경험 있으신분이면 좋음) ',null,null,'4000','https://open.kakao.com/o/sBXxwAxb',1,5,'1','/studyloop/views/host/img/bot.png',to_date('19/09/18','RR/MM/DD'),to_date('19/09/19','RR/MM/DD'),'홍대 9출쪽 스터디룸',66,2,9,27);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (28,'토익 800대 목표 스터디 구합니다','800점대를 목표로하는 토익 스터디입니다.','단어 각자 외워와서 단어 테스트 볼 예정이구요
+한 회 모의고사 풀고 채점까지 할 예정입니다.','점수가 지금 600 후반인데 800점대를 목표로 하는 만큼 점수대가 맞으시는 분들을 모집합니다.','없음','주중 한번 주말한번 예정','3000원 커피비용','https://open.kakao.com/o/sBXxwAxb',1,6,'0','/studyloop/views/host/img/다운로드.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/19','RR/MM/DD'),'수원역 근처 카페',66,33,22,28);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (29,'한국사 1급 스터디','한국사 1급 준비하기 위한 스터디입니다.','공유된 인강을 통해 사전 학습 후
+
+만나서는 모의고사를 통해 내용을 점검하고 서로 암기 비법같은 것들을 공유 할 예정입니다.','기존에 한국사에 대한 지식이 아예 전무하신분은 조금 힘드실 것 같습니다.',null,'토 일중 하루 예정','0','https://open.kakao.com/o/sBXxwAxb',1,5,'1','/studyloop/views/host/img/2016061001505_01.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/19','RR/MM/DD'),'미정',66,18,21,29);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (30,'한식조리 스터디 구합니다','한식조리기사 실기 스터디 구합니다','각자 준비물 사와서 시간 재고 실습 모의고사 진행합니다.
+','한식조리기사 취득하려는 분 이라면 아무나 환영',null,null,'대관비 5000원씩','https://open.kakao.com/o/sBXxwAxb',1,3,'0','/studyloop/views/host/img/다운로드 (1).jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/09/19','RR/MM/DD'),'대학로 4출에 요리학원 대관 가능합니다',67,12,17,30);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (31,'doe, a deer, a female deer 영어회화스터디','즐겁지만 알찬 스터디를 만들어보아요','2시간 동안 진행될 예정입니다.
+1시간은 영화, 미드/영드 또는 강연을 보고 1시간은 이를 주제로 토론 또는 의견공유를 하는 식으로 회화를 진행하려고 합니다.','20~35세 남녀무관',null,null,'1000','https://open.kakao.com/o/sUB5AwEb',1,8,'1','/studyloop/views/host/img/영회.png',to_date('19/09/18','RR/MM/DD'),to_date('19/09/26','RR/MM/DD'),'노원역 놀숲',64,10,49,31);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (32,'LG전자 IT 직무 면접 스터디','LG전자 IT 직무 면접 스터디입니다.','1명씩 면접자가 되고 나머지 4명은 면접관이 되서 서로 평가하고 피드백 해주는 식으로 진행할까 합니다.','LG전자 면접 준비하시는 취준생',null,null,'0','https://open.kakao.com/o/sBXxwAxb',1,5,'0','/studyloop/views/host/img/2728413A53211EC410.png',to_date('19/09/18','RR/MM/DD'),to_date('19/08/19','RR/MM/DD'),'강서구 카페(미정)',67,32,3,32);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (21,'7대 대기업 자소서 첨삭 스터디','대기업을 준비하는 취준생들을 위한 자소서 첨삭 스터디 입니다.','각자 준비하는 기업에 대해 자기소개서를 써오면 돌아가면서 서로 첨삭해주는 방식으로 진행합니다.','대기업 자소서이기 때문에 왠만하면 준비해보신 분들 위주로 받고 있습니다.','일주일에 2번정도로 계획 중이며 원서 마감일이 다가오면 구성원들끼리 추가적으로 모일 수 있도록 할 예정입니다.','회비는 카페 음료값입니다.','3000','https://open.kakao.com/o/sUB5AwEb',1,5,'1','/studyloop/views/host/img/180907_?????????TV1.png',to_date('19/09/16','RR/MM/DD'),to_date('21/08/19','RR/MM/DD'),'강남역 부근(추후 협의)',65,1,1,21);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (33,'사회조사분석사2급 같이 공부해요','사회조사분석사 2급 필기 시험 같이 준비해요.','사회조사분석사 2급 2차 실기 한권으로 끝내기(2019) 교재 챕터 하나씩 매번 나감 ','성실한 사람 / 스터디 분위기 안 흐릴 사람','사회조사분석사 2급 2차 실기 한권으로 끝내기(2019) 교재 챕터 하나씩 매번 나감 
+
+후에는 문제풀이 + 기출문제 한 회씩 숙제로 풀고 채점해오고 모르는거 서로 질문','사회조사분석사 2급 2차 실기 한권으로 끝내기(2019) 교재 각자 준비','각자 음료값 정도만','https://open.kakao.com/o/sUB5AwEb',1,8,'1','/studyloop/views/host/img/사분제.gif',to_date('19/09/18','RR/MM/DD'),to_date('19/11/01','RR/MM/DD'),'성수동 3출 앞 스벅카페 2층',61,13,16,33);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (34,'컴공 전공공부 같이하실분 구합니다','컴공 학점을 위한 전공 스터디입니다.(저학년)','아래는 제가 스터디 진행하고자 하는 과목들입니다.
+
+1. 알고리즘
+2. DB
+3. 네트워크
+4. 운영체제','컴공 1~2학년 재학생 중 전공 기초가 부족하신 분들','같이 모여서 전공서적 공부하면서 모르는 부분 서로 찾아보고 알려주고 하는 간단한 식으로 준비하려 합니다.','강의실을 빌릴 대학은 추후 변경 가능합니다.','대학 강의실 대여예정','https://open.kakao.com/o/sBXxwAxb',2,5,'1','/studyloop/views/host/img/다운로드1.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/09/19','RR/MM/DD'),'서울대부근',67,19,31,34);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (35,'웨이트 같이 조지실 분','웨이트 같이 하실 남성분 구합니다','총 2시간 진행예정
+1시간 반 - 웨이트
+30분 - 가벼운 유산소','근력이 어느정도 있으신분(서로 도와가며 운동하려고 함)','인터벌 트레이닝 진행예정(크로스핏 스타일)','주말은 쉼','등록비 3달 10만원','https://open.kakao.com/o/sBXxwAxb',1,3,'1','/studyloop/views/host/img/다운로드 (2).jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/09/21','RR/MM/DD'),'화정 세이브존헬스장',68,34,50,35);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (37,'리눅스 마스터 1급 필기, 실기 준비 스터디','리눅스 마스터 1급 필기부터 실기까지 같이 준비할 분 모집합니다.','필기는 리눅스마스터 1급 책 같이 구매해서 공부하면 쉽게 붙습니다.
+실기는 필기 합격 후 진행하도록 하겠습니다.','리눅스마스터 1급 자격증 필요하신 분 대상',null,'장소는 부평인데 인천 전지역 가능','카페비용','https://open.kakao.com/o/sBXxwAxb',1,10,'1','/studyloop/views/host/img/800x0.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/19','RR/MM/DD'),'부평역 주변 카페',68,39,15,37);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (38,'게임회사(엔씨, 넷마블, 스게 등) 취준 같이 준비하실 분','게임 회사 취직 같이 준비하는 사람들을 위한 스터디입니다.','게임회사 특성상 인적성의 경우 IT 지식을 물어보기 때문에 IT 공부를 같이 겸합니다.(코딩테스트 포함)','게임회사 취직 준비하시는 분',null,null,'3000','https://open.kakao.com/o/sBXxwAxb',1,8,'1','/studyloop/views/host/img/다운로드 (3).jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/19','RR/MM/DD'),'영등포역 근처',69,22,1,38);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (39,'SKCT 같이 준비하실분','올 하반기  SKCT 같이 준비해요','모의고사 풀고 채점 
+일주일 총 2회 (그날 풀고 미리 풀어오고 하루에 2회씩 담당)','SKCT 준비하시는 분',null,null,'커피비','https://open.kakao.com/o/sBXxwAxb',1,6,'1','/studyloop/views/host/img/255772436.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/30','RR/MM/DD'),'신사역 카페파스쿠치',69,5,2,39);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (40,'홍대 자취러들 모이세요!! 아침에 조깅합시다','아침 9시반쯤에 나가서 동네 한바퀴 뛰어요','걍 올 사람 모여서 동네 한바퀴 뛰고 각자 해산','1교시 없어도 아침형 인간이 되고싶은 사람','이유 없이 안오거나 늦으면 벌칙금 5만원 내야함
+
+홍대 1출에서 모여서 동네 한바퀴 뛰고 ( 약 30 분 ~ 1시간 소요 예정 ) 각자 해산 ',null,'5만원 ( 지각이나 결석 시에만 ) ','https://open.kakao.com/o/sUB5AwEb',1,6,'1','/studyloop/views/host/img/ㅈㄱ.jpg',to_date('19/09/18','RR/MM/DD'),to_date('19/10/01','RR/MM/DD'),'홍대 1출 앞',61,2,51,40);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (42,'토플공부 고득점 필요하신분 같이 공부해요','토플 고득점 같이 공부하면서 점수 내요!','각 섹션별로 문제풀이 + 스킬 위주로 수업 ','토플 고득점 필요하신 분 ','단어장 정해서 단어 시험 보고 숙제해온거 문제풀이',null,'각자 음료값 정도만','https://open.kakao.com/o/sUB5AwEb',1,10,'1','/studyloop/views/host/img/tf.jpg',to_date('19/09/19','RR/MM/DD'),to_date('19/10/01','RR/MM/DD'),'캠퍼스타운역 3출 앞 스벅',70,37,25,42);
+Insert into ENCORE.WS_STUDYINFO (ID,TITLE,INTRO,PROCESS,TARGET,CURRICULUM,SCOMMENT,SCOST,CHAT_URL,CUR_PERSONNEL,MAX_PERSONNEL,TERM,PICTURE,REGDATE,DEADLINE,PLACE,USER_ID,LOC_ID,CAT_ID,STUDYTIME_ID) values (43,'정보처리기사 스터디 구합니다','정보처리기사 필기 2020년 대비 스터디구합니다.','올 때 마다 한 챕터씩 나가고 문제 풀이
+
+책 끝나면 요약정리 + 기출문제 풀이 ','정처기 필요한 사람','올 때 마다 한 챕터씩 나가고 문제 풀이
+--> 교재는 첫 날 와서 같이 정할 거임
+
+책 끝나면 요약정리 + 기출문제 풀이 
+--> 요약정리는 이기주의 정처기 위주로 ',null,'각자 음료값 정도만','https://open.kakao.com/o/sUB5AwEb',1,8,'1','/studyloop/views/host/img/wgr.jpg',to_date('19/09/19','RR/MM/DD'),to_date('19/11/01','RR/MM/DD'),'잠실역 8번출구 앤젤리너스 2층 큰 테이블',71,7,12,43);
 
 /*거리 계산용 radian 함수 */
 CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
