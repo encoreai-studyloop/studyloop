@@ -28,6 +28,8 @@ public class StudyDataBean {
 	private String user_name;
 	private String regprocess_id;
 	
+	private Double est_rate;
+	
 	public String getRegprocess_id() {
 		return regprocess_id;
 	}
@@ -177,6 +179,12 @@ public class StudyDataBean {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public Double getEst_rate() {
+		return est_rate;
+	}
+	public void setEst_rate(Double est_rate) {
+		this.est_rate = est_rate;
 	}
 	
 	

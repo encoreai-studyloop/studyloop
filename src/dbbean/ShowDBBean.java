@@ -114,4 +114,11 @@ public class ShowDBBean implements ShowDao{
 	public CommentDataBean getCommentByCommentId( int comment_id ) {
 		return SqlMapClient.getSession().selectOne( "Studyloop.getCommentByCommentId", comment_id );
 	}
+	public int addAttendRate(Map<String, Double> map) {
+		return SqlMapClient.getSession().insert( "Studyloop.addAttendRate", map );
+	}
+	public Double getAttendRate(Map<String, Integer> map) {
+	
+		return SqlMapClient.getSession().selectOne( "Studyloop.getAttendRate", map );
+	}
 }

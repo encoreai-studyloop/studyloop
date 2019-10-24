@@ -55,7 +55,7 @@
 				<table class="table">
 					<tr>
 						<td class="text-center text-info" colspan="3">
-							${msg_checkresult}
+							해당 신청자의 예측되는 출석률은 약 ${attend_rate * 100}% 입니다. 
 						</td>
 					</tr>
 					<tr>

@@ -290,6 +290,10 @@
 	                                	<span><i class="fa fa-users"></i></span>&nbsp;
 	                                    <span><b>참석인원 : <%=studyDto.getCur_personnel()%>/<%=studyDto.getMax_personnel()%></b></span>
 	                                </div>
+	                                <div class="users" style="padding-bottom:5px; padding-left:10px;">
+	                                	<span><i class="fa fa-users"></i></span>&nbsp;
+	                                    <span><b>나와의 일치도 : <%=studyDto.getEst_rate()%></b></span>
+	                                </div>
 	                            </div>
 	                      
                     	</div>

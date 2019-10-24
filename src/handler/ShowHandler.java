@@ -1,5 +1,8 @@
 package handler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -263,6 +266,114 @@ public class ShowHandler {
 			
 			log.debug("1.0"+","+userDto.getId() +","+userDto.getEmail() +","+userDto.getGender()+","+userDto.getBirth()+","+userDto.getAddress()+","+userDto.getInterest()+","+userDto.getGoal()+","+userDto.getOpen()+","+userDto.getPart()+ ","+studyDto.getId()+",{" + studyDto.getTitle().replace(",", " ") + "},{" + studyDto.getIntro().replace(",", " ") + "},{" + tar + "},{" +cur + "},{" + studyDto.getScomment() + "},{" + studyDto.getScost() + "}," + studyDto.getCur_personnel() + "," + studyDto.getMax_personnel() + "," + studyDto.getTerm() + "," + studyDto.getRegdate() + "," + studyDto.getDeadline() + ",{" + studyDto.getPlace() + "}," + locationDto.getState_city() + "," + locationDto.getDetail_loc() + "," + categoryDto.getBig() + "," + categoryDto.getMiddle() + "," + categoryDto.getSmall() + "," + studytimeDto.getSdate() + "," + studytimeDto.getSday() + "," + studytimeDto.getStime() );
 			log.debug( "[스터디 신청 완료 끝]" );
+			
+			//머신러닝 부분
+			//졸업유무 경력횟수  어학개수 자격증개수  나이  평점  프리미엄여부   신청이유  목표    자기소개    할말    걸린시간(ms)
+			//0,1,2,1,28,0.1,0,4.0,1.5,1.0,0.5,2000
+			
+			ArrayList<Double> arr = new ArrayList<Double>();
+			if(schoolDto.getStatus().equals("졸업")) {
+				arr.add(0.0);
+			}
+			else if(schoolDto.getStatus().equals("재학")) {
+				arr.add(1.0);
+			}
+			else {
+				arr.add(2.0);
+			}
+			arr.add((double) careernum);
+			arr.add((double) langnum);
+			arr.add((double) certnum);
+			String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 4))));
+			arr.add(Double.parseDouble(age));
+			arr.add(userDto.getRate());
+			arr.add(Double.parseDouble(userDto.getPrime()));
+			
+			Runtime rt = Runtime.getRuntime();
+            String[] processString = {"/Users/joon/anaconda3/bin/python3", "/Users/joon/Desktop/webproject/studyloop/WebContent/dataForm.py", attendeeDto.getPurpose()};
+            System.out.println(processString);
+            try {
+                Process extractProcess = rt.exec(processString);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                arr.add(Double.parseDouble(pyString));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
+            processString[2] = attendeeDto.getGoal();
+            System.out.println(processString);
+            try {
+                Process extractProcess = rt.exec(processString);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                arr.add(Double.parseDouble(pyString));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
+            processString[2] = attendeeDto.getIntro();
+            System.out.println(processString);
+            try {
+                Process extractProcess = rt.exec(processString);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                if(pyString != null) {
+                	arr.add(Double.parseDouble(pyString));
+                }
+                else {
+                	arr.add(0.0);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
+            processString[2] = attendeeDto.getRequest();
+            System.out.println(processString);
+            try {
+                Process extractProcess = rt.exec(processString);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                if(pyString != null) {
+                	arr.add(Double.parseDouble(pyString));
+                }
+                else {
+                	arr.add(0.0);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
+			
+            arr.add((double) millis);
+            
+            //머신러닝 실행 
+            Double est_rate = 0.0;
+            rt = Runtime.getRuntime();
+            String[] processStr = {"/Users/joon/anaconda3/bin/python3", "/Users/joon/Desktop/webproject/studyloop/WebContent/data2DL.py", attendeeDto.getPurpose()};
+            System.out.println(processStr);
+            try {
+                Process extractProcess = rt.exec(processStr);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                est_rate = Double.parseDouble(pyString);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
+			System.out.println("예측 출석률은 : "+ est_rate);
+			//예측된 출석률 DB 저장
+			Map<String,Double> map = new HashMap<String,Double>();
+			map.put("user_id", (double) userDto.getId());
+			map.put("study_id", (double) studyDto.getId());
+			map.put("attend_rate", est_rate);
+			showDao.addAttendRate(map);
+			
 			return new ModelAndView("views/show/apply");
 	}
 
@@ -290,9 +401,15 @@ public class ShowHandler {
 	public ModelAndView applyResultPro(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		int user_id = Integer.parseInt( req.getParameter( "id" ) );
 		int study_id = Integer.parseInt( req.getParameter( "sid" ) );
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		map.put("user_id", user_id);
+		map.put("study_id", study_id);
+		Double attend_rate = showDao.getAttendRate(map);
 		
+		req.setAttribute("attend_rate", attend_rate);
 		req.setAttribute( "user_id", user_id );
 		req.setAttribute( "study_id", study_id );
+
 		
 		return new ModelAndView("views/show/applyResult");
 	}

@@ -1,6 +1,12 @@
 package handler;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +68,7 @@ public class MainSearchHandler {
         String cat = req.getParameter("cat");
         String[] daylist = req.getParameterValues("sday");
         String sort = req.getParameter("sort");
-              
+        int cluster = 0;
         if(req.getSession().getAttribute("userDto") == null) {
         	log.debug("[비회원 검색]");
         }
@@ -70,6 +76,66 @@ public class MainSearchHandler {
         	log.debug("[회원 검색]");
         	UserDataBean userDto = userDao.getUserById(((UserDataBean)req.getSession().getAttribute("userDto")).getId());
         	log.debug(userDto.getId() + ","+ userDto.getEmail());
+        	String[] interest = {"BG","MS","PC","PU","IT","CK","SO","AZ","CO","ID","MT","NE", "NM", "EN", "JP", "CH","DE", "ET","EX"};
+        	String[] goal = {"JB", "CT", "MJ", "LA"," AC"};
+        	
+       
+        	
+        	ArrayList<String> interestArr = new ArrayList<String>(Arrays.asList(interest)); 
+        	ArrayList<String> goalArr = new ArrayList<String>(Arrays.asList(goal)); 
+        	
+        	
+        	ArrayList<String> userdata = new ArrayList<String>();
+        	if(userDto.getGender().equals("남"))
+        		userdata.add("0.0");
+        	else
+        		userdata.add("1.0");
+        	String age = Integer.toString((2019 - Integer.parseInt(userDto.getBirth().substring(0, 4))));
+        	userdata.add(age);
+        	String inter = Double.toString(interestArr.indexOf(userDto.getInterest())).toString();
+        	if (inter.equals(null))
+        		inter = "0.0";    	
+        	userdata.add(inter);
+        	String gol = Double.toString(goalArr.indexOf(userDto.getGoal())).toString();
+        	if (gol.equals(null))
+        		gol = "0.0";
+        	userdata.add(gol);
+        	userdata.add(userDto.getOpen());
+        	userdata.add(userDto.getPart());
+        	       	
+        	String message = userdata.get(0)+","+userdata.get(1)+","+userdata.get(2)+","+userdata.get(3)+","+userdata.get(4)+","+userdata.get(5);
+            
+            File file = new File("/Users/joon/Desktop/webproject/studyloop/WebContent/views/search/mydata.txt");
+            FileWriter writer = null;
+          
+            try {
+                // 기존 파일의 내용에 이어서 쓰려면 true를, 기존 내용을 없애고 새로 쓰려면 false를 지정한다.
+                writer = new FileWriter(file, false);
+                writer.write(message);
+                writer.flush();   
+                System.out.println("DONE");
+            } catch(IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if(writer != null) writer.close();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Runtime rt = Runtime.getRuntime();
+            String[] processString = {"/Users/joon/anaconda3/bin/python3", "/Users/joon/Desktop/webproject/studyloop/WebContent/findCluster.py"};
+            System.out.println(processString);
+            try {
+                Process extractProcess = rt.exec(processString);
+                BufferedReader input = new BufferedReader(new InputStreamReader(extractProcess.getInputStream()));
+                String pyString = input.readLine();
+                System.out.println("<PYSTUFF>SUCCESS " + pyString + "</PYSTUFF>");
+                cluster = Integer.parseInt(pyString);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("<FAIL>PYTHON DID NOT RUN</FAIL>");
+            } 
         }
         
         if(keyword == null) {
@@ -215,6 +281,27 @@ public class MainSearchHandler {
                     }
                 });   
         	}
+        }
+        
+        //머신러닝 결과 적용(회원만)
+        if(req.getSession().getAttribute("userDto") != null) {
+       
+	       	String[] category = {"대기업 자소서", "대기업 인적성", "대기업 면접" ,"공기업 자소서","공기업 NCS","공기업 면접","중소기업 자소서","중소기업 면접","공무원 7급","공무원 9급","공무원 5급","컴퓨터 정보처리기사","컴퓨터 정보보안기사","컴퓨터 컴퓨터활용능력","컴퓨터 리눅스마스터","사회 사회조사분석사","요리 한식조리기사","요리 일식조리기사","요리 양식조리기사","사회 유통관리사","사회 한국사능력검정시험","영어 TOEIC","영어 OPIC"
+	        		,"영어 SAT","영어 TOEFL","일본어 JPLT","일본어 JPT","중국어 HSK","독일어 ZD","공학 기계공학","공학 컴퓨터공학","공학 화학공학","공학 환경공학","공학 로봇공학","공학 생명공학"
+	        		,"인문 국어국문학","인문 철학","인문 사학","인문 유학","인문 중어중문학","사회 심리학","사회 통계학","사회 사회학","사회 커뮤니케이션학","자연과학 물리학","자연과학 수학","자연과학 생물학","자연과학 지구과학"
+	        		,"회화 영어회화","운동 웨이트","운동 조깅"};
+	
+	        String[] loc = {"강남","홍대","신촌","종로","신사","목동","잠실","양재","사당","노원","은평","혜화","성수","인사동","고양","서면","송도","건대"
+	        	               ,"신림","마포","성북","영등포","용산","왕십리" ,"구로","동작","수유","회기","충무로","미아","청량리","강서"
+	        	               ,"수원","고양","분당","의정부","송도","구월동","부평","대전역","중앙","서면","부경대","해운대","남포","구미","울산대"};
+	        	
+	        
+	        
+	        studyDtoList = searchDao.addEstrate(studyDtoList, cluster);
+	        for(StudyDataBean s : studyDtoList) {
+	        	//System.out.println(s.getEst_rate());
+	        }
+	        
         }
         
         req.setAttribute("studyDtoList", studyDtoList);

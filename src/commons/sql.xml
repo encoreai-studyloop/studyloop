@@ -729,5 +729,18 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		u.repcat_id = r.id
 	</select>
 	
+	<!--machine learning -->
+	<select id="addEstrate" parameterType="java.util.Map" resultType="Double">
+		select s.pre_rate from ws_studyrecommend s, ws_categoryforml c where s.studyc_id = c.id and s.user_cid = #{cluster}
+		and c.cat_id =#{cat_id} and c.loc_id = #{loc_id} and c.day_id = #{day_id}
+	</select>
+	
+	<insert id="addAttendRate" parameterType="java.util.Map">
+		insert into ws_attendrate values (SEQ_WS_attendrate_id.NEXTVAL, #{user_id}, #{study_id}, #{attend_rate})
+	</insert>
+	
+	<select id="getAttendRate" parameterType="java.util.Map" resultType="Double">
+		select rate from ws_attendrate where user_id = #{user_id} and study_id = #{study_id}
+	</select>
 </mapper>
 

@@ -86,7 +86,7 @@ CREATE SEQUENCE SEQ_ws_studytime_id INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_ws_userreport_id INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_WS_USER_id INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_WS_COMMENT_id INCREMENT BY 1 START WITH 1;
-
+CREATE SEQUENCE SEQ_WS_attendrate_id INCREMENT BY 1 START WITH 1;
 
 /* Create Tables */
 
@@ -474,6 +474,23 @@ create table ws_comment
   primary key (id)
 );
 
+create table ws_categoryforml
+(
+  id number NOT NULL,
+  cat_id number NOT NULL,
+  loc_id number NOT NULL,
+  day_id number NOT NULL,
+  primary key (id)
+);
+
+create table ws_attendrate
+(
+  id number NOT NULL,
+  user_id number NOT NULL,
+  study_id number NOT NULL,
+  rate number NOT NULL,
+  primary key (id)
+);
 
 /* Create Foreign Keys */
 

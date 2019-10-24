@@ -50,5 +50,7 @@ public interface SearchDao {
 	public List<UserReportDataBean> getReportedUsers();
 	public int closeStudy(int sid);
 	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, Double> cord);
+	
+	public List<StudyDataBean> addEstrate(List<StudyDataBean> studyDtoList, int cluster);
 		
 }

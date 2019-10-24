@@ -110,7 +110,7 @@
 						</div>
 						<div class="carousel-item active">
 							<img class="d-block w-100" alt="Carousel Bootstrap Second"
-								src="../../studyloop/views/search/images/study2.jpg" style="width: 100%; height: 500px;">
+								src="../../studyloop/views/search/images/milkyway.jpeg" style="width: 100%; height: 500px;">
 							<div class="carousel-caption">
 								<h4>아직도 혼자 공부하니?</h4>
 								<p>다같이 즐겁게 공부하자!</p>

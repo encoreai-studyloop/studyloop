@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import commons.SqlMapClient;
 import databean.AlarmDataBean;
@@ -288,13 +289,33 @@ public class SearchDBBean implements SearchDao{
 	
 	@Override
 	public int closeStudy(int sid) {
-		
 		return SqlMapClient.getSession().update("Studyloop.closeStudy", sid);
 		
 	}
-	
+
 	@Override
 	public List<StudyDataBean> getStudyThumbNailofnear(Map<String, Double> cord) {		
 		return SqlMapClient.getSession().selectList("Studyloop.getStudyThumbNailofnear", cord);
+	}
+	
+	@Override
+	public List<StudyDataBean> addEstrate(List<StudyDataBean> studyDtoList, int cluster) {
+		for( StudyDataBean s: studyDtoList) {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("cluster", cluster);
+			map.put("cat_id", s.getCat_id());
+			map.put("loc_id", s.getLoc_id());
+			//일단 요일은 랜덤
+			Random generator = new Random();
+			map.put("day_id", generator.nextInt(3));
+			Double rate = SqlMapClient.getSession().selectOne("Studyloop.addEstrate", map);
+			if(rate != null) {
+				s.setEst_rate(rate);
+			}
+			else {
+				s.setEst_rate(0.5);
+			}
+		}
+		return studyDtoList;
 	}
 }

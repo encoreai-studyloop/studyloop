@@ -18,7 +18,7 @@
 <nav class="navbar navbar-default navbar-static-top m-b-0">
 	<div class="navbar-header" style="padding-left: 20px">
 		<ul class="nav navbar-top-links navbar-left pull-left">
-			<li class="nav-item"><a href="main.do"><img alt="logo" src="../../studyloop/views/search/images/logo.png" style="width: 50px; height: 20px; margin-top: 20px; margin-right: 20px"></a></li>
+			<li class="nav-item"><a href="main.do"><img alt="logo" src="../../studyloop/views/search/images/logotp.png" style="width: 100px; height: 50px"></a></li>
 			<li>
 				<form role="search" class="app-search hidden-xs" name="searchform" action="search.do">
                     <input type="text" placeholder="참여하고 싶은 수업을 검색해보세요!"
